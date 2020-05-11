@@ -26,6 +26,7 @@ function ColorPicker(props: Props) {
         return (
           <TouchableOpacity
             style={{ flex: 1 }}
+            key={index}
             onPress={() => setSelectedColor(index)}>
             <View
               style={{

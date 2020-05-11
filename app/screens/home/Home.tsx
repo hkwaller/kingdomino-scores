@@ -18,6 +18,8 @@ const styles = StyleSheet.create({
 })
 
 function Home() {
+  const navigation = useNavigation()
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <SafeAreaView />
@@ -27,19 +29,19 @@ function Home() {
           title="New Game"
           backgroundColor={colors.GREEN}
           lean="right"
-          destination="NewGame"
+          onPress={() => navigation.navigate('NewGame')}
         />
         <Button
           title="Continue"
           backgroundColor={colors.YELLOW}
           lean="left"
-          destination=""
+          onPress={() => navigation.navigate('Continue')}
         />
         <Button
           title="Statistics"
           backgroundColor={colors.BLUE}
           lean="right"
-          destination=""
+          onPress={() => navigation.navigate('Statistics')}
         />
       </View>
     </ScrollView>

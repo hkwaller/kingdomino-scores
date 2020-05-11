@@ -8,13 +8,12 @@ import {
   ViewStyle,
 } from 'react-native'
 import { fonts } from 'app/config/constants'
-import { useNavigation } from '@react-navigation/core'
 
 type Props = {
   title: string
   backgroundColor: string
   lean?: 'left' | 'right'
-  destination?: string
+  onPress?: () => void
   style?: StyleProp<ViewStyle>
 }
 
@@ -34,13 +33,11 @@ function Button({
   title,
   lean = 'right',
   backgroundColor,
-  destination,
+  onPress,
   style,
 }: Props) {
-  const navigation = useNavigation()
-
   return (
-    <TouchableOpacity onPress={() => navigation.navigate(destination)}>
+    <TouchableOpacity onPress={onPress}>
       <View style={[styles.container, style]}>
         <View
           style={{

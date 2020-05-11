@@ -29,8 +29,11 @@ function Input({ placeholder, type = 'default', style }: Props) {
   return (
     <View style={[styles.container, style]}>
       <View style={styles.background} />
-      <TextInput style={styles.text} keyboardType={type}>
-        {placeholder || 0}
+      <TextInput
+        style={styles.text}
+        keyboardType={type}
+        placeholder={placeholder}>
+        {''}
       </TextInput>
     </View>
   )

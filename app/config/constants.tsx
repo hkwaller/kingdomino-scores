@@ -5,6 +5,7 @@ export const colors = {
   YELLOW: '#FDD827',
   BACKGROUND: '#EAE7D6',
   WHITE: '#fff',
+  BLACK: '#2B2B2C',
 }
 
 export const landscapeColors = {

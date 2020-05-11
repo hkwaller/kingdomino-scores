@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: 'row',
+    marginTop: 10,
   },
 })
 
@@ -42,7 +43,7 @@ function SmallButton({ number, selected, onPress }: SmallButtonProps) {
       style={{
         backgroundColor: selected ? colors.RED : colors.WHITE,
         flex: 1,
-        paddingVertical: 30,
+        paddingVertical: 20,
       }}>
       <Text
         style={{ textAlign: 'center', fontFamily: fonts.BOLD, fontSize: 40 }}>
@@ -54,6 +55,7 @@ function SmallButton({ number, selected, onPress }: SmallButtonProps) {
 
 function SelectPlayers() {
   const [selectedNumber, setSelectedNumber] = useState(2)
+  const navigation = useNavigation()
 
   return (
     <>
@@ -86,7 +88,9 @@ function SelectPlayers() {
       <Button
         title="Continue"
         backgroundColor={colors.YELLOW}
-        destination="EnterInfo"
+        onPress={() =>
+          navigation.navigate('EnterInfo', { players: selectedNumber })
+        }
         style={{ alignSelf: 'center' }}
       />
       <SafeAreaView />
