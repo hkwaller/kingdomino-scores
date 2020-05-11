@@ -1,4 +1,4 @@
-export const colours = {
+export const colors = {
   GREEN: '#28ECA5',
   BLUE: '#3FC0F8',
   RED: '#FF5959',
@@ -7,7 +7,7 @@ export const colours = {
   WHITE: '#fff',
 }
 
-export const landscapeColours = {
+export const landscapeColors = {
   FIELD: '#F7C63B',
   WOODS: '#77902B',
   WATER: '#097FB6',

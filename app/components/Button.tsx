@@ -1,11 +1,13 @@
 import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import { fonts } from '../config/constants'
+import { fonts } from 'app/config/constants'
+import { useNavigation } from '@react-navigation/core'
 
 type Props = {
-  lean: 'left' | 'right'
   title: string
   backgroundColor: string
+  lean?: 'left' | 'right'
+  destination?: string
 }
 
 const styles = StyleSheet.create({
@@ -20,15 +22,22 @@ const styles = StyleSheet.create({
   },
 })
 
-function Button({ title, lean, backgroundColor }: Props) {
+function Button({
+  title,
+  lean = 'right',
+  backgroundColor,
+  destination,
+}: Props) {
+  const navigation = useNavigation()
+
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={() => navigation.navigate(destination)}>
       <View style={styles.container}>
         <View
           style={{
             ...StyleSheet.absoluteFillObject,
             backgroundColor,
-            transform: [{ rotate: `${lean === 'right' ? '-' : ''}2deg` }],
+            transform: [{ rotate: `${lean === 'left' ? '-' : ''}2deg` }],
           }}
         />
         <Text style={styles.text}>{title}</Text>

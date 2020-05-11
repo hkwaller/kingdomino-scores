@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
-import { colours, fonts } from '../config/constants'
+import { colors, fonts } from 'app/config/constants'
 
 type Props = {
   title: string
@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   background: {
-    backgroundColor: colours.WHITE,
+    backgroundColor: colors.WHITE,
     transform: [{ rotate: '-5deg' }],
     marginBottom: 25,
     ...StyleSheet.absoluteFillObject,

@@ -9,7 +9,7 @@
     "resolveJsonModule": true,
     "baseUrl": "./",
     "paths": {
-      "components/*": ["./app/*"]
+      "app/*": ["./app/*"]
     }
   }
 }

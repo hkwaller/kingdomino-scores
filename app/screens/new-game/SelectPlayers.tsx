@@ -1,6 +1,8 @@
 import React from 'react'
 import { View, ScrollView, SafeAreaView, StyleSheet } from 'react-native'
 import { Header } from 'app/components'
+import SmallHeader from 'app/components/SmallHeader'
+import Input from 'app/components/Input'
 import Button from 'app/components/Button'
 import { colors } from 'app/config/constants'
 import { useNavigation } from '@react-navigation/core'
@@ -8,42 +10,38 @@ import { useNavigation } from '@react-navigation/core'
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
   },
-  buttonContainer: {
+  viewContainer: {
     marginTop: 20,
+  },
+  views: {
+    flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
   },
 })
 
-function Home() {
+function SelectPlayers() {
+  const navigation = useNavigation()
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <SafeAreaView />
-      <Header title="King Domino" />
-      <View style={styles.buttonContainer}>
-        <Button
-          title="New Game"
-          backgroundColor={colors.GREEN}
-          lean="right"
-          destination="NewGame"
-        />
+      <View style={styles.views}>
+        <Header title="New Game" />
+        <View style={styles.viewContainer}>
+          <SmallHeader title="How many players?" />
+          <Input />
+        </View>
         <Button
           title="Continue"
           backgroundColor={colors.YELLOW}
-          lean="left"
-          destination=""
-        />
-        <Button
-          title="Statistics"
-          backgroundColor={colors.BLUE}
-          lean="right"
-          destination=""
+          destination="EnterInfo"
         />
       </View>
+      <SafeAreaView />
     </ScrollView>
   )
 }
 
-export default Home
+export default SelectPlayers
