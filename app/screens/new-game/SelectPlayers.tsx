@@ -1,10 +1,16 @@
-import React from 'react'
-import { View, ScrollView, SafeAreaView, StyleSheet } from 'react-native'
+import React, { useState } from 'react'
+import {
+  View,
+  ScrollView,
+  SafeAreaView,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+} from 'react-native'
 import { Header } from 'app/components'
 import SmallHeader from 'app/components/SmallHeader'
-import Input from 'app/components/Input'
 import Button from 'app/components/Button'
-import { colors } from 'app/config/constants'
+import { colors, fonts } from 'app/config/constants'
 import { useNavigation } from '@react-navigation/core'
 
 const styles = StyleSheet.create({
@@ -12,35 +18,79 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   viewContainer: {
-    marginTop: 20,
+    marginTop: 60,
   },
   views: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'space-between',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
   },
 })
 
+type SmallButtonProps = {
+  number: string
+  onPress: () => void
+  selected: boolean
+}
+
+function SmallButton({ number, selected, onPress }: SmallButtonProps) {
+  return (
+    <TouchableOpacity
+      onPress={onPress}
+      style={{
+        backgroundColor: selected ? colors.RED : colors.WHITE,
+        flex: 1,
+        paddingVertical: 30,
+      }}>
+      <Text
+        style={{ textAlign: 'center', fontFamily: fonts.BOLD, fontSize: 40 }}>
+        {number}
+      </Text>
+    </TouchableOpacity>
+  )
+}
+
 function SelectPlayers() {
-  const navigation = useNavigation()
+  const [selectedNumber, setSelectedNumber] = useState(2)
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <SafeAreaView />
-      <View style={styles.views}>
-        <Header title="New Game" />
-        <View style={styles.viewContainer}>
-          <SmallHeader title="How many players?" />
-          <Input />
+    <>
+      <ScrollView contentContainerStyle={styles.container}>
+        <SafeAreaView />
+        <View style={styles.views}>
+          <Header title="New Game" />
+          <View style={styles.viewContainer}>
+            <SmallHeader title="How many players?" />
+            <View style={styles.buttonContainer}>
+              <SmallButton
+                number="2"
+                onPress={() => setSelectedNumber(2)}
+                selected={2 === selectedNumber}
+              />
+              <SmallButton
+                number="3"
+                onPress={() => setSelectedNumber(3)}
+                selected={3 === selectedNumber}
+              />
+              <SmallButton
+                number="4"
+                onPress={() => setSelectedNumber(4)}
+                selected={4 === selectedNumber}
+              />
+            </View>
+          </View>
         </View>
-        <Button
-          title="Continue"
-          backgroundColor={colors.YELLOW}
-          destination="EnterInfo"
-        />
-      </View>
+      </ScrollView>
+      <Button
+        title="Continue"
+        backgroundColor={colors.YELLOW}
+        destination="EnterInfo"
+        style={{ alignSelf: 'center' }}
+      />
       <SafeAreaView />
-    </ScrollView>
+    </>
   )
 }
 

@@ -18,30 +18,31 @@ const styles = StyleSheet.create({
   },
   views: {
     flex: 1,
-    justifyContent: 'space-between',
     alignItems: 'center',
   },
 })
 
 function EnterInfo() {
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <SafeAreaView />
-      <View style={styles.views}>
-        <Header title="New Game" />
-        <View style={styles.viewContainer}>
-          <SmallHeader title="Name?" style={{ alignSelf: 'center' }} />
-          <Input placeholder="Christine" />
+    <>
+      <ScrollView contentContainerStyle={styles.container}>
+        <SafeAreaView />
+        <View style={styles.views}>
+          <Header title="New Game" />
+          <SmallHeader title="Name" />
+          <Input placeholder="Christine" style={{ minWidth: '80%' }} />
+          <SmallHeader title="Colour" style={{ marginTop: 30 }} />
+          <ColorPicker />
         </View>
-        <SmallHeader
-          title="Colour?"
-          style={{ marginLeft: 20, marginBottom: -40 }}
-        />
-        <ColorPicker />
-        <Button title="Continue" backgroundColor={colors.YELLOW} />
-      </View>
+        <SafeAreaView />
+      </ScrollView>
+      <Button
+        title="Continue"
+        backgroundColor={colors.YELLOW}
+        style={{ alignSelf: 'center' }}
+      />
       <SafeAreaView />
-    </ScrollView>
+    </>
   )
 }
 

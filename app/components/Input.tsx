@@ -1,9 +1,11 @@
 import React from 'react'
-import { View, TextInput, StyleSheet } from 'react-native'
+import { View, TextInput, StyleSheet, StyleProp, ViewStyle } from 'react-native'
 import { colors, fonts } from 'app/config/constants'
 
 type Props = {
   placeholder?: string
+  type?: 'numeric' | 'default'
+  style?: StyleProp<ViewStyle>
 }
 
 const styles = StyleSheet.create({
@@ -23,11 +25,13 @@ const styles = StyleSheet.create({
   },
 })
 
-function Input({ placeholder }: Props) {
+function Input({ placeholder, type = 'default', style }: Props) {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style]}>
       <View style={styles.background} />
-      <TextInput style={styles.text}>{placeholder || 0}</TextInput>
+      <TextInput style={styles.text} keyboardType={type}>
+        {placeholder || 0}
+      </TextInput>
     </View>
   )
 }

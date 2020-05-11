@@ -1,5 +1,12 @@
 import React from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  StyleProp,
+  ViewStyle,
+} from 'react-native'
 import { fonts } from 'app/config/constants'
 import { useNavigation } from '@react-navigation/core'
 
@@ -8,6 +15,7 @@ type Props = {
   backgroundColor: string
   lean?: 'left' | 'right'
   destination?: string
+  style?: StyleProp<ViewStyle>
 }
 
 const styles = StyleSheet.create({
@@ -27,12 +35,13 @@ function Button({
   lean = 'right',
   backgroundColor,
   destination,
+  style,
 }: Props) {
   const navigation = useNavigation()
 
   return (
     <TouchableOpacity onPress={() => navigation.navigate(destination)}>
-      <View style={styles.container}>
+      <View style={[styles.container, style]}>
         <View
           style={{
             ...StyleSheet.absoluteFillObject,
