@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native'
 import { colors } from 'app/config/constants'
 
 type Props = {
-  selected: boolean
+  currentIndex: number
   players: number
 }
 
@@ -14,6 +14,17 @@ const styles = StyleSheet.create({
     marginHorizontal: '20%',
   },
 })
+
+function PageControl({ currentIndex, players }: Props) {
+  console.log('currentIndex: ', currentIndex)
+  return (
+    <View style={styles.container}>
+      {Array.from({ length: players }, (_, i) => {
+        return <Circle key={i} filled={currentIndex === i} />
+      })}
+    </View>
+  )
+}
 
 function Circle({ filled = false }: { filled: boolean }) {
   const style = filled
@@ -36,13 +47,4 @@ function Circle({ filled = false }: { filled: boolean }) {
   )
 }
 
-function PageControl({ selected, players }: Props) {
-  return (
-    <View style={styles.container}>
-      {Array.from({ length: players }, (_, i) => {
-        return <Circle filled={selected} />
-      })}
-    </View>
-  )
-}
 export default PageControl

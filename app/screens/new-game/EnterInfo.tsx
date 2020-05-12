@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import {
   View,
   ScrollView,
@@ -13,8 +13,7 @@ import Button from 'app/components/Button'
 import { colors } from 'app/config/constants'
 import ColorPicker from 'app/components/ColorPicker'
 import PageControl from 'app/components/PageControl'
-import { useRoute } from '@react-navigation/core'
-import { Colors } from 'react-native/Libraries/NewAppScreen'
+import { useRoute, useNavigation } from '@react-navigation/core'
 
 const styles = StyleSheet.create({
   container: {
@@ -33,7 +32,8 @@ const styles = StyleSheet.create({
 
 function EnterInfo() {
   const route = useRoute()
-  const [selected, setSelected] = useState(0)
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const ref = useRef(null)
   const [players, setPlayers] = useState(
     Array.from({ length: route.params.players || 2 }, (_, i) => {
       return {
@@ -43,6 +43,8 @@ function EnterInfo() {
     }),
   )
 
+  const navigation = useNavigation()
+
   return (
     <>
       <ScrollView contentContainerStyle={styles.container}>
@@ -51,6 +53,8 @@ function EnterInfo() {
         <FlatList
           keyExtractor={(item, index) => `${index}`}
           horizontal
+          ref={ref}
+          scrollEnabled={false}
           data={players}
           renderItem={({ item }) => {
             return (
@@ -64,11 +68,20 @@ function EnterInfo() {
           }}
         />
       </ScrollView>
-      <PageControl selected={selected} players={route.params.players} />
+      <PageControl currentIndex={currentIndex} players={route.params.players} />
       <Button
         title="Continue"
         backgroundColor={colors.YELLOW}
         style={{ alignSelf: 'center' }}
+        onPress={() => {
+          if (currentIndex < players.length - 1) {
+            const arr = [...players]
+            ref.current.scrollToIndex({ index: currentIndex + 1 })
+            setCurrentIndex(prev => prev + 1)
+          } else {
+            navigation.navigate('SetupComplete')
+          }
+        }}
       />
       <SafeAreaView />
     </>

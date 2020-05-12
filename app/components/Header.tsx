@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Dimensions } from 'react-native'
+import { View, Text, Dimensions, Image } from 'react-native'
 import { useNavigation } from '@react-navigation/core'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import styles from './Header.styles'
@@ -32,7 +32,7 @@ function Header({ title = 'King Domino' }: Props) {
           <TouchableOpacity
             style={styles.backButton}
             onPress={() => navigation.goBack()}>
-            <Text style={styles.backButtonText}>BACK</Text>
+            <Image source={require('../../assets/back.png')} />
           </TouchableOpacity>
         </View>
       )}

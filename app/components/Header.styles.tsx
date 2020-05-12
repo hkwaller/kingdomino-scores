@@ -31,8 +31,4 @@ export default StyleSheet.create({
     marginLeft: -30,
     marginTop: -30,
   },
-  backButtonText: {
-    fontFamily: fonts.BOLD,
-    fontSize: 30,
-  },
 })

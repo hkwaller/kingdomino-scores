@@ -9,6 +9,7 @@ import Home from 'app/screens/home/Home'
 
 import SelectPlayers from 'app/screens/new-game/SelectPlayers'
 import EnterInfo from 'app/screens/new-game/EnterInfo'
+import SetupComplete from 'app/screens/new-game/SetupComplete'
 
 import Continue from 'app/screens/continue/Continue'
 import Statistics from 'app/screens/statistics/Statistics'
@@ -39,6 +40,7 @@ function NewGameStack() {
       }}>
       <Stack.Screen name="SelectPlayers" component={SelectPlayers} />
       <Stack.Screen name="EnterInfo" component={EnterInfo} />
+      <Stack.Screen name="SetupComplete" component={SetupComplete} />
     </Stack.Navigator>
   )
 }
