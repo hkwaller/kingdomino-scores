@@ -19,24 +19,26 @@ import { colors } from 'app/config/constants'
 
 function EnterInfo() {
   const route = useRoute()
+  const navigation = useNavigation()
+
   const [currentIndex, setCurrentIndex] = useState(0)
   const [currentName, setCurrentName] = useState('')
-  const [currentColor, setCurrentColor] = useState('')
+  const [currentColor, setCurrentColor] = useState(0)
+
   const ref = useRef(null)
   const [players, setPlayers] = useState(
     Array.from({ length: route.params.players || 2 }, (_, i) => {
       return {
         name: '',
-        color: colors.RED,
+        color: 9,
       }
     }),
   )
 
-  const navigation = useNavigation()
-
   function continueTapped() {
     if (currentIndex < players.length - 1) {
-      const arr = [...players, { name: currentName, color: currentColor }]
+      players[currentIndex].name = currentName
+      players[currentIndex].color = currentColor
       ref.current.scrollToIndex({ index: currentIndex + 1 })
       setCurrentIndex(prev => prev + 1)
     } else {
@@ -52,7 +54,7 @@ function EnterInfo() {
         keyboardShouldPersistTaps="always">
         <Header title="New Game" />
         <FlatList
-          keyExtractor={(item, index) => `${index}`}
+          keyExtractor={(_, index) => `${index}`}
           horizontal
           keyboardShouldPersistTaps="always"
           ref={ref}

@@ -17,18 +17,6 @@ type Props = {
   style?: StyleProp<ViewStyle>
 }
 
-const styles = StyleSheet.create({
-  container: {
-    marginTop: 30,
-    alignSelf: 'flex-start',
-  },
-  text: {
-    fontFamily: fonts.BOLD,
-    fontSize: 80,
-    marginBottom: -10,
-  },
-})
-
 function Button({
   title,
   lean = 'right',
@@ -51,4 +39,17 @@ function Button({
     </TouchableOpacity>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    marginTop: 30,
+    alignSelf: 'flex-start',
+  },
+  text: {
+    fontFamily: fonts.BOLD,
+    fontSize: 80,
+    marginBottom: -10,
+  },
+})
+
 export default Button

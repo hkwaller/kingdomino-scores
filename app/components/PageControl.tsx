@@ -16,7 +16,6 @@ const styles = StyleSheet.create({
 })
 
 function PageControl({ currentIndex, players }: Props) {
-  console.log('currentIndex: ', currentIndex)
   return (
     <View style={styles.container}>
       {Array.from({ length: players }, (_, i) => {

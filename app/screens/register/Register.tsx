@@ -9,6 +9,7 @@ import {
 } from 'react-native'
 import { Header, Input, Button, Type } from 'app/components'
 import { colors, types, landscapeColors } from 'app/config/constants'
+import { useNavigation } from '@react-navigation/core'
 
 const styles = StyleSheet.create({
   container: {
@@ -30,6 +31,7 @@ function Register() {
   const [inputValue, setInputValue] = useState(0)
   const typeRef = useRef(null)
   const playerRef = useRef(null)
+  const navigation = useNavigation()
 
   function continueTapped() {
     const scores = [...game]
@@ -40,8 +42,10 @@ function Register() {
       setPlayerIndex(playerIndex + 1)
     } else if (playerIndex === players.length - 1) {
       setPlayerIndex(0)
+      console.log('playerIndex: ', playerIndex)
+      console.log('typeIndex: ', typeIndex)
       if (typeIndex < types.length - 1) setTypeIndex(typeIndex + 1)
-      else if (typeIndex === types.length - 1) setTypeIndex(0)
+      else if (typeIndex === types.length - 1) navigation.navigate('Bonus')
     }
   }
 
