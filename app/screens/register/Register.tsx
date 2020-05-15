@@ -4,17 +4,11 @@ import {
   SafeAreaView,
   StyleSheet,
   View,
-  Text,
+  FlatList,
   Dimensions,
 } from 'react-native'
-import { Header } from 'app/components'
-import Type from 'app/components/Type'
+import { Header, Input, Button, Type } from 'app/components'
 import { colors, types, landscapeColors } from 'app/config/constants'
-import Input from 'app/components/Input'
-import { FlatList } from 'react-native-gesture-handler'
-import Button from 'app/components/Button'
-
-type Props = {}
 
 const styles = StyleSheet.create({
   container: {
@@ -23,46 +17,38 @@ const styles = StyleSheet.create({
   },
 })
 
-const initialState = [[1, 10, 50, 8, 7], [6, 12, 40, 2, 4]]
+const initialState = [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]]
 const players = [
   { name: 'Hannes', color: colors.BLUE },
   { name: 'Christine', color: colors.RED },
 ]
 
-function Continue(props: Props) {
+function Register() {
   const [game, setGame] = useState(initialState)
   const [typeIndex, setTypeIndex] = useState(0)
   const [playerIndex, setPlayerIndex] = useState(0)
   const [inputValue, setInputValue] = useState(0)
-  const [roundCompleted, setRoundCompleted] = useState(false)
   const typeRef = useRef(null)
   const playerRef = useRef(null)
 
   function continueTapped() {
-    console.log('going')
     const scores = [...game]
-    scores[playerIndex][typeIndex] = 100000
+    scores[playerIndex][typeIndex] = Number(inputValue)
     setGame(scores)
 
     if (playerIndex < players.length - 1) {
       setPlayerIndex(playerIndex + 1)
     } else if (playerIndex === players.length - 1) {
       setPlayerIndex(0)
-      setRoundCompleted(true)
+      if (typeIndex < types.length - 1) setTypeIndex(typeIndex + 1)
+      else if (typeIndex === types.length - 1) setTypeIndex(0)
     }
-
-    if (roundCompleted) {
-      setRoundCompleted(false)
-      return
-    }
-
-    if (typeIndex < types.length - 1) setTypeIndex(typeIndex + 1)
-    else if (typeIndex === types.length - 1) setTypeIndex(0)
   }
 
   useEffect(() => {
     playerRef.current.scrollToIndex({ index: playerIndex })
   }, [playerIndex])
+
   useEffect(() => {
     typeRef.current.scrollToIndex({ index: typeIndex })
   }, [typeIndex])
@@ -95,9 +81,8 @@ function Continue(props: Props) {
                 }}>
                 <Type
                   title={item}
-                  big
+                  landscape
                   left
-                  uppercased
                   backgroundColor={landscapeColors[item.toUpperCase()]}
                 />
               </View>
@@ -145,4 +130,5 @@ function Continue(props: Props) {
     </>
   )
 }
-export default Continue
+
+export default Register

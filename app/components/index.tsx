@@ -4,5 +4,6 @@ import Input from './Input'
 import Button from './Button'
 import ColorPicker from './ColorPicker'
 import PageControl from './PageControl'
+import Type from './Type'
 
-export { Header, SmallHeader, Input, Button, ColorPicker, PageControl }
+export { Header, SmallHeader, Input, Button, ColorPicker, Type, PageControl }

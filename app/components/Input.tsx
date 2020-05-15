@@ -77,7 +77,6 @@ const styles = StyleSheet.create({
     fontFamily: fonts.BOLD,
   },
   inputAccessoryViewContainer: {
-    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: colors.WHITE,
@@ -86,7 +85,8 @@ const styles = StyleSheet.create({
     padding: 10,
     marginVertical: 10,
     paddingHorizontal: 50,
-    backgroundColor: colors.RED,
+    backgroundColor: colors.YELLOW,
+    transform: [{ rotate: '2deg' }],
     alignSelf: 'center',
   },
   inputAccessoryViewButtonText: {

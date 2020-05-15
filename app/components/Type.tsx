@@ -1,14 +1,13 @@
 import React from 'react'
 import { View, Text, StyleSheet, StyleProp, ViewStyle } from 'react-native'
-import { colors, fonts } from 'app/config/constants'
+import { colors, fonts, landscapeColors } from 'app/config/constants'
 
 type Props = {
   title: string
-  backgroundColor: string
   style?: StyleProp<ViewStyle>
-  uppercased?: boolean
+  landscape?: boolean
   left?: boolean
-  big?: boolean
+  backgroundColor: string
 }
 
 const styles = StyleSheet.create({
@@ -28,23 +27,31 @@ const styles = StyleSheet.create({
 function Type({
   style,
   title,
-  backgroundColor = '#fff',
-  uppercased = false,
+  landscape = false,
   left = false,
-  big = false,
+  backgroundColor,
 }: Props) {
-  const text = uppercased ? title.toUpperCase() : title
+  const text = landscape ? title.toUpperCase() : title
   const rotation = `${left ? '-' : ''}2deg`
+  const landscapeStyle = landscape
+    ? { borderWidth: 8, borderColor: colors.WHITE, marginHorizontal: -30 }
+    : {}
 
   return (
     <View style={[styles.container, style]}>
       <View
         style={[
           styles.background,
-          { backgroundColor, transform: [{ rotate: rotation }] },
+          {
+            backgroundColor,
+            transform: [{ rotate: rotation }],
+          },
+          landscapeStyle,
         ]}
       />
-      <Text style={[styles.text, { fontSize: big ? 90 : 80 }]}>{text}</Text>
+      <Text style={[styles.text, { fontSize: landscape ? 90 : 80 }]}>
+        {text}
+      </Text>
     </View>
   )
 }

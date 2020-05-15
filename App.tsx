@@ -11,7 +11,7 @@ import SelectPlayers from 'app/screens/new-game/SelectPlayers'
 import EnterInfo from 'app/screens/new-game/EnterInfo'
 import SetupComplete from 'app/screens/new-game/SetupComplete'
 
-import Continue from 'app/screens/continue/Continue'
+import Register from 'app/screens/register/Register'
 import Statistics from 'app/screens/statistics/Statistics'
 import { colors } from 'app/config/constants'
 
@@ -68,7 +68,7 @@ export default function App() {
         }}>
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="NewGame" component={NewGameStack} />
-        <Stack.Screen name="Continue" component={Continue} />
+        <Stack.Screen name="Register" component={Register} />
         <Stack.Screen name="Statistics" component={Statistics} />
       </Stack.Navigator>
     </NavigationContainer>
