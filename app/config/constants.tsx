@@ -21,3 +21,5 @@ export const fonts = {
   BOLD: 'Formula Condensed Bold',
   LIGHT: 'Formula Condensed Light',
 }
+
+export const types = ['Field', 'Woods', 'Water', 'Grass', 'Mud', 'Mine']

@@ -1,11 +1,64 @@
-import React from 'react'
-import { View, TextInput, StyleSheet, StyleProp, ViewStyle } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import {
+  View,
+  TextInput,
+  StyleSheet,
+  StyleProp,
+  ViewStyle,
+  InputAccessoryView,
+  TouchableOpacity,
+  Text,
+} from 'react-native'
 import { colors, fonts } from 'app/config/constants'
 
 type Props = {
   placeholder?: string
   type?: 'numeric' | 'default'
   style?: StyleProp<ViewStyle>
+  handleChange: (string) => void
+  continueTapped?: () => void
+}
+
+function Input({
+  placeholder,
+  type = 'default',
+  style,
+  handleChange,
+  continueTapped,
+}: Props) {
+  const [text, setText] = useState('')
+  const inputAccessoryViewID = 'supermegaID'
+
+  return (
+    <>
+      <View style={[styles.container, style]}>
+        <View style={styles.background} />
+        <TextInput
+          style={styles.text}
+          keyboardType={type}
+          onChangeText={text => {
+            handleChange(text)
+            setText(text)
+          }}
+          value={text}
+          inputAccessoryViewID={inputAccessoryViewID}
+          placeholder={placeholder}
+        />
+      </View>
+      <InputAccessoryView nativeID={inputAccessoryViewID}>
+        <View style={styles.inputAccessoryViewContainer}>
+          <TouchableOpacity
+            style={styles.inputAccessoryViewButton}
+            onPress={() => {
+              continueTapped()
+              setText('')
+            }}>
+            <Text style={styles.inputAccessoryViewButtonText}>Next</Text>
+          </TouchableOpacity>
+        </View>
+      </InputAccessoryView>
+    </>
+  )
 }
 
 const styles = StyleSheet.create({
@@ -23,19 +76,24 @@ const styles = StyleSheet.create({
     fontSize: 60,
     fontFamily: fonts.BOLD,
   },
+  inputAccessoryViewContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.WHITE,
+  },
+  inputAccessoryViewButton: {
+    padding: 10,
+    marginVertical: 10,
+    paddingHorizontal: 50,
+    backgroundColor: colors.RED,
+    alignSelf: 'center',
+  },
+  inputAccessoryViewButtonText: {
+    fontSize: 30,
+    textAlign: 'center',
+    fontFamily: fonts.BOLD,
+  },
 })
 
-function Input({ placeholder, type = 'default', style }: Props) {
-  return (
-    <View style={[styles.container, style]}>
-      <View style={styles.background} />
-      <TextInput
-        style={styles.text}
-        keyboardType={type}
-        placeholder={placeholder}>
-        {''}
-      </TextInput>
-    </View>
-  )
-}
 export default Input

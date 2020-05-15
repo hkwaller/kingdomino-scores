@@ -1,8 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, StyleSheet, Dimensions, TouchableOpacity } from 'react-native'
 import { colors } from 'app/config/constants'
 
-type Props = {}
+type Props = {
+  handleChange: (color) => void
+  alreadyPickedColors: string[]
+}
 
 const WIDTH = Dimensions.get('screen').width
 
@@ -14,23 +17,33 @@ const styles = StyleSheet.create({
   },
 })
 
-function ColorPicker(props: Props) {
+function ColorPicker({ handleChange, alreadyPickedColors }: Props) {
   const [selectedColor, setSelectedColor] = useState(0)
   const c = [colors.YELLOW, colors.RED, colors.GREEN, colors.BLUE]
+
+  useEffect(() => {
+    handleChange(selectedColor)
+  }, [selectedColor])
 
   return (
     <View style={styles.container}>
       {c.map((color, index) => {
         const selected = selectedColor === index
+        const alreadyPicked =
+          alreadyPickedColors.filter(a => a === color).length > 0
 
         return (
           <TouchableOpacity
             style={{ flex: 1 }}
             key={index}
-            onPress={() => setSelectedColor(index)}>
+            onPress={() => {
+              if (alreadyPicked) return
+              setSelectedColor(index)
+            }}>
             <View
               style={{
                 flex: 1,
+                opacity: alreadyPicked ? 0.2 : 1,
                 backgroundColor: color,
                 paddingVertical: WIDTH / 15,
                 borderWidth: selected ? 10 : 0,
