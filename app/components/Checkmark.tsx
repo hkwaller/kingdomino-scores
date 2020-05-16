@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { Svg, Line } from 'react-native-svg'
 import { colors } from 'app/config/constants'
 
@@ -42,4 +42,5 @@ function CheckMark({ checked }: Props) {
     </View>
   )
 }
+
 export default CheckMark

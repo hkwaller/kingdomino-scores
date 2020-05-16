@@ -13,6 +13,7 @@ import SetupComplete from 'app/screens/new-game/SetupComplete'
 
 import Register from 'app/screens/register/Register'
 import Bonus from 'app/screens/register/Bonus'
+import Scores from 'app/screens/register/Scores'
 
 import Statistics from 'app/screens/statistics/Statistics'
 import { colors } from 'app/config/constants'
@@ -55,6 +56,7 @@ function RegisterStack() {
       }}>
       <Stack.Screen name="Register" component={Register} />
       <Stack.Screen name="Bonus" component={Bonus} />
+      <Stack.Screen name="Scores" component={Scores} />
     </Stack.Navigator>
   )
 }

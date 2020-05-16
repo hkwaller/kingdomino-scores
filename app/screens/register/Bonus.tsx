@@ -7,15 +7,18 @@ import {
   Dimensions,
   Text,
 } from 'react-native'
-import { useRoute } from '@react-navigation/core'
+import { useRoute, useNavigation } from '@react-navigation/core'
 import { TapGestureHandler, State } from 'react-native-gesture-handler'
-import { Header, Type, Checkmark } from 'app/components'
-import { fonts } from 'app/config/constants'
+import { Header, Type, Checkmark, Button } from 'app/components'
+import { fonts, colors } from 'app/config/constants'
+import Check from 'app/components/Check'
 
 function Bonus() {
   const ref = useRef(null)
   const route = useRoute()
   const [players, setPlayers] = useState()
+  const [activePlayer, setActivePlayer] = useState(0)
+  const navigation = useNavigation()
 
   useEffect(() => {
     const players = route.params.players.map(p => {
@@ -24,6 +27,26 @@ function Bonus() {
 
     setPlayers(players)
   }, [])
+
+  function check(event, index, type) {
+    if (event.nativeEvent.state === State.END) {
+      const playersToUpdate = [...players]
+      playersToUpdate[index][type] = !playersToUpdate[index][type]
+      setPlayers(playersToUpdate)
+    }
+  }
+
+  function continueTapped() {
+    if (activePlayer < players.length - 1) {
+      setActivePlayer(activePlayer + 1)
+      ref.current.scrollToIndex({ index: activePlayer + 1 })
+    } else {
+      navigation.navigate('Scores', {
+        game: route.params.game,
+        players: players,
+      })
+    }
+  }
 
   return (
     <>
@@ -42,42 +65,31 @@ function Bonus() {
             if (!item) return <View />
             return (
               <View style={styles.item}>
-                <Type backgroundColor={item.color} title={item.name} />
-                <TapGestureHandler
-                  onHandlerStateChange={event => {
-                    if (event.nativeEvent.state === State.END) {
-                      const playersToUpdate = [...players]
-                      playersToUpdate[index].symmetric = !playersToUpdate[index]
-                        .symmetric
-                      setPlayers(playersToUpdate)
-                    }
-                  }}>
-                  <View
-                    style={[
-                      styles.checkmark,
-                      { marginBottom: 20, marginTop: 40 },
-                    ]}>
-                    <Checkmark checked={item.symmetric} />
-                    <Text style={styles.checkmarkText}>Symmetric</Text>
-                  </View>
-                </TapGestureHandler>
-                <TapGestureHandler
-                  onHandlerStateChange={event => {
-                    if (event.nativeEvent.state === State.END) {
-                      const playersToUpdate = [...players]
-                      playersToUpdate[index].king = !playersToUpdate[index].king
-                      setPlayers(playersToUpdate)
-                    }
-                  }}>
-                  <View style={styles.checkmark}>
-                    <Checkmark checked={item.king} />
-                    <Text style={styles.checkmarkText}>King in the middle</Text>
-                  </View>
-                </TapGestureHandler>
+                <Type
+                  backgroundColor={item.color}
+                  title={item.name}
+                  style={{ marginBottom: 20 }}
+                />
+                <Check
+                  item={item}
+                  type="symmetric"
+                  handleCheck={event => check(event, index, 'symmetric')}
+                />
+                <Check
+                  item={item}
+                  type="king"
+                  handleCheck={event => check(event, index, 'king')}
+                />
               </View>
             )
           }}
         />
+        <Button
+          title="Continue"
+          backgroundColor={colors.YELLOW}
+          onPress={() => continueTapped()}
+        />
+        <SafeAreaView />
       </View>
     </>
   )
