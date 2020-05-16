@@ -5,7 +5,6 @@ import { VictoryPie, VictoryChart } from 'victory-native'
 import { data } from 'app/config/data'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Header } from 'app/components'
-console.log('data: ', data)
 
 type Props = {}
 
