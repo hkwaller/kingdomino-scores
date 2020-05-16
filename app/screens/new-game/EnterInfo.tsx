@@ -26,6 +26,7 @@ function EnterInfo() {
   const [currentColor, setCurrentColor] = useState(0)
 
   const ref = useRef(null)
+  const scrollViewRef = useRef(null)
   const [players, setPlayers] = useState(
     Array.from({ length: route.params.players || 2 }, (_, i) => {
       return {
@@ -51,6 +52,7 @@ function EnterInfo() {
       <SafeAreaView />
       <ScrollView
         contentContainerStyle={styles.container}
+        ref={scrollViewRef}
         keyboardShouldPersistTaps="always">
         <Header title="New Game" />
         <FlatList
@@ -60,12 +62,20 @@ function EnterInfo() {
           ref={ref}
           scrollEnabled={false}
           data={players}
+          onTouchStart={() => {
+            scrollViewRef.current.scrollTo({
+              y: 140,
+              animated: true,
+            })
+          }}
           renderItem={({ item }) => {
             return (
               <View style={styles.views}>
                 <SmallHeader title="Name" style={{ marginBottom: -20 }} />
                 <Input
-                  handleChange={t => setCurrentName(t)}
+                  handleChange={t => {
+                    setCurrentName(t)
+                  }}
                   continueTapped={() => continueTapped()}
                   placeholder="Christine"
                   style={{ minWidth: '80%' }}
@@ -94,7 +104,7 @@ function EnterInfo() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    paddingBottom: 500,
   },
   viewContainer: {
     marginHorizontal: 20,
@@ -104,6 +114,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     marginTop: 20,
+    paddingBottom: 20,
   },
 })
 
