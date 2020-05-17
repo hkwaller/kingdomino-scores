@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-start',
+    overflow: 'visible',
   },
 })
 
@@ -20,8 +21,8 @@ function Statistics(props: Props) {
   return (
     <>
       <SafeAreaView />
+      <Header title="Statistics" />
       <ScrollView contentContainerStyle={styles.container}>
-        <Header title="Statistics" />
         <VictoryPie
           animate={{
             duration: 1000,

@@ -16,6 +16,11 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
   },
+  itemContainer: {
+    width: Dimensions.get('screen').width - 100,
+    marginHorizontal: 40,
+    alignItems: 'center',
+  },
 })
 
 const initialState = [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]]
@@ -26,7 +31,7 @@ const players = [
 ]
 
 function Register() {
-  const [game, setGame] = useState(initialState2)
+  const [game, setGame] = useState(initialState)
   const [typeIndex, setTypeIndex] = useState(0)
   const [playerIndex, setPlayerIndex] = useState(0)
   const [inputValue, setInputValue] = useState(0)
@@ -77,12 +82,7 @@ function Register() {
           horizontal
           renderItem={({ item }) => {
             return (
-              <View
-                style={{
-                  width: Dimensions.get('screen').width - 100,
-                  marginHorizontal: 40,
-                  alignItems: 'center',
-                }}>
+              <View style={styles.itemContainer}>
                 <Type
                   title={item}
                   landscape
@@ -103,12 +103,7 @@ function Register() {
           scrollEnabled={false}
           renderItem={({ item }) => {
             return (
-              <View
-                style={{
-                  width: Dimensions.get('screen').width - 100,
-                  marginHorizontal: 40,
-                  alignItems: 'center',
-                }}>
+              <View style={styles.itemContainer}>
                 <Type backgroundColor={item.color} title={item.name} />
               </View>
             )

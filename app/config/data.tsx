@@ -1,3 +1,29 @@
+import { AsyncStorage } from 'react-native'
+
+export async function saveGame(game) {
+  try {
+    const earlierGames = await AsyncStorage.getItem('games')
+
+    if (earlierGames !== null) {
+      const parsedGames = JSON.parse(earlierGames)
+      const mergedGames = parsedGames.push(game)
+
+      AsyncStorage.setItem('games', JSON.stringify(mergedGames))
+    }
+  } catch (e) {
+    console.log('there is nothing here')
+  }
+}
+
+export async function loadGames() {
+  try {
+    const loadedGames = await AsyncStorage.getItem('games')
+    return JSON.parse(loadedGames)
+  } catch (e) {
+    console.log("couldn't find any games to load")
+  }
+}
+
 export const data = {
   players: ['Christine', 'Hannes', 'Muttis'],
   matchUps: [

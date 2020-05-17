@@ -68,7 +68,7 @@ function EnterInfo() {
               animated: true,
             })
           }}
-          renderItem={({ item }) => {
+          renderItem={() => {
             return (
               <View style={styles.views}>
                 <SmallHeader title="Name" style={{ marginBottom: -20 }} />

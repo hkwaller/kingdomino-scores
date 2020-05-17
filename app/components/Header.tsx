@@ -12,10 +12,7 @@ function Header({ title = 'King Domino' }: Props) {
   const navigation = useNavigation()
 
   return (
-    <View
-      style={{
-        width: Dimensions.get('screen').width,
-      }}>
+    <View style={{ width: Dimensions.get('screen').width }}>
       <View style={styles.container}>
         <View style={styles.textContainer}>
           <View style={styles.background} />

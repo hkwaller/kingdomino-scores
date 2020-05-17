@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text, StyleSheet, StyleProp, ViewStyle } from 'react-native'
-import { colors, fonts, landscapeColors } from 'app/config/constants'
+import { colors, fonts } from 'app/config/constants'
 
 type Props = {
   title: string

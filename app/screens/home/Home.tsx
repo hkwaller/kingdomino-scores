@@ -28,13 +28,13 @@ function Home() {
         <Button
           title="Register"
           backgroundColor={colors.YELLOW}
-          lean="left"
+          lean="right"
           onPress={() => navigation.navigate('Register')}
         />
         <Button
           title="New Game"
+          lean="left"
           backgroundColor={colors.GREEN}
-          lean="right"
           onPress={() => navigation.navigate('NewGame')}
         />
         <Button
