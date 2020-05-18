@@ -5,20 +5,21 @@ import {
   StyleSheet,
   FlatList,
   Dimensions,
-  Text,
 } from 'react-native'
 import { useRoute, useNavigation } from '@react-navigation/core'
-import { TapGestureHandler, State } from 'react-native-gesture-handler'
-import { Header, Type, Checkmark, Button } from 'app/components'
+import { State } from 'react-native-gesture-handler'
+import { Header, Type } from 'app/components'
 import { fonts, colors } from 'app/config/constants'
 import Check from 'app/components/Check'
+import NormalButton from 'app/components/NormalButton'
 
 function Bonus() {
-  const ref = useRef(null)
-  const route = useRoute()
-  const [players, setPlayers] = useState()
+  const [players, setPlayers] = useState([])
   const [activePlayer, setActivePlayer] = useState(0)
+
+  const route = useRoute()
   const navigation = useNavigation()
+  const ref = useRef(null)
 
   useEffect(() => {
     const players = route.params.players.map(p => {
@@ -84,13 +85,15 @@ function Bonus() {
             )
           }}
         />
-        <Button
-          title="Continue"
-          backgroundColor={colors.YELLOW}
-          onPress={() => continueTapped()}
-        />
-        <SafeAreaView />
       </View>
+
+      <NormalButton
+        title="Continue"
+        backgroundColor={colors.YELLOW}
+        onPress={() => continueTapped()}
+      />
+
+      <SafeAreaView />
     </>
   )
 }

@@ -1,11 +1,13 @@
 import { AsyncStorage } from 'react-native'
 
 export async function saveGame(game) {
+  console.log('game: ', game)
   try {
     const earlierGames = await AsyncStorage.getItem('games')
 
     if (earlierGames !== null) {
       const parsedGames = JSON.parse(earlierGames)
+      console.log('parsedGames: ', parsedGames)
       const mergedGames = parsedGames.push(game)
 
       AsyncStorage.setItem('games', JSON.stringify(mergedGames))

@@ -15,7 +15,7 @@ function Scores() {
   useEffect(() => {
     setPlayers(route.params.players)
     setGame(route.params.game)
-    saveGame(game)
+    saveGame({ game: route.params.game, players: route.params.players })
   }, [])
 
   return (

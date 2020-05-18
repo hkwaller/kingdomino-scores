@@ -17,6 +17,7 @@ type Props = {
   style?: StyleProp<ViewStyle>
   handleChange: (string) => void
   continueTapped?: () => void
+  handleFocus: () => void
 }
 
 function Input({
@@ -25,6 +26,7 @@ function Input({
   style,
   handleChange,
   continueTapped,
+  handleFocus,
 }: Props) {
   const [text, setText] = useState('')
   const inputAccessoryViewID = 'supermegaID'
@@ -40,6 +42,7 @@ function Input({
             handleChange(text)
             setText(text)
           }}
+          onFocus={() => handleFocus()}
           value={text}
           inputAccessoryViewID={inputAccessoryViewID}
           placeholder={placeholder}

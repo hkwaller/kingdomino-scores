@@ -1,13 +1,8 @@
 import React from 'react'
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  StyleProp,
-  ViewStyle,
-} from 'react-native'
+import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native'
+import Animated, { Value, interpolate } from 'react-native-reanimated'
 import { fonts } from 'app/config/constants'
+import TapHandler from './TapHandler'
 
 type Props = {
   title: string
@@ -24,26 +19,40 @@ function Button({
   onPress,
   style,
 }: Props) {
+  const value = new Value(0)
+  const scale = interpolate(value, {
+    inputRange: [0, 1],
+    outputRange: [1, 1.2],
+  })
+
+  const outputRange = lean === 'right' ? [-0.05, 0.05] : [0.05, -0.05]
+  const rotate = interpolate(value, {
+    inputRange: [0, 1],
+    outputRange: outputRange,
+  })
+
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TapHandler onPress={onPress} value={value}>
       <View style={[styles.container, style]}>
-        <View
+        <Animated.View
           style={{
             ...StyleSheet.absoluteFillObject,
             backgroundColor,
-            transform: [{ rotate: `${lean === 'left' ? '-' : ''}2deg` }],
+            transform: [{ rotate }],
           }}
         />
-        <Text style={styles.text}>{title}</Text>
+        <Animated.Text style={[styles.text, { transform: [{ scale }] }]}>
+          {title}
+        </Animated.Text>
       </View>
-    </TouchableOpacity>
+    </TapHandler>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
     marginTop: 30,
-    alignSelf: 'flex-start',
+    alignSelf: 'center',
   },
   text: {
     fontFamily: fonts.BOLD,

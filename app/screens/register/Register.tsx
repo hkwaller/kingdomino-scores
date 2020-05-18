@@ -7,24 +7,11 @@ import {
   FlatList,
   Dimensions,
 } from 'react-native'
+import { useNavigation } from '@react-navigation/core'
 import { Header, Input, Button, Type } from 'app/components'
 import { colors, types, landscapeColors } from 'app/config/constants'
-import { useNavigation } from '@react-navigation/core'
-
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-  },
-  itemContainer: {
-    width: Dimensions.get('screen').width - 100,
-    marginHorizontal: 40,
-    alignItems: 'center',
-  },
-})
 
 const initialState = [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]]
-const initialState2 = [[20, 10, 0, 0, 0, 0], [50, 0, 0, 40, 0, 0]]
 const players = [
   { name: 'Hannes', color: colors.BLUE },
   { name: 'Christine', color: colors.RED },
@@ -35,8 +22,11 @@ function Register() {
   const [typeIndex, setTypeIndex] = useState(0)
   const [playerIndex, setPlayerIndex] = useState(0)
   const [inputValue, setInputValue] = useState(0)
+
   const typeRef = useRef(null)
   const playerRef = useRef(null)
+  const scrollViewRef = useRef(null)
+
   const navigation = useNavigation()
 
   function continueTapped() {
@@ -65,10 +55,11 @@ function Register() {
   return (
     <>
       <SafeAreaView />
-      <Header title="Score" />
       <ScrollView
         contentContainerStyle={styles.container}
+        ref={scrollViewRef}
         keyboardShouldPersistTaps="always">
+        <Header title="Score" />
         <FlatList
           keyExtractor={(_, index) => `${index}`}
           data={types}
@@ -112,6 +103,7 @@ function Register() {
         <Input
           placeholder="0"
           type="numeric"
+          handleFocus={() => scrollViewRef.current.scrollTo({ y: 100 })}
           continueTapped={() => {
             continueTapped()
           }}
@@ -131,11 +123,23 @@ function Register() {
         backgroundColor={colors.YELLOW}
         title="Continue"
         onPress={() => continueTapped()}
-        style={{ alignSelf: 'center' }}
       />
       <SafeAreaView />
     </>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    paddingBottom: 500,
+  },
+  itemContainer: {
+    width: Dimensions.get('screen').width - 100,
+    marginHorizontal: 40,
+    alignItems: 'center',
+  },
+})
 
 export default Register
