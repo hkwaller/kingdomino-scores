@@ -19,18 +19,19 @@ type Props = {
   continueTapped?: () => void
   handleFocus?: () => void
   hideInputAccessory?: boolean
+  value: string
 }
 
 function Input({
   placeholder,
   type = 'default',
   style,
+  value,
   handleChange,
   continueTapped,
   hideInputAccessory = false,
   handleFocus = () => {},
 }: Props) {
-  const [text, setText] = useState('')
   const inputAccessoryViewID = 'supermegaID'
 
   return (
@@ -42,10 +43,9 @@ function Input({
           keyboardType={type}
           onChangeText={text => {
             handleChange(text)
-            setText(text)
           }}
           onFocus={handleFocus}
-          value={text}
+          value={value}
           inputAccessoryViewID={inputAccessoryViewID}
           placeholder={placeholder}
         />
@@ -57,7 +57,6 @@ function Input({
               style={styles.inputAccessoryViewButton}
               onPress={() => {
                 continueTapped()
-                setText('')
               }}>
               <Text style={styles.inputAccessoryViewButtonText}>Next</Text>
             </TouchableOpacity>

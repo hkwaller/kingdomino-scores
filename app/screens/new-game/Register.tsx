@@ -108,6 +108,7 @@ function Register() {
         <Input
           placeholder="0"
           type="numeric"
+          value={`${inputValue}`}
           handleFocus={() => scrollViewRef.current.scrollTo({ y: 100 })}
           continueTapped={() => {
             continueTapped()

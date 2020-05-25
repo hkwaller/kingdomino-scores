@@ -4,9 +4,39 @@ import { colors } from 'app/config/constants'
 
 type Props = {
   handleChange: (color) => void
+  currentColour: string
 }
 
 const WIDTH = Dimensions.get('screen').width
+
+function ColorPicker({ handleChange, currentColour }: Props) {
+  const c = [colors.YELLOW, colors.RED, colors.GREEN, colors.BLUE]
+
+  return (
+    <View style={styles.container}>
+      {c.map((color, index) => {
+        const selected = currentColour === c[index]
+
+        return (
+          <TouchableOpacity
+            style={{ flex: 1 }}
+            key={index}
+            onPress={() => handleChange(color)}>
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: color,
+                paddingVertical: WIDTH / 15,
+                borderWidth: 10,
+                borderColor: selected ? colors.WHITE : color,
+              }}
+            />
+          </TouchableOpacity>
+        )
+      })}
+    </View>
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -16,39 +46,4 @@ const styles = StyleSheet.create({
   },
 })
 
-function ColorPicker({ handleChange }: Props) {
-  const c = [colors.YELLOW, colors.RED, colors.GREEN, colors.BLUE]
-  const [selectedColor, setSelectedColor] = useState(0)
-
-  useEffect(() => {
-    handleChange(selectedColor)
-  }, [selectedColor])
-
-  return (
-    <View style={styles.container}>
-      {c.map((color, index) => {
-        const selected = selectedColor === index
-
-        return (
-          <TouchableOpacity
-            style={{ flex: 1 }}
-            key={index}
-            onPress={() => {
-              setSelectedColor(index)
-            }}>
-            <View
-              style={{
-                flex: 1,
-                backgroundColor: color,
-                paddingVertical: WIDTH / 15,
-                borderWidth: selected ? 10 : 0,
-                borderColor: selected ? colors.WHITE : 'transparent',
-              }}
-            />
-          </TouchableOpacity>
-        )
-      })}
-    </View>
-  )
-}
 export default ColorPicker

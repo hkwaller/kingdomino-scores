@@ -11,6 +11,9 @@ import { getPlayers } from 'app/config/data'
 import { Header } from 'app/components'
 import { fonts, colors, colorArray } from 'app/config/constants'
 import NormalButton from 'app/components/NormalButton'
+import { withTimingTransition, useTimingTransition } from 'react-native-redash'
+import Animated, { Value, interpolate } from 'react-native-reanimated'
+import SelectPlayer from 'app/components/SelectPlayer'
 
 function Players() {
   const [players, setPlayers] = useState([])
@@ -46,32 +49,21 @@ function Players() {
           </Text>
         )}
         {players.map((p, i) => {
-          const bgColour =
-            selectedPlayers.indexOf(p) > -1
-              ? colorArray[p.colour]
-              : 'transparent'
+          const isSelected = selectedPlayers.indexOf(p) > -1
 
           return (
-            <TouchableOpacity
-              key={p.name}
-              onPress={() => {
-                const indexOfPlayer = selectedPlayers.indexOf(p)
-
-                const updatedSelectedPlayers =
-                  indexOfPlayer > -1
-                    ? selectedPlayers.filter(f => f.name !== p.name)
-                    : selectedPlayers.concat(p)
+            <SelectPlayer
+              key={players.name}
+              player={p}
+              isSelected={isSelected}
+              selectPlayer={player => {
+                const updatedSelectedPlayers = isSelected
+                  ? selectedPlayers.filter(f => f.name !== player.name)
+                  : selectedPlayers.concat(player)
 
                 setSelectedPlayers(updatedSelectedPlayers)
               }}
-              style={[
-                styles.playerContainer,
-                {
-                  backgroundColor: bgColour,
-                },
-              ]}>
-              <Text style={styles.playerText}>{p.name}</Text>
-            </TouchableOpacity>
+            />
           )
         })}
       </ScrollView>
@@ -86,9 +78,6 @@ function Players() {
 }
 
 const styles = StyleSheet.create({
-  playerContainer: {
-    padding: 20,
-  },
   playerText: {
     fontFamily: fonts.LIGHT,
     fontSize: 24,
