@@ -53,7 +53,7 @@ function Players() {
 
           return (
             <SelectPlayer
-              key={players.name}
+              key={p.name}
               player={p}
               isSelected={isSelected}
               selectPlayer={player => {

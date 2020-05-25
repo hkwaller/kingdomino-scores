@@ -22,7 +22,7 @@ function Register() {
   const [game, setGame] = useState(players.map(_ => [0, 0, 0, 0, 0, 0]))
   const [typeIndex, setTypeIndex] = useState(0)
   const [playerIndex, setPlayerIndex] = useState(0)
-  const [inputValue, setInputValue] = useState(0)
+  const [inputValue, setInputValue] = useState('')
 
   const typeRef = useRef(null)
   const playerRef = useRef(null)
@@ -34,7 +34,7 @@ function Register() {
     const scores = [...game]
     scores[playerIndex][typeIndex] = Number(inputValue)
     setGame(scores)
-    setInputValue(0)
+    setInputValue('')
 
     if (playerIndex < players.length - 1) {
       setPlayerIndex(playerIndex + 1)

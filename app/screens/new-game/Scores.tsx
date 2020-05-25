@@ -23,7 +23,7 @@ function Scores() {
     <>
       <SafeAreaView />
       <Header title="Scores" />
-      <ScrollView contentContainerStyle={styles.cosntainer}>
+      <ScrollView contentContainerStyle={styles.container}>
         <View style={{ flex: 1, flexDirection: 'row', flexWrap: 'wrap' }}>
           {players.map((p, index) => {
             const playerScore =

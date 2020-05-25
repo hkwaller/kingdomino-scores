@@ -1,13 +1,8 @@
 import React from 'react'
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
+import { Text, TouchableOpacity, StyleSheet } from 'react-native'
 import { colorArray, fonts } from 'app/config/constants'
 import Animated, { interpolate } from 'react-native-reanimated'
-import {
-  withTimingTransition,
-  useTimingTransition,
-  useSpringTransition,
-} from 'react-native-redash'
-import { useMemoOne } from 'use-memo-one'
+import { useSpringTransition } from 'react-native-redash'
 
 type Props = {
   player: { name: string; colour: string }

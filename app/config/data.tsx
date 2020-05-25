@@ -1,6 +1,7 @@
 import { AsyncStorage } from 'react-native'
 
 export async function saveGame(game) {
+  console.log('game: ', game)
   try {
     const earlierGames = await AsyncStorage.getItem('games')
 
@@ -11,7 +12,7 @@ export async function saveGame(game) {
       AsyncStorage.setItem('games', JSON.stringify(mergedGames))
     }
   } catch (e) {
-    console.log('there is nothing here')
+    console.log('there is nothing here', e)
   }
 }
 
@@ -20,7 +21,7 @@ export async function loadGames() {
     const loadedGames = await AsyncStorage.getItem('games')
     return JSON.parse(loadedGames)
   } catch (e) {
-    console.log("couldn't find any games to load")
+    console.log("couldn't find any games to load", e)
   }
 }
 
@@ -31,7 +32,7 @@ export async function getPlayers() {
     const players = await AsyncStorage.getItem('players')
     return JSON.parse(players)
   } catch (e) {
-    console.log('i dont know any players')
+    console.log('i dont know any players', e)
     return []
   }
 }
@@ -53,38 +54,4 @@ export async function savePlayer(player) {
   } catch (e) {
     console.log('e: ', e)
   }
-}
-
-export const data = {
-  players: ['Christine', 'Hannes', 'Muttis'],
-  matchUps: [
-    {
-      players: ['Christine', 'Hannes'],
-      matches: [
-        {
-          id: 0,
-          date: '2020-05-04T17:40',
-          score: [[24, 16, 8, 6, 4], [22, 6, 10, 5, 3]],
-          totalScore: [54, 48],
-        },
-        {
-          id: 1,
-          date: '2020-05-04T22:40',
-          score: [[14, 16, 8, 6, 4], [22, 6, 10, 5, 3]],
-          totalScore: [52, 40],
-        },
-      ],
-    },
-    {
-      players: ['Christine', 'Muttis'],
-      matches: [
-        {
-          id: 0,
-          date: '2020-05-02T10:40',
-          score: [[14, 16, 8, 6, 4], [22, 6, 10, 5, 3]],
-          totalScore: [80, 22],
-        },
-      ],
-    },
-  ],
 }
