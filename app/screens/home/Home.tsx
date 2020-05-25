@@ -26,16 +26,16 @@ function Home() {
       <Header title="King Domino" />
       <View style={styles.buttonContainer}>
         <Button
-          title="Register"
+          title="New Game"
           backgroundColor={colors.YELLOW}
           lean="right"
-          onPress={() => navigation.navigate('Register')}
+          onPress={() => navigation.navigate('NewGame')}
         />
         <Button
-          title="New Game"
+          title="Add Player"
           lean="left"
           backgroundColor={colors.GREEN}
-          onPress={() => navigation.navigate('NewGame')}
+          onPress={() => navigation.navigate('AddPlayer')}
         />
         <Button
           title="Statistics"

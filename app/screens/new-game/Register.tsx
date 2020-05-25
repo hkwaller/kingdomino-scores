@@ -7,18 +7,19 @@ import {
   FlatList,
   Dimensions,
 } from 'react-native'
-import { useNavigation } from '@react-navigation/core'
+import { useNavigation, useRoute } from '@react-navigation/core'
 import { Header, Input, Button, Type } from 'app/components'
-import { colors, types, landscapeColors } from 'app/config/constants'
-
-const initialState = [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]]
-const players = [
-  { name: 'Hannes', color: colors.BLUE },
-  { name: 'Christine', color: colors.RED },
-]
+import {
+  colorArray,
+  colors,
+  types,
+  landscapeColors,
+} from 'app/config/constants'
 
 function Register() {
-  const [game, setGame] = useState(initialState)
+  const route = useRoute()
+  const { players = [] } = route.params
+  const [game, setGame] = useState(players.map(_ => [0, 0, 0, 0, 0, 0]))
   const [typeIndex, setTypeIndex] = useState(0)
   const [playerIndex, setPlayerIndex] = useState(0)
   const [inputValue, setInputValue] = useState(0)
@@ -33,6 +34,7 @@ function Register() {
     const scores = [...game]
     scores[playerIndex][typeIndex] = Number(inputValue)
     setGame(scores)
+    setInputValue(0)
 
     if (playerIndex < players.length - 1) {
       setPlayerIndex(playerIndex + 1)
@@ -95,7 +97,10 @@ function Register() {
           renderItem={({ item }) => {
             return (
               <View style={styles.itemContainer}>
-                <Type backgroundColor={item.color} title={item.name} />
+                <Type
+                  backgroundColor={colorArray[item.colour]}
+                  title={item.name}
+                />
               </View>
             )
           }}
@@ -117,7 +122,6 @@ function Register() {
         onPress={() =>
           navigation.navigate('Bonus', { game: game, players: players })
         }
-        style={{ alignSelf: 'center' }}
       />
       <Button
         backgroundColor={colors.YELLOW}

@@ -7,13 +7,12 @@ import * as Font from 'expo-font'
 
 import Home from 'app/screens/home/Home'
 
-import SelectPlayers from 'app/screens/new-game/SelectPlayers'
-import EnterInfo from 'app/screens/new-game/EnterInfo'
-import SetupComplete from 'app/screens/new-game/SetupComplete'
+import AddPlayer from 'app/screens/add-player/AddPlayer'
 
-import Register from 'app/screens/register/Register'
-import Bonus from 'app/screens/register/Bonus'
-import Scores from 'app/screens/register/Scores'
+import Register from 'app/screens/new-game/Register'
+import Players from 'app/screens/new-game/Players'
+import Bonus from 'app/screens/new-game/Bonus'
+import Scores from 'app/screens/new-game/Scores'
 
 import Statistics from 'app/screens/statistics/Statistics'
 import { colors } from 'app/config/constants'
@@ -41,19 +40,7 @@ function NewGameStack() {
       screenOptions={{
         headerShown: false,
       }}>
-      <Stack.Screen name="SelectPlayers" component={SelectPlayers} />
-      <Stack.Screen name="EnterInfo" component={EnterInfo} />
-      <Stack.Screen name="SetupComplete" component={SetupComplete} />
-    </Stack.Navigator>
-  )
-}
-
-function RegisterStack() {
-  return (
-    <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-      }}>
+      <Stack.Screen name="Players" component={Players} />
       <Stack.Screen name="Register" component={Register} />
       <Stack.Screen name="Bonus" component={Bonus} />
       <Stack.Screen name="Scores" component={Scores} />
@@ -83,8 +70,8 @@ export default function App() {
           headerShown: false,
         }}>
         <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="AddPlayer" component={AddPlayer} />
         <Stack.Screen name="NewGame" component={NewGameStack} />
-        <Stack.Screen name="Register" component={RegisterStack} />
         <Stack.Screen name="Statistics" component={Statistics} />
       </Stack.Navigator>
     </NavigationContainer>

@@ -31,11 +31,10 @@ export default ({ onPress, children, value }: TapHandlerProps) => {
     () => ({
       shouldSpring: new Value(0),
       state: new Value(UNDETERMINED),
-      gestureHandler: onGestureEvent({ state }),
     }),
     [],
   )
-  console.log('hey')
+
   const gestureHandler = onGestureEvent({ state })
 
   useCode(

@@ -8,6 +8,8 @@ export const colors = {
   BLACK: '#2B2B2C',
 }
 
+export const colorArray = ['#FDD827', '#FF5959', '#28ECA5', '#3FC0F8']
+
 export const landscapeColors = {
   FIELD: '#F7C63B',
   WOODS: '#77902B',
@@ -15,6 +17,15 @@ export const landscapeColors = {
   GRASS: '#ABBD40',
   MUD: '#BB996B',
   MINE: '#342C28',
+}
+
+export const landscapeFontColors = {
+  FIELD: '#000',
+  WOODS: '#000',
+  WATER: '#000',
+  GRASS: '#000',
+  MUD: '#000',
+  MINE: '#fff',
 }
 
 export const fonts = {

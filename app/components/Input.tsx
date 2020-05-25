@@ -17,7 +17,8 @@ type Props = {
   style?: StyleProp<ViewStyle>
   handleChange: (string) => void
   continueTapped?: () => void
-  handleFocus: () => void
+  handleFocus?: () => void
+  hideInputAccessory?: boolean
 }
 
 function Input({
@@ -26,7 +27,8 @@ function Input({
   style,
   handleChange,
   continueTapped,
-  handleFocus,
+  hideInputAccessory = false,
+  handleFocus = () => {},
 }: Props) {
   const [text, setText] = useState('')
   const inputAccessoryViewID = 'supermegaID'
@@ -42,24 +44,26 @@ function Input({
             handleChange(text)
             setText(text)
           }}
-          onFocus={() => handleFocus()}
+          onFocus={handleFocus}
           value={text}
           inputAccessoryViewID={inputAccessoryViewID}
           placeholder={placeholder}
         />
       </View>
-      <InputAccessoryView nativeID={inputAccessoryViewID}>
-        <View style={styles.inputAccessoryViewContainer}>
-          <TouchableOpacity
-            style={styles.inputAccessoryViewButton}
-            onPress={() => {
-              continueTapped()
-              setText('')
-            }}>
-            <Text style={styles.inputAccessoryViewButtonText}>Next</Text>
-          </TouchableOpacity>
-        </View>
-      </InputAccessoryView>
+      {!hideInputAccessory && (
+        <InputAccessoryView nativeID={inputAccessoryViewID}>
+          <View style={styles.inputAccessoryViewContainer}>
+            <TouchableOpacity
+              style={styles.inputAccessoryViewButton}
+              onPress={() => {
+                continueTapped()
+                setText('')
+              }}>
+              <Text style={styles.inputAccessoryViewButtonText}>Next</Text>
+            </TouchableOpacity>
+          </View>
+        </InputAccessoryView>
+      )}
     </>
   )
 }

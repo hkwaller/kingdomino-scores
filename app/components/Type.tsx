@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text, StyleSheet, StyleProp, ViewStyle } from 'react-native'
-import { colors, fonts } from 'app/config/constants'
+import { colors, fonts, landscapeFontColors } from 'app/config/constants'
 
 type Props = {
   title: string
@@ -49,7 +49,16 @@ function Type({
           landscapeStyle,
         ]}
       />
-      <Text style={[styles.text, { fontSize: landscape ? 90 : 80 }]}>
+      <Text
+        style={[
+          styles.text,
+          {
+            fontSize: landscape ? 90 : 80,
+            color: landscape
+              ? landscapeFontColors[title.toUpperCase()]
+              : colors.BLACK,
+          },
+        ]}>
         {text}
       </Text>
     </View>

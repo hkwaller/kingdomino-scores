@@ -4,7 +4,6 @@ import { colors } from 'app/config/constants'
 
 type Props = {
   handleChange: (color) => void
-  alreadyPickedColors: number[]
 }
 
 const WIDTH = Dimensions.get('screen').width
@@ -17,7 +16,7 @@ const styles = StyleSheet.create({
   },
 })
 
-function ColorPicker({ handleChange, alreadyPickedColors }: Props) {
+function ColorPicker({ handleChange }: Props) {
   const c = [colors.YELLOW, colors.RED, colors.GREEN, colors.BLUE]
   const [selectedColor, setSelectedColor] = useState(0)
 
@@ -29,21 +28,17 @@ function ColorPicker({ handleChange, alreadyPickedColors }: Props) {
     <View style={styles.container}>
       {c.map((color, index) => {
         const selected = selectedColor === index
-        const alreadyPicked =
-          alreadyPickedColors.filter(a => a === index).length > 0
 
         return (
           <TouchableOpacity
             style={{ flex: 1 }}
             key={index}
             onPress={() => {
-              if (alreadyPicked) return
               setSelectedColor(index)
             }}>
             <View
               style={{
                 flex: 1,
-                opacity: alreadyPicked ? 0.2 : 1,
                 backgroundColor: color,
                 paddingVertical: WIDTH / 15,
                 borderWidth: selected ? 10 : 0,

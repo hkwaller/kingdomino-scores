@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
-import { Svg, Line } from 'react-native-svg'
+import { Svg, Path } from 'react-native-svg'
 import { colors } from 'app/config/constants'
 
 type Props = {
@@ -19,23 +19,11 @@ function CheckMark({ checked }: Props) {
       />
       {checked && (
         <Svg height="50" width="80">
-          <Line
-            x1="8.5"
-            y1="25.5"
-            x2="29.5"
-            y2="46.5"
-            id="Line-3"
-            stroke="#2B2B2C"
-            strokeWidth="11"
-          />
-          <Line
-            x1="29.5"
-            y1="46.5"
-            x2="74.5"
-            y2="8.5"
-            id="Line"
-            stroke="#2B2B2C"
-            strokeWidth="11"
+          <Path
+            d="M10 30 L25 45 L55 5"
+            fill="none"
+            stroke={colors.BLACK}
+            strokeWidth={8}
           />
         </Svg>
       )}

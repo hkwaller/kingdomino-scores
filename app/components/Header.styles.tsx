@@ -18,7 +18,7 @@ export default StyleSheet.create({
   },
   text: {
     fontFamily: fonts.BOLD,
-    fontSize: 80,
+    fontSize: 60,
     marginTop: -25,
   },
   backButtonContainer: {

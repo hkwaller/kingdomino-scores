@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Dimensions } from 'react-native'
 import {
   TapGestureHandler,
   TapGestureHandlerGestureEvent,
+  State,
 } from 'react-native-gesture-handler'
 import { Checkmark } from '.'
 import { fonts } from 'app/config/constants'
@@ -20,7 +21,10 @@ const texts = {
 
 function Check({ item, handleCheck, type }: Props) {
   return (
-    <TapGestureHandler onHandlerStateChange={event => handleCheck(event)}>
+    <TapGestureHandler
+      onHandlerStateChange={event => {
+        if (event.nativeEvent.state === State.END) handleCheck(event)
+      }}>
       <View style={[styles.checkmark, { marginTop: type === 'king' ? 30 : 0 }]}>
         <Checkmark checked={item[type]} />
         <Text style={styles.checkmarkText}>{texts[type]}</Text>
