@@ -29,7 +29,7 @@ function Players() {
   }
 
   function handlePress() {
-    if (selectedPlayers.length === 0) return
+    if (selectedPlayers.length === 0 && players.length !== 0) return
     const destination = players.length === 0 ? 'AddPlayer' : 'Register'
     navigation.navigate(destination, { players: selectedPlayers })
   }

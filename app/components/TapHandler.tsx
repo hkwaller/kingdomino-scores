@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react'
 import Animated, { Easing } from 'react-native-reanimated'
 import { State, TapGestureHandler } from 'react-native-gesture-handler'
-import { contains, delay, onGestureEvent, timing } from 'react-native-redash'
+import { contains, delay, timing, useGestureHandler } from 'react-native-redash'
 import { useMemoOne } from 'use-memo-one'
 
 interface TapHandlerProps {
@@ -35,7 +35,7 @@ export default ({ onPress, children, value }: TapHandlerProps) => {
     [],
   )
 
-  const gestureHandler = onGestureEvent({ state })
+  const gestureHandler = useGestureHandler({ state })
 
   useCode(
     () =>

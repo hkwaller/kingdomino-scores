@@ -32,22 +32,20 @@ function Button({
   })
 
   return (
-    <View>
-      <TapHandler onPress={() => onPress()} value={value}>
-        <View style={[styles.container, style]}>
-          <Animated.View
-            style={{
-              ...StyleSheet.absoluteFillObject,
-              backgroundColor,
-              transform: [{ rotate }],
-            }}
-          />
-          <Animated.Text style={[styles.text, { transform: [{ scale }] }]}>
-            {title}
-          </Animated.Text>
-        </View>
-      </TapHandler>
-    </View>
+    <TapHandler onPress={() => onPress()} value={value}>
+      <View style={[styles.container, style]}>
+        <Animated.View
+          style={{
+            ...StyleSheet.absoluteFillObject,
+            backgroundColor,
+            transform: [{ rotate }],
+          }}
+        />
+        <Animated.Text style={[styles.text, { transform: [{ scale }] }]}>
+          {title}
+        </Animated.Text>
+      </View>
+    </TapHandler>
   )
 }
 
