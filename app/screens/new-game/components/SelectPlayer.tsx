@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, TouchableWithoutFeedback } from 'react-native'
 import Animated, { interpolate, Extrapolate } from 'react-native-reanimated'
-import { useTimingTransition } from 'react-native-redash'
+import { useTimingTransition, transformOrigin } from 'react-native-redash'
 import { fonts } from 'app/config/constants'
 
 type Props = {
@@ -35,8 +35,11 @@ function SelectPlayer({ player, isSelected, selectPlayer }: Props) {
           style={{
             backgroundColor: player.colour,
             height: 50,
-            width: 50,
-            transform: [{ scale: animation, translateX }],
+            width: 100,
+            transform: transformOrigin(
+              { x: 200, y: 25 },
+              { scale: animation, translateX },
+            ),
           }}
         />
       </Animated.View>

@@ -30,6 +30,7 @@ export async function getPlayers() {
     // AsyncStorage.setItem('players', JSON.stringify([]))
 
     const players = await AsyncStorage.getItem('players')
+    console.log('players: ', players)
     return JSON.parse(players)
   } catch (e) {
     console.log('i dont know any players', e)
@@ -41,11 +42,14 @@ export async function savePlayer(player) {
   try {
     const storedPlayers = await AsyncStorage.getItem('players')
     const parsedPlayers = JSON.parse(storedPlayers || '[]')
+    const lowestId = Math.min.apply(Math, parsedPlayers.map(p => p.id)) + 1
 
     if (parsedPlayers.filter(p => p.name === player.name).length > 0) {
       return 'nonono we got that one'
     } else {
-      parsedPlayers.push(player)
+      parsedPlayers.push(
+        Object.assign(player, { id: lowestId === Infinity ? 0 : lowestId }),
+      )
 
       AsyncStorage.setItem('players', JSON.stringify(parsedPlayers))
 

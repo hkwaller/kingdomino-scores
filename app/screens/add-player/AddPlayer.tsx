@@ -16,7 +16,7 @@ function AddPlayer() {
 
   const translateY = interpolate(animation, {
     inputRange: [0, 1],
-    outputRange: [500, 0],
+    outputRange: [200, 0],
   })
 
   function successfullySaved() {
@@ -67,7 +67,7 @@ function AddPlayer() {
           backgroundColor: colors.WHITE,
           left: 0,
           right: 0,
-          height: 500,
+          height: 200,
           transform: [{ translateY }],
           alignItems: 'center',
           justifyContent: 'center',

@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { Svg, Path } from 'react-native-svg'
-import Animated, { interpolate, Extrapolate } from 'react-native-reanimated'
+import Animated, { interpolate } from 'react-native-reanimated'
 import { useSpringTransition } from 'react-native-redash'
 import { colors } from 'app/config/constants'
 
