@@ -10,6 +10,7 @@ type Props = {
   lean?: 'left' | 'right'
   onPress?: () => void
   style?: StyleProp<ViewStyle>
+  small: boolean
 }
 
 function Button({
@@ -18,6 +19,7 @@ function Button({
   backgroundColor,
   onPress,
   style,
+  small = false,
 }: Props) {
   const value = new Value(0)
   const scale = interpolate(value, {
@@ -41,7 +43,11 @@ function Button({
             transform: [{ rotate }],
           }}
         />
-        <Animated.Text style={[styles.text, { transform: [{ scale }] }]}>
+        <Animated.Text
+          style={[
+            styles.text,
+            { fontSize: small ? 60 : 80, transform: [{ scale }] },
+          ]}>
           {title}
         </Animated.Text>
       </View>
@@ -56,7 +62,6 @@ const styles = StyleSheet.create({
   },
   text: {
     fontFamily: fonts.BOLD,
-    fontSize: 80,
     marginBottom: -10,
   },
 })

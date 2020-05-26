@@ -1,8 +1,8 @@
 import React from 'react'
-import { Text, TouchableOpacity, StyleSheet } from 'react-native'
+import { StyleSheet, TouchableWithoutFeedback } from 'react-native'
 import { colorArray, fonts } from 'app/config/constants'
-import Animated, { interpolate } from 'react-native-reanimated'
-import { useSpringTransition } from 'react-native-redash'
+import Animated, { interpolate, Extrapolate } from 'react-native-reanimated'
+import { useSpringTransition, useTimingTransition } from 'react-native-redash'
 
 type Props = {
   player: { name: string; colour: string }
@@ -11,30 +11,38 @@ type Props = {
 }
 
 function SelectPlayer({ player, isSelected, selectPlayer }: Props) {
-  const bgColour = isSelected ? colorArray[player.colour] : 'transparent'
+  const animation = useTimingTransition(isSelected)
 
-  const animation = useSpringTransition(isSelected)
+  const bgColour = colorArray[player.colour]
 
-  const scale = interpolate(animation, {
+  const textScale = interpolate(animation, {
     inputRange: [0, 1],
-    outputRange: [0, 1],
+    outputRange: [0.8, 1.2],
+  })
+
+  const translateX = interpolate(animation, {
+    inputRange: [0, 1],
+    outputRange: [100, 0],
+    extrapolate: Extrapolate.CLAMP,
   })
 
   return (
-    <TouchableOpacity
-      key={player.name}
-      onPress={() => selectPlayer(player)}
-      style={[styles.playerContainer]}>
-      <Text style={styles.playerText}>{player.name}</Text>
-      <Animated.View
-        style={{
-          backgroundColor: bgColour,
-          height: 50,
-          width: 50,
-          transform: [{ scale }],
-        }}
-      />
-    </TouchableOpacity>
+    <TouchableWithoutFeedback onPress={() => selectPlayer(player)}>
+      <Animated.View key={player.name} style={styles.playerContainer}>
+        <Animated.Text
+          style={[styles.playerText, { transform: [{ scale: textScale }] }]}>
+          {player.name}
+        </Animated.Text>
+        <Animated.View
+          style={{
+            backgroundColor: bgColour,
+            height: 50,
+            width: 50,
+            transform: [{ scale: animation, translateX }],
+          }}
+        />
+      </Animated.View>
+    </TouchableWithoutFeedback>
   )
 }
 

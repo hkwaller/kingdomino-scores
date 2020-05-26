@@ -1,18 +1,10 @@
 import React, { useState, useCallback } from 'react'
-import {
-  Text,
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native'
+import { Text, SafeAreaView, StyleSheet, ScrollView } from 'react-native'
 import { useNavigation, useFocusEffect } from '@react-navigation/core'
 import { getPlayers } from 'app/config/data'
 import { Header } from 'app/components'
-import { fonts, colors, colorArray } from 'app/config/constants'
+import { fonts, colors } from 'app/config/constants'
 import NormalButton from 'app/components/NormalButton'
-import { withTimingTransition, useTimingTransition } from 'react-native-redash'
-import Animated, { Value, interpolate } from 'react-native-reanimated'
 import SelectPlayer from 'app/components/SelectPlayer'
 
 function Players() {
@@ -56,12 +48,13 @@ function Players() {
               key={p.name}
               player={p}
               isSelected={isSelected}
-              selectPlayer={player => {
+              selectPlayer={() => {
                 const updatedSelectedPlayers = isSelected
-                  ? selectedPlayers.filter(f => f.name !== player.name)
-                  : selectedPlayers.concat(player)
+                  ? selectedPlayers.filter(f => f.name !== p.name)
+                  : selectedPlayers.concat(p)
 
                 setSelectedPlayers(updatedSelectedPlayers)
+                console.log('updatedSelectedPlayers: ', updatedSelectedPlayers)
               }}
             />
           )

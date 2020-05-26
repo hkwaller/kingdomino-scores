@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { View, Text, ScrollView, StyleSheet, SafeAreaView } from 'react-native'
 import { Header, SmallHeader, ColorPicker, Input } from 'app/components'
-import { colors } from 'app/config/constants'
+import { colors, fonts } from 'app/config/constants'
 import { savePlayer } from 'app/config/data'
 import Button from 'app/components/Button'
 import Animated, { interpolate } from 'react-native-reanimated'
@@ -16,13 +16,13 @@ function AddPlayer() {
 
   const translateY = interpolate(animation, {
     inputRange: [0, 1],
-    outputRange: [200, 0],
+    outputRange: [500, 0],
   })
 
   function successfullySaved() {
     setS(true)
-    setName('')
     setColour('')
+    setName('')
     setTimeout(() => {
       setS(false)
     }, 2000)
@@ -58,20 +58,21 @@ function AddPlayer() {
               }
             }}
           />
-          <Text>Add another</Text>
         </SafeAreaView>
       </View>
       <Animated.View
         style={{
           position: 'absolute',
           bottom: 0,
-          backgroundColor: 'red',
+          backgroundColor: colors.WHITE,
           left: 0,
           right: 0,
-          height: 200,
+          height: 500,
           transform: [{ translateY }],
+          alignItems: 'center',
+          justifyContent: 'center',
         }}>
-        <Text>sup</Text>
+        <Text style={styles.successful}>Player added!</Text>
       </Animated.View>
     </>
   )
@@ -93,6 +94,10 @@ const styles = StyleSheet.create({
     padding: 40,
     backgroundColor: colors.WHITE,
     alignItems: 'center',
+  },
+  successful: {
+    fontSize: 40,
+    fontFamily: fonts.BOLD,
   },
 })
 

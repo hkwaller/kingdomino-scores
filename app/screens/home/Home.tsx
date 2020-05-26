@@ -5,18 +5,6 @@ import Button from 'app/components/Button'
 import { colors } from 'app/config/constants'
 import { useNavigation } from '@react-navigation/core'
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  buttonContainer: {
-    marginTop: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-})
-
 function Home() {
   const navigation = useNavigation()
 
@@ -34,6 +22,7 @@ function Home() {
         <Button
           title="Add Player"
           lean="left"
+          small
           backgroundColor={colors.GREEN}
           onPress={() => navigation.navigate('AddPlayer')}
         />
@@ -41,11 +30,24 @@ function Home() {
           title="Statistics"
           backgroundColor={colors.BLUE}
           lean="right"
+          small
           onPress={() => navigation.navigate('Statistics')}
         />
       </View>
     </ScrollView>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  buttonContainer: {
+    marginTop: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+})
 
 export default Home
