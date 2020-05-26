@@ -8,13 +8,14 @@ import {
   Dimensions,
 } from 'react-native'
 import { useNavigation, useRoute } from '@react-navigation/core'
-import { Header, Input, Button, Type } from 'app/components'
+import { Header, Input, Button } from 'app/components'
 import {
   colorArray,
   colors,
   types,
   landscapeColors,
 } from 'app/config/constants'
+import Type from './components/Type'
 
 function Register() {
   const route = useRoute()

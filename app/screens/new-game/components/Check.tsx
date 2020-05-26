@@ -5,7 +5,7 @@ import {
   TapGestureHandlerGestureEvent,
   State,
 } from 'react-native-gesture-handler'
-import { Checkmark } from '.'
+import Checkmark from './Checkmark'
 import { fonts } from 'app/config/constants'
 
 type Props = {

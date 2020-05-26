@@ -8,10 +8,10 @@ import {
 } from 'react-native'
 import { useRoute, useNavigation } from '@react-navigation/core'
 import { State } from 'react-native-gesture-handler'
-import { Header, Type } from 'app/components'
+import { Header, NormalButton } from 'app/components'
 import { fonts, colors } from 'app/config/constants'
-import Check from 'app/components/Check'
-import NormalButton from 'app/components/NormalButton'
+import Check from 'app/screens/new-game/components/Check'
+import Type from './components/Type'
 
 function Bonus() {
   const [players, setPlayers] = useState([])

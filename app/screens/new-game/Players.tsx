@@ -5,7 +5,7 @@ import { getPlayers } from 'app/config/data'
 import { Header } from 'app/components'
 import { fonts, colors } from 'app/config/constants'
 import NormalButton from 'app/components/NormalButton'
-import SelectPlayer from 'app/components/SelectPlayer'
+import SelectPlayer from 'app/screens/new-game/components/SelectPlayer'
 
 function Players() {
   const [players, setPlayers] = useState([])
@@ -54,7 +54,6 @@ function Players() {
                   : selectedPlayers.concat(p)
 
                 setSelectedPlayers(updatedSelectedPlayers)
-                console.log('updatedSelectedPlayers: ', updatedSelectedPlayers)
               }}
             />
           )

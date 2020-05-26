@@ -10,7 +10,7 @@ type Props = {
   lean?: 'left' | 'right'
   onPress?: () => void
   style?: StyleProp<ViewStyle>
-  small: boolean
+  small?: boolean
 }
 
 function Button({

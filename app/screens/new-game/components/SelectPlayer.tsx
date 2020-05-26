@@ -1,8 +1,8 @@
 import React from 'react'
 import { StyleSheet, TouchableWithoutFeedback } from 'react-native'
-import { colorArray, fonts } from 'app/config/constants'
 import Animated, { interpolate, Extrapolate } from 'react-native-reanimated'
-import { useSpringTransition, useTimingTransition } from 'react-native-redash'
+import { useTimingTransition } from 'react-native-redash'
+import { fonts } from 'app/config/constants'
 
 type Props = {
   player: { name: string; colour: string }
@@ -12,8 +12,6 @@ type Props = {
 
 function SelectPlayer({ player, isSelected, selectPlayer }: Props) {
   const animation = useTimingTransition(isSelected)
-
-  const bgColour = colorArray[player.colour]
 
   const textScale = interpolate(animation, {
     inputRange: [0, 1],
@@ -35,7 +33,7 @@ function SelectPlayer({ player, isSelected, selectPlayer }: Props) {
         </Animated.Text>
         <Animated.View
           style={{
-            backgroundColor: bgColour,
+            backgroundColor: player.colour,
             height: 50,
             width: 50,
             transform: [{ scale: animation, translateX }],

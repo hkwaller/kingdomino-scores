@@ -4,7 +4,7 @@ import { useRoute, useNavigation } from '@react-navigation/core'
 import { Header, Button } from 'app/components'
 import { fonts, colors } from 'app/config/constants'
 import { saveGame } from 'app/config/data'
-import CountUp from 'app/components/CountUp'
+import CountUp from 'app/screens/new-game/components/CountUp'
 
 function Scores() {
   const route = useRoute()

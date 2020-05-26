@@ -1,9 +1,9 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { Svg, Path } from 'react-native-svg'
-import { colors } from 'app/config/constants'
-import { useTimingTransition, useSpringTransition } from 'react-native-redash'
 import Animated, { interpolate, Extrapolate } from 'react-native-reanimated'
+import { useSpringTransition } from 'react-native-redash'
+import { colors } from 'app/config/constants'
 
 type Props = {
   checked: boolean
@@ -12,12 +12,11 @@ type Props = {
 const AnimatedSvg = Animated.createAnimatedComponent(Svg)
 
 function CheckMark({ checked }: Props) {
-  const animation = useSpringTransition(checked)
+  const animation = useSpringTransition(checked, { damping: 10 })
 
   const scale = interpolate(animation, {
     inputRange: [0, 1],
-    outputRange: [0, 1.3],
-    extrapolate: Extrapolate.CLAMP,
+    outputRange: [0, 1.2],
   })
 
   return (

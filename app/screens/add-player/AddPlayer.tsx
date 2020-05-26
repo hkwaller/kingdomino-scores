@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { View, Text, ScrollView, StyleSheet, SafeAreaView } from 'react-native'
-import { Header, SmallHeader, ColorPicker, Input } from 'app/components'
-import { colors, fonts } from 'app/config/constants'
-import { savePlayer } from 'app/config/data'
-import Button from 'app/components/Button'
 import Animated, { interpolate } from 'react-native-reanimated'
 import { useSpringTransition } from 'react-native-redash'
+import { Header, SmallHeader, Input, Button } from 'app/components'
+import { colors, fonts } from 'app/config/constants'
+import { savePlayer } from 'app/config/data'
+import ColorPicker from './components/ColorPicker'
 
 function AddPlayer() {
   const [name, setName] = useState('')
