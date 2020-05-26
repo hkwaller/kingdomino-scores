@@ -117,13 +117,7 @@ function Register() {
           style={{ paddingHorizontal: 12, width: 100 }}
         />
       </ScrollView>
-      <Button
-        backgroundColor={colors.YELLOW}
-        title="Nav"
-        onPress={() =>
-          navigation.navigate('Bonus', { game: game, players: players })
-        }
-      />
+
       <Button
         backgroundColor={colors.YELLOW}
         title="Continue"

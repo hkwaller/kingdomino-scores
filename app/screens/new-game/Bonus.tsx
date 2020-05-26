@@ -63,7 +63,6 @@ function Bonus() {
           pagingEnabled
           scrollEnabled={false}
           renderItem={({ item, index }) => {
-            if (!item) return <View />
             return (
               <View style={styles.item}>
                 <Type
