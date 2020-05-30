@@ -49,7 +49,7 @@ function AddPlayer() {
             />
           </ScrollView>
           <Button
-            title="Save player"
+            title="Save"
             backgroundColor={colors.YELLOW}
             onPress={async () => {
               const s = await savePlayer({ name: name, colour: colour })
