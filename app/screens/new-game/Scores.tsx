@@ -5,6 +5,7 @@ import { Header, Button } from 'app/components'
 import { fonts, colors } from 'app/config/constants'
 import { saveGame } from 'app/config/data'
 import CountUp from 'app/screens/new-game/components/CountUp'
+import Details from 'app/screens/new-game/components/Details'
 
 function Scores() {
   const route = useRoute()
@@ -30,6 +31,7 @@ function Scores() {
               game[index].reduce((cur, acc) => Number(cur) + acc, 0) +
               (p.symmetric && 5) +
               (p.king && 10)
+            console.log('p: ', p)
 
             return (
               <View key={index} style={styles.scoreContainer}>
@@ -37,12 +39,13 @@ function Scores() {
                   <View
                     style={[
                       styles.nameBackground,
-                      { backgroundColor: p.color },
+                      { backgroundColor: p.colour },
                     ]}
                   />
                   <Text style={styles.name}>{p.name}</Text>
                 </View>
                 <CountUp to={playerScore} />
+                <Details score={game[index]} />
               </View>
             )
           })}

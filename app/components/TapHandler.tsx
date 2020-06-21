@@ -29,7 +29,7 @@ const duration = 250
 export default ({ onPress, children, value }: TapHandlerProps) => {
   const { shouldSpring, state } = useMemoOne(
     () => ({
-      shouldSpring: new Value(0),
+      shouldSpring: new Value<0 | 1>(0),
       state: new Value(UNDETERMINED),
     }),
     [],

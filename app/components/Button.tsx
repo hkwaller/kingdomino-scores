@@ -34,7 +34,7 @@ function Button({
   })
 
   return (
-    <TapHandler onPress={() => onPress()} value={value}>
+    <TapHandler onPress={onPress} value={value}>
       <View style={[styles.container, style]}>
         <Animated.View
           style={{
