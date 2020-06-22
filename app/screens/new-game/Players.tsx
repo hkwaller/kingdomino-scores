@@ -16,6 +16,7 @@ function Players() {
   useFocusEffect(
     useCallback(() => {
       getPlayersFromStorage()
+      setSelectedPlayers([])
     }, [])
   )
 
@@ -34,7 +35,7 @@ function Players() {
     <>
       <SafeAreaView />
       <Header title="Who's playing?" />
-      <ScrollView contentContainerStyle={{ flex: 0, margin: 20 }}>
+      <ScrollView contentContainerStyle={{ margin: 20 }}>
         {players.length === 0 && (
           <Text
             style={[styles.playerText, { textAlign: 'center', marginTop: 40 }]}

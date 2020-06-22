@@ -1,30 +1,39 @@
-import React, { useRef, useState, useEffect } from 'react'
-import {
-  View,
-  SafeAreaView,
-  StyleSheet,
-  FlatList,
-  Dimensions,
-} from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { View, SafeAreaView, StyleSheet, Dimensions } from 'react-native'
 import { useRoute, useNavigation } from '@react-navigation/native'
 import { State } from 'react-native-gesture-handler'
+import Animated, {
+  useSharedValue,
+  withSpring,
+  useAnimatedStyle,
+  delay,
+} from 'react-native-reanimated'
+
 import { Header, NormalButton } from 'app/components'
 import { fonts, colors } from 'app/config/constants'
 import Check from 'app/screens/new-game/components/Check'
 import Type from './components/Type'
 
+const WIDTH = Dimensions.get('screen').width
+
 function Bonus() {
   const [players, setPlayers] = useState([])
   const [activePlayer, setActivePlayer] = useState(0)
+  const x = useSharedValue(500)
+  const symmetric = useSharedValue(200)
+  const king = useSharedValue(200)
 
   const route = useRoute()
   const navigation = useNavigation()
-  const ref = useRef(null)
 
   useEffect(() => {
     const players = route.params.players.map(p => {
       return Object.assign(p, { symmetric: true, king: true })
     })
+
+    x.value = 0
+    symmetric.value = 0
+    king.style = 0
 
     setPlayers(players)
   }, [])
@@ -40,7 +49,7 @@ function Bonus() {
   function continueTapped() {
     if (activePlayer < players.length - 1) {
       setActivePlayer(activePlayer + 1)
-      ref.current.scrollToIndex({ index: activePlayer + 1 })
+      x.value = WIDTH * players.indexOf(activePlayer)
     } else {
       navigation.navigate('Scores', {
         game: route.params.game,
@@ -49,41 +58,49 @@ function Bonus() {
     }
   }
 
+  const style = useAnimatedStyle(() => {
+    return {
+      transform: [{ translateX: withSpring(x.value) }],
+    }
+  })
+
   return (
     <>
       <SafeAreaView />
       <View style={styles.container}>
         <Header title="Bonus" />
-        <FlatList
-          keyExtractor={(_, index) => `${index}`}
-          data={players}
-          ref={ref}
-          showsHorizontalScrollIndicator={false}
-          horizontal
-          pagingEnabled
-          scrollEnabled={false}
-          renderItem={({ item, index }) => {
+        <Animated.View
+          style={[
+            {
+              flexDirection: 'row',
+              justifyContent: 'flex-start',
+              width: WIDTH * players.length,
+            },
+            style,
+          ]}
+        >
+          {players.map((p, index) => {
             return (
-              <View style={styles.item}>
+              <View key={index} style={styles.item}>
                 <Type
-                  backgroundColor={item.color}
-                  title={item.name}
+                  backgroundColor={p.color}
+                  title={p.name}
                   style={{ marginBottom: 20 }}
                 />
                 <Check
-                  item={item}
+                  item={p}
                   type="symmetric"
                   handleCheck={event => check(event, index, 'symmetric')}
                 />
                 <Check
-                  item={item}
+                  item={p}
                   type="king"
                   handleCheck={event => check(event, index, 'king')}
                 />
               </View>
             )
-          }}
-        />
+          })}
+        </Animated.View>
       </View>
 
       <NormalButton
@@ -100,13 +117,13 @@ function Bonus() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
+    alignItems: 'flex-start',
     justifyContent: 'flex-start',
   },
   item: {
-    width: Dimensions.get('screen').width - 100,
-    marginHorizontal: 40,
+    width: WIDTH,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   checkmark: {
     alignItems: 'center',
