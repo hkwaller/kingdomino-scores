@@ -2,8 +2,6 @@ import React, { useState } from 'react'
 import { StatusBar } from 'react-native'
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
-import { AppLoading } from 'expo'
-import * as Font from 'expo-font'
 
 import Home from 'app/screens/home/Home'
 
@@ -20,60 +18,44 @@ import { colors } from 'app/config/constants'
 const Stack = createStackNavigator()
 
 const theme = {
-  ...DefaultTheme,
-  colors: {
-    ...DefaultTheme.colors,
-    background: colors.BACKGROUND,
-  },
-}
-
-function fetchFonts() {
-  return Font.loadAsync({
-    'Formula Condensed Bold': require('./assets/fonts/FormulaCondensed-Bold.otf'),
-    'Formula Condensed Light': require('./assets/fonts/FormulaCondensed-Light.otf'),
-  })
+    ...DefaultTheme,
+    colors: {
+        ...DefaultTheme.colors,
+        background: colors.BACKGROUND,
+    },
 }
 
 function NewGameStack() {
-  return (
-    <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-      }}>
-      <Stack.Screen name="Players" component={Players} />
-      <Stack.Screen name="Register" component={Register} />
-      <Stack.Screen name="Bonus" component={Bonus} />
-      <Stack.Screen name="Scores" component={Scores} />
-    </Stack.Navigator>
-  )
+    return (
+        <Stack.Navigator
+            screenOptions={{
+                headerShown: false,
+            }}
+        >
+            <Stack.Screen name="Players" component={Players} />
+            <Stack.Screen name="Register" component={Register} />
+            <Stack.Screen name="Bonus" component={Bonus} />
+            <Stack.Screen name="Scores" component={Scores} />
+        </Stack.Navigator>
+    )
 }
 
 export default function App() {
-  const [fontsLoaded, setFontsLoaded] = useState(false)
-
-  if (!fontsLoaded) {
     return (
-      <AppLoading
-        startAsync={fetchFonts}
-        onFinish={() => setFontsLoaded(true)}
-      />
+        <NavigationContainer theme={theme}>
+            <StatusBar barStyle="dark-content" />
+
+            <Stack.Navigator
+                initialRouteName="Home"
+                screenOptions={{
+                    headerShown: false,
+                }}
+            >
+                <Stack.Screen name="Home" component={Home} />
+                <Stack.Screen name="AddPlayer" component={AddPlayer} />
+                <Stack.Screen name="NewGame" component={NewGameStack} />
+                <Stack.Screen name="Statistics" component={Statistics} />
+            </Stack.Navigator>
+        </NavigationContainer>
     )
-  }
-
-  return (
-    <NavigationContainer theme={theme}>
-      <StatusBar barStyle="dark-content" />
-
-      <Stack.Navigator
-        initialRouteName="Home"
-        screenOptions={{
-          headerShown: false,
-        }}>
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="AddPlayer" component={AddPlayer} />
-        <Stack.Screen name="NewGame" component={NewGameStack} />
-        <Stack.Screen name="Statistics" component={Statistics} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  )
 }
