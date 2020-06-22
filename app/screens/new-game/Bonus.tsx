@@ -6,25 +6,12 @@ import {
   FlatList,
   Dimensions,
 } from 'react-native'
-import { useRoute, useNavigation } from '@react-navigation/core'
+import { useRoute, useNavigation } from '@react-navigation/native'
 import { State } from 'react-native-gesture-handler'
 import { Header, NormalButton } from 'app/components'
 import { fonts, colors } from 'app/config/constants'
 import Check from 'app/screens/new-game/components/Check'
 import Type from './components/Type'
-import {
-  Transitioning,
-  Transition,
-  TransitioningView,
-} from 'react-native-reanimated'
-import BonusRow from './BonusRow'
-
-const transition = delay => (
-  <Transition.Together>
-    <Transition.In type="fade" durationMs={400} delayMs={delay} />
-    <Transition.Out type="fade" durationMs={500} delayMs={delay} />
-  </Transition.Together>
-)
 
 function Bonus() {
   const [players, setPlayers] = useState([])

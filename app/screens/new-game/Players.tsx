@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react'
 import { Text, SafeAreaView, StyleSheet, ScrollView } from 'react-native'
-import { useNavigation, useFocusEffect } from '@react-navigation/core'
+import { useNavigation, useFocusEffect } from '@react-navigation/native'
+
 import { getPlayers } from 'app/config/data'
 import { Header } from 'app/components'
 import { fonts, colors } from 'app/config/constants'
@@ -15,7 +16,7 @@ function Players() {
   useFocusEffect(
     useCallback(() => {
       getPlayersFromStorage()
-    }, []),
+    }, [])
   )
 
   async function getPlayersFromStorage() {
@@ -36,7 +37,8 @@ function Players() {
       <ScrollView contentContainerStyle={{ flex: 0, margin: 20 }}>
         {players.length === 0 && (
           <Text
-            style={[styles.playerText, { textAlign: 'center', marginTop: 40 }]}>
+            style={[styles.playerText, { textAlign: 'center', marginTop: 40 }]}
+          >
             You haven't created any players yet. Tap below bitte.
           </Text>
         )}

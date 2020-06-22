@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, SafeAreaView, ScrollView } from 'react-native'
-import { useRoute, useNavigation } from '@react-navigation/core'
+import { useRoute, useNavigation } from '@react-navigation/native'
 import { Header, Button } from 'app/components'
 import { fonts, colors } from 'app/config/constants'
 import { saveGame } from 'app/config/data'
@@ -52,7 +52,7 @@ function Scores() {
         </View>
       </ScrollView>
       <Button
-        title="Start"
+        title="Start over"
         backgroundColor={colors.GREEN}
         onPress={() => navigation.navigate('Home')}
       />

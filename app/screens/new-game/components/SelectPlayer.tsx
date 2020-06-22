@@ -1,58 +1,59 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { StyleSheet, TouchableWithoutFeedback } from 'react-native'
-import Animated, { interpolate, Extrapolate } from 'react-native-reanimated'
-import {
-  useTimingTransition,
-  transformOrigin,
-  useSpringTransition,
-} from 'react-native-redash'
+import Animated, {
+  useSharedValue,
+  withSpring,
+  useAnimatedStyle,
+} from 'react-native-reanimated'
 import { fonts } from 'app/config/constants'
 
 type Props = {
   player: { name: string; colour: string }
   isSelected: boolean
-  selectPlayer: (player) => void
+  selectPlayer: (player: any) => void
 }
 
 function SelectPlayer({ player, isSelected, selectPlayer }: Props) {
-  const animation = useSpringTransition(isSelected)
+  const textScale = useSharedValue(1)
+  const translateX = useSharedValue(100)
 
-  const textScale = interpolate(animation, {
-    inputRange: [0, 1],
-    outputRange: [1, 1.4],
+  const textStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ scale: withSpring(textScale.value) }],
+    }
   })
 
-  const translateX = interpolate(animation, {
-    inputRange: [0, 1],
-    outputRange: [100, 0],
-    extrapolate: Extrapolate.CLAMP,
+  const translateStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ translateX: withSpring(translateX.value) }],
+    }
   })
+
+  useEffect(() => {
+    if (isSelected) {
+      textScale.value = 1.4
+      translateX.value = 0
+    } else {
+      textScale.value = 1
+      translateX.value = 200
+    }
+  }, [isSelected])
 
   return (
     <TouchableWithoutFeedback onPress={() => selectPlayer(player)}>
       <Animated.View key={player.name} style={styles.playerContainer}>
-        <Animated.Text
-          style={[
-            styles.playerText,
-            {
-              transform: transformOrigin(
-                { x: -25, y: 0 },
-                { scale: textScale },
-              ),
-            },
-          ]}>
+        <Animated.Text style={[styles.playerText, textStyle]}>
           {player.name}
         </Animated.Text>
         <Animated.View
-          style={{
-            backgroundColor: player.colour,
-            height: 50,
-            width: 100,
-            transform: transformOrigin(
-              { x: 1, y: 0 },
-              { scale: animation, translateX },
-            ),
-          }}
+          style={[
+            {
+              backgroundColor: player.colour,
+              height: 50,
+              width: 100,
+            },
+            translateStyle,
+          ]}
         />
       </Animated.View>
     </TouchableWithoutFeedback>

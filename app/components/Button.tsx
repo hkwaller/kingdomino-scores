@@ -1,14 +1,19 @@
 import React from 'react'
-import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native'
-import Animated, { Value, interpolate } from 'react-native-reanimated'
+import { StyleSheet, StyleProp, ViewStyle } from 'react-native'
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  useAnimatedGestureHandler,
+  withSpring,
+} from 'react-native-reanimated'
 import { fonts } from 'app/config/constants'
-import TapHandler from './TapHandler'
+import { TapGestureHandler, State } from 'react-native-gesture-handler'
 
 type Props = {
   title: string
   backgroundColor: string
   lean?: 'left' | 'right'
-  onPress?: () => void
+  onPress: () => void
   style?: StyleProp<ViewStyle>
   small?: boolean
 }
@@ -18,40 +23,67 @@ function Button({
   lean = 'right',
   backgroundColor,
   onPress,
-  style,
   small = false,
 }: Props) {
-  const value = new Value(0)
-  const scale = interpolate(value, {
-    inputRange: [0, 1],
-    outputRange: [1, 1.2],
+  const startValue = lean === 'right' ? 0.05 : -0.05
+  const endValue = lean === 'right' ? -0.05 : 0.05
+
+  const scaleValue = useSharedValue(1)
+  const rotationValue = useSharedValue(startValue)
+
+  const onGestureEvent = useAnimatedGestureHandler({
+    onStart: _ => {
+      scaleValue.value = 1.2
+      rotationValue.value = endValue
+    },
+    onFail: _ => {
+      scaleValue.value = 1
+      rotationValue.value = startValue
+    },
+    onEnd: _ => {
+      scaleValue.value = 1
+      rotationValue.value = endValue
+    },
   })
 
-  const outputRange = lean === 'right' ? [-0.05, 0.05] : [0.05, -0.05]
-  const rotate = interpolate(value, {
-    inputRange: [0, 1],
-    outputRange: outputRange,
+  const rotation = useAnimatedStyle(() => {
+    return {
+      transform: [{ rotate: withSpring(rotationValue.value) }],
+    }
+  })
+
+  const scale = useAnimatedStyle(() => {
+    return {
+      transform: [{ scale: withSpring(scaleValue.value) }],
+    }
   })
 
   return (
-    <TapHandler onPress={onPress} value={value}>
-      <View style={[styles.container, style]}>
+    <TapGestureHandler
+      onHandlerStateChange={event => {
+        onGestureEvent
+        if (event.nativeEvent.state === State.END) onPress()
+      }}
+      onGestureEvent={onGestureEvent}
+      maxDist={15}
+    >
+      <Animated.View style={[styles.container]}>
         <Animated.View
-          style={{
-            ...StyleSheet.absoluteFillObject,
-            backgroundColor,
-            transform: [{ rotate }],
-          }}
+          style={[
+            {
+              backgroundColor: backgroundColor,
+              ...StyleSheet.absoluteFillObject,
+            },
+            rotation,
+          ]}
         />
         <Animated.Text
-          style={[
-            styles.text,
-            { fontSize: small ? 60 : 80, transform: [{ scale }] },
-          ]}>
+          style={[styles.text, { fontSize: small ? 65 : 80 }, scale]}
+        >
           {title}
         </Animated.Text>
-      </View>
-    </TapHandler>
+      </Animated.View>
+    </TapGestureHandler>
   )
 }
 

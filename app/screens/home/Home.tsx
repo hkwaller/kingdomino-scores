@@ -3,13 +3,13 @@ import { View, ScrollView, SafeAreaView, StyleSheet } from 'react-native'
 import { Header } from 'app/components'
 import Button from 'app/components/Button'
 import { colors } from 'app/config/constants'
-import { useNavigation } from '@react-navigation/core'
+import { useNavigation } from '@react-navigation/native'
 
 function Home() {
   const navigation = useNavigation()
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <View contentContainerStyle={styles.container}>
       <SafeAreaView />
       <Header title="King Domino" />
       <View style={styles.buttonContainer}>
@@ -34,7 +34,7 @@ function Home() {
           onPress={() => navigation.navigate('Statistics')}
         />
       </View>
-    </ScrollView>
+    </View>
   )
 }
 
