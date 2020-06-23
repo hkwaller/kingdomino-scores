@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react'
 import { Text, SafeAreaView, StyleSheet, ScrollView } from 'react-native'
 import { useNavigation, useFocusEffect } from '@react-navigation/native'
 
-import { getPlayers } from 'app/config/data'
+import { getPlayers, deletePlayer } from 'app/config/data'
 import { Header } from 'app/components'
 import { fonts, colors } from 'app/config/constants'
 import NormalButton from 'app/components/NormalButton'
@@ -51,6 +51,10 @@ function Players() {
               key={p.name}
               player={p}
               isSelected={isSelected}
+              deletePlayer={async () => {
+                const newPlayers = await deletePlayer(p)
+                setPlayers(newPlayers)
+              }}
               selectPlayer={() => {
                 const updatedSelectedPlayers = isSelected
                   ? selectedPlayers.filter(f => f.name !== p.name)

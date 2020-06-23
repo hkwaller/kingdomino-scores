@@ -1,15 +1,24 @@
 import AsyncStorage from '@react-native-community/async-storage'
 
-export async function saveGame(game) {
-  console.log('game: ', game)
+export async function saveGame(data) {
+  await AsyncStorage.setItem('games', '[]')
   try {
-    const earlierGames = await AsyncStorage.getItem('games')
+    const earlierGames = (await AsyncStorage.getItem('games')) || '[]'
 
     if (earlierGames !== null) {
       const parsedGames = JSON.parse(earlierGames)
-      const mergedGames = parsedGames.push(game)
+
+      const newData = {
+        game: data.game,
+        players: data.players.map(p => p.id),
+        date: new Date(),
+      }
+
+      const mergedGames = parsedGames.push(newData)
 
       AsyncStorage.setItem('games', JSON.stringify(mergedGames))
+    } else {
+      AsyncStorage.setItem('games', JSON.stringify([]))
     }
   } catch (e) {
     console.log('there is nothing here', e)
@@ -26,6 +35,7 @@ export async function loadGames() {
 }
 
 export async function getPlayers() {
+  // await AsyncStorage.setItem('players', '[]')
   try {
     const players = await AsyncStorage.getItem('players')
     return JSON.parse(players)
@@ -36,14 +46,12 @@ export async function getPlayers() {
 }
 
 export async function savePlayer(player) {
-  console.log('saving this fucker: ', player)
-
   try {
     const storedPlayers = await AsyncStorage.getItem('players')
     const parsedPlayers = JSON.parse(storedPlayers || '[]')
-    console.log('player: ', player)
-    const lowestId =
-      Math.min.apply(
+
+    const highestExistingId =
+      Math.max.apply(
         Math,
         parsedPlayers.map(p => p.id)
       ) + 1
@@ -52,7 +60,9 @@ export async function savePlayer(player) {
       return 'nonono we got that one'
     } else {
       parsedPlayers.push(
-        Object.assign(player, { id: lowestId === Infinity ? 0 : lowestId })
+        Object.assign(player, {
+          id: highestExistingId === Infinity ? 0 : highestExistingId,
+        })
       )
 
       AsyncStorage.setItem('players', JSON.stringify(parsedPlayers))
@@ -61,5 +71,22 @@ export async function savePlayer(player) {
     }
   } catch (e) {
     console.log('e: ', e)
+  }
+}
+
+export async function deletePlayer(player) {
+  try {
+    const storedPlayers = await AsyncStorage.getItem('players')
+    const parsedPlayers = JSON.parse(storedPlayers || '[]')
+
+    const filteredPlayers = parsedPlayers.filter(p => {
+      if (player.id !== p.id) return p
+    })
+
+    await AsyncStorage.setItem('players', JSON.stringify(filteredPlayers))
+
+    return filteredPlayers
+  } catch (e) {
+    console.log('something happened', e)
   }
 }

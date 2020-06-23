@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { StyleSheet, TouchableWithoutFeedback } from 'react-native'
 import Animated, {
   useSharedValue,
@@ -6,16 +6,28 @@ import Animated, {
   useAnimatedStyle,
 } from 'react-native-reanimated'
 import { fonts } from 'app/config/constants'
+import {
+  LongPressGestureHandler,
+  TapGestureHandler,
+  State,
+} from 'react-native-gesture-handler'
 
 type Props = {
   player: { name: string; colour: string }
   isSelected: boolean
-  selectPlayer: (player: any) => void
+  selectPlayer: () => void
+  deletePlayer: () => void
 }
 
-function SelectPlayer({ player, isSelected, selectPlayer }: Props) {
+function SelectPlayer({
+  player,
+  isSelected,
+  selectPlayer,
+  deletePlayer,
+}: Props) {
   const textScale = useSharedValue(1)
   const translateX = useSharedValue(100)
+  const doubleTapRef = useRef(null)
 
   const textStyle = useAnimatedStyle(() => {
     return {
@@ -40,23 +52,35 @@ function SelectPlayer({ player, isSelected, selectPlayer }: Props) {
   }, [isSelected])
 
   return (
-    <TouchableWithoutFeedback onPress={() => selectPlayer(player)}>
-      <Animated.View key={player.name} style={styles.playerContainer}>
-        <Animated.Text style={[styles.playerText, textStyle]}>
-          {player.name}
-        </Animated.Text>
-        <Animated.View
-          style={[
-            {
-              backgroundColor: player.colour,
-              height: 50,
-              width: 100,
-            },
-            translateStyle,
-          ]}
-        />
-      </Animated.View>
-    </TouchableWithoutFeedback>
+    <LongPressGestureHandler
+      ref={doubleTapRef}
+      onHandlerStateChange={event => {
+        if (event.nativeEvent.state === State.END) deletePlayer()
+      }}
+    >
+      <TapGestureHandler
+        waitFor={doubleTapRef}
+        onHandlerStateChange={event => {
+          if (event.nativeEvent.state === State.END) selectPlayer()
+        }}
+      >
+        <Animated.View key={player.name} style={styles.playerContainer}>
+          <Animated.Text style={[styles.playerText, textStyle]}>
+            {player.name}
+          </Animated.Text>
+          <Animated.View
+            style={[
+              {
+                backgroundColor: player.colour,
+                height: 50,
+                width: 100,
+              },
+              translateStyle,
+            ]}
+          />
+        </Animated.View>
+      </TapGestureHandler>
+    </LongPressGestureHandler>
   )
 }
 

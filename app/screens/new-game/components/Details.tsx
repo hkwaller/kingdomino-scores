@@ -24,25 +24,47 @@ function Details({ score }: Props) {
   })
 
   useEffect(() => {
-    show.value = expanded ? 200 : 50
+    show.value = expanded ? 200 : 70
   }, [expanded])
 
   return (
     <Animated.View style={[styles.table, style]}>
-      <View>
+      <View style={{ width: '100%' }}>
         <TouchableOpacity
           onPress={() => setExpanded(!expanded)}
-          style={{ marginBottom: 30 }}
+          style={{
+            paddingVertical: 15,
+            backgroundColor: 'gold',
+            width: '100%',
+            alignItems: 'center',
+          }}
         >
           <SmallText>{expanded ? 'Hide Details' : 'Show Details'}</SmallText>
         </TouchableOpacity>
-        {score.map((s, index) => {
-          return (
-            <Text key={index}>
-              {types[index]}: {s}
-            </Text>
-          )
-        })}
+        <View
+          style={{
+            backgroundColor: 'rgba(255,215,0,0.5)',
+            width: '100%',
+            height: '100%',
+            padding: 15,
+          }}
+        >
+          {score.map((points, index) => {
+            return (
+              <View
+                key={index}
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
+                <Text>{types[index]}</Text>
+                <Text>{points}</Text>
+              </View>
+            )
+          })}
+        </View>
       </View>
     </Animated.View>
   )
@@ -50,10 +72,10 @@ function Details({ score }: Props) {
 
 const styles = StyleSheet.create({
   table: {
-    backgroundColor: 'gold',
     paddingTop: 15,
-    paddingHorizontal: 30,
     overflow: 'hidden',
+    width: '80%',
+    alignItems: 'center',
   },
 })
 
