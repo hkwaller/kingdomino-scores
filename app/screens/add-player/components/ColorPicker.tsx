@@ -9,7 +9,7 @@ import Animated, {
 import { colors } from 'app/config/constants'
 
 type Props = {
-  handleChange: (color) => void
+  handleChange: (color: string) => void
   currentColour: string
 }
 
@@ -18,7 +18,7 @@ const HEIGHT = Dimensions.get('screen').height
 
 function ColorPicker({ handleChange, currentColour }: Props) {
   const c = [colors.YELLOW, colors.RED, colors.GREEN, colors.BLUE]
-  const x = useSharedValue(-100)
+  const x = useSharedValue(0)
 
   const style = useAnimatedStyle(() => {
     return {
@@ -27,7 +27,7 @@ function ColorPicker({ handleChange, currentColour }: Props) {
   })
 
   useEffect(() => {
-    x.value = (c.indexOf(currentColour) || 0) * 100
+    x.value = (c.indexOf(currentColour) || 0) * (WIDTH / 4)
   }, [currentColour])
 
   return (
