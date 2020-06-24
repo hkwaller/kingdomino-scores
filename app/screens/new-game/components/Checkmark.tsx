@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { Svg, Path } from 'react-native-svg'
-import Animated, { interpolate } from 'react-native-reanimated'
-import { useSpringTransition } from 'react-native-redash'
+import Animated, {
+  useSharedValue,
+  withSpring,
+  useAnimatedStyle,
+} from 'react-native-reanimated'
 import { colors } from 'app/config/constants'
 
 type Props = {
@@ -12,12 +15,21 @@ type Props = {
 const AnimatedSvg = Animated.createAnimatedComponent(Svg)
 
 function CheckMark({ checked }: Props) {
-  const animation = useSpringTransition(checked, { damping: 10 })
+  const scale = useSharedValue(0)
 
-  const scale = interpolate(animation, {
-    inputRange: [0, 1],
-    outputRange: [0, 1.2],
+  const style = useAnimatedStyle(() => {
+    return {
+      transform: [{ scale: withSpring(scale.value) }],
+    }
   })
+
+  useEffect(() => {
+    if (checked) {
+      scale.value = 1.2
+    } else {
+      scale.value = 0
+    }
+  }, [checked])
 
   return (
     <View style={{ width: 60, height: 60 }}>
@@ -28,7 +40,7 @@ function CheckMark({ checked }: Props) {
           backgroundColor: colors.WHITE,
         }}
       />
-      <AnimatedSvg height="50" width="80" style={{ transform: [{ scale }] }}>
+      <AnimatedSvg height="50" width="80" style={style}>
         <Path
           d="M10 30 L25 45 L55 5"
           fill="none"

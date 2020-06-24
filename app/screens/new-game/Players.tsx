@@ -1,31 +1,27 @@
 import React, { useState, useCallback } from 'react'
 import { Text, SafeAreaView, StyleSheet, ScrollView } from 'react-native'
-import { useNavigation, useFocusEffect } from '@react-navigation/core'
-import { getPlayers } from 'app/config/data'
+import { useNavigation, useFocusEffect } from '@react-navigation/native'
+import { view } from '@risingstack/react-easy-state'
+
+import { deletePlayer, state } from 'app/config/data'
 import { Header } from 'app/components'
 import { fonts, colors } from 'app/config/constants'
 import NormalButton from 'app/components/NormalButton'
 import SelectPlayer from 'app/screens/new-game/components/SelectPlayer'
 
 function Players() {
-  const [players, setPlayers] = useState([])
   const [selectedPlayers, setSelectedPlayers] = useState([])
   const navigation = useNavigation()
 
   useFocusEffect(
     useCallback(() => {
-      getPlayersFromStorage()
-    }, []),
+      setSelectedPlayers([])
+    }, [])
   )
 
-  async function getPlayersFromStorage() {
-    const p = await getPlayers()
-    setPlayers(p || [])
-  }
-
   function handlePress() {
-    if (selectedPlayers.length === 0 && players.length !== 0) return
-    const destination = players.length === 0 ? 'AddPlayer' : 'Register'
+    if (selectedPlayers.length === 0 && state.players.length !== 0) return
+    const destination = state.players.length === 0 ? 'AddPlayer' : 'Register'
     navigation.navigate(destination, { players: selectedPlayers })
   }
 
@@ -33,14 +29,15 @@ function Players() {
     <>
       <SafeAreaView />
       <Header title="Who's playing?" />
-      <ScrollView contentContainerStyle={{ flex: 0, margin: 20 }}>
-        {players.length === 0 && (
+      <ScrollView contentContainerStyle={{ margin: 20 }}>
+        {state.players.length === 0 && (
           <Text
-            style={[styles.playerText, { textAlign: 'center', marginTop: 40 }]}>
+            style={[styles.playerText, { textAlign: 'center', marginTop: 40 }]}
+          >
             You haven't created any players yet. Tap below bitte.
           </Text>
         )}
-        {players.map((p, i) => {
+        {state.players.map((p, i) => {
           const isSelected = selectedPlayers.indexOf(p) > -1
 
           return (
@@ -48,6 +45,7 @@ function Players() {
               key={p.name}
               player={p}
               isSelected={isSelected}
+              deletePlayer={() => deletePlayer(p)}
               selectPlayer={() => {
                 const updatedSelectedPlayers = isSelected
                   ? selectedPlayers.filter(f => f.name !== p.name)
@@ -60,7 +58,7 @@ function Players() {
         })}
       </ScrollView>
       <NormalButton
-        title={players.length === 0 ? 'Add players' : 'Continue'}
+        title={state.players.length === 0 ? 'Add players' : 'Continue'}
         backgroundColor={colors.YELLOW}
         onPress={() => handlePress()}
       />
@@ -76,4 +74,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default Players
+export default view(Players)

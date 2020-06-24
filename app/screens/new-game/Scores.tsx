@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, SafeAreaView, ScrollView } from 'react-native'
-import { useRoute, useNavigation } from '@react-navigation/core'
+import { useRoute, useNavigation } from '@react-navigation/native'
 import { Header, Button } from 'app/components'
 import { fonts, colors } from 'app/config/constants'
 import { saveGame } from 'app/config/data'
@@ -25,23 +25,24 @@ function Scores() {
       <SafeAreaView />
       <Header title="Scores" />
       <ScrollView contentContainerStyle={styles.container}>
-        <View style={{ flex: 1, flexDirection: 'row', flexWrap: 'wrap' }}>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+          }}
+        >
           {players.map((p, index) => {
             const playerScore =
               game[index].reduce((cur, acc) => Number(cur) + acc, 0) +
-              (p.symmetric && 5) +
+              (p.alldominos && 5) +
               (p.king && 10)
-            console.log('p: ', p)
 
             return (
               <View key={index} style={styles.scoreContainer}>
-                <View>
-                  <View
-                    style={[
-                      styles.nameBackground,
-                      { backgroundColor: p.colour },
-                    ]}
-                  />
+                <View
+                  style={[styles.nameBackground, { backgroundColor: p.colour }]}
+                >
                   <Text style={styles.name}>{p.name}</Text>
                 </View>
                 <CountUp to={playerScore} />
@@ -52,7 +53,7 @@ function Scores() {
         </View>
       </ScrollView>
       <Button
-        title="Start"
+        title="Start over"
         backgroundColor={colors.GREEN}
         onPress={() => navigation.navigate('Home')}
       />
@@ -63,8 +64,8 @@ function Scores() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     justifyContent: 'flex-start',
+    paddingBottom: 200,
   },
   scoreContainer: {
     width: '50%',
@@ -76,8 +77,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
   },
   nameBackground: {
-    ...StyleSheet.absoluteFillObject,
-    transform: [{ rotate: '2deg' }],
+    padding: 10,
   },
 })
 

@@ -7,7 +7,7 @@ import {
   FlatList,
   Dimensions,
 } from 'react-native'
-import { useNavigation, useRoute } from '@react-navigation/core'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import { Header, Input, Button } from 'app/components'
 import {
   colorArray,
@@ -61,7 +61,8 @@ function Register() {
       <ScrollView
         contentContainerStyle={styles.container}
         ref={scrollViewRef}
-        keyboardShouldPersistTaps="always">
+        keyboardShouldPersistTaps="always"
+      >
         <Header title="Score" />
         <FlatList
           keyExtractor={(_, index) => `${index}`}

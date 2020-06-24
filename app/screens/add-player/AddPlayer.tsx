@@ -1,7 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, ScrollView, StyleSheet, SafeAreaView } from 'react-native'
-import Animated, { interpolate } from 'react-native-reanimated'
-import { useSpringTransition } from 'react-native-redash'
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withSpring,
+} from 'react-native-reanimated'
 import { Header, SmallHeader, Input, Button } from 'app/components'
 import { colors, fonts } from 'app/config/constants'
 import { savePlayer } from 'app/config/data'
@@ -12,20 +15,29 @@ function AddPlayer() {
   const [colour, setColour] = useState('')
   const [s, setS] = useState(false)
 
-  const animation = useSpringTransition(s)
+  const translateY = useSharedValue(200)
 
-  const translateY = interpolate(animation, {
-    inputRange: [0, 1],
-    outputRange: [200, 0],
+  const style = useAnimatedStyle(() => {
+    return {
+      transform: [{ translateY: translateY.value }],
+    }
   })
 
-  function successfullySaved() {
-    setS(true)
-    setColour('')
-    setName('')
-    setTimeout(() => {
-      setS(false)
-    }, 2000)
+  useEffect(() => {
+    if (s) translateY.value = withSpring(0)
+    else translateY.value = withSpring(200)
+  }, [s])
+
+  async function save() {
+    const s = await savePlayer({ name: name, colour: colour })
+    if (s) {
+      setS(true)
+      setColour('')
+      setName('')
+      setTimeout(() => {
+        setS(false)
+      }, 2000)
+    }
   }
 
   return (
@@ -51,27 +63,11 @@ function AddPlayer() {
           <Button
             title="Save"
             backgroundColor={colors.YELLOW}
-            onPress={async () => {
-              const s = await savePlayer({ name: name, colour: colour })
-              if (s) {
-                successfullySaved()
-              }
-            }}
+            onPress={() => save()}
           />
         </SafeAreaView>
       </View>
-      <Animated.View
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          backgroundColor: colors.WHITE,
-          left: 0,
-          right: 0,
-          height: 200,
-          transform: [{ translateY }],
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
+      <Animated.View style={[styles.popup, style]}>
         <Text style={styles.successful}>Player added!</Text>
       </Animated.View>
     </>
@@ -98,6 +94,16 @@ const styles = StyleSheet.create({
   successful: {
     fontSize: 40,
     fontFamily: fonts.BOLD,
+  },
+  popup: {
+    position: 'absolute',
+    bottom: 0,
+    backgroundColor: colors.WHITE,
+    left: 0,
+    right: 0,
+    height: 200,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 })
 
