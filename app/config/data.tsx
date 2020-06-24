@@ -1,7 +1,23 @@
 import AsyncStorage from '@react-native-community/async-storage'
+import { store, autoEffect } from '@risingstack/react-easy-state'
+
+export const state = store({
+  players: [],
+  games: [],
+})
+
+autoEffect(() => {
+  if (state.players.length === 0) return
+  AsyncStorage.setItem('players', JSON.stringify(state.players))
+})
+
+autoEffect(() => {
+  if (state.games.length === 0) return
+  AsyncStorage.setItem('games', JSON.stringify(state.games))
+})
 
 export async function saveGame(data) {
-  await AsyncStorage.setItem('games', '[]')
+  // await AsyncStorage.setItem('games', '[]')
   try {
     const earlierGames = (await AsyncStorage.getItem('games')) || '[]'
 
@@ -34,38 +50,19 @@ export async function loadGames() {
   }
 }
 
-export async function getPlayers() {
-  // await AsyncStorage.setItem('players', '[]')
-  try {
-    const players = await AsyncStorage.getItem('players')
-    return JSON.parse(players)
-  } catch (e) {
-    console.log('i dont know any players', e)
-    return []
-  }
-}
-
 export async function savePlayer(player) {
   try {
-    const storedPlayers = await AsyncStorage.getItem('players')
-    const parsedPlayers = JSON.parse(storedPlayers || '[]')
-
     const highestExistingId =
-      Math.max.apply(
-        Math,
-        parsedPlayers.map(p => p.id)
-      ) + 1
+      Math.max.apply(Math, state.players.map(p => p.id) || 0) + 1
 
-    if (parsedPlayers.filter(p => p.name === player.name).length > 0) {
+    if (state.players.filter(p => p.name === player.name).length > 0) {
       return 'nonono we got that one'
     } else {
-      parsedPlayers.push(
+      state.players.push(
         Object.assign(player, {
           id: highestExistingId === Infinity ? 0 : highestExistingId,
         })
       )
-
-      AsyncStorage.setItem('players', JSON.stringify(parsedPlayers))
 
       return 'hell yeah'
     }
@@ -75,18 +72,8 @@ export async function savePlayer(player) {
 }
 
 export async function deletePlayer(player) {
-  try {
-    const storedPlayers = await AsyncStorage.getItem('players')
-    const parsedPlayers = JSON.parse(storedPlayers || '[]')
-
-    const filteredPlayers = parsedPlayers.filter(p => {
-      if (player.id !== p.id) return p
-    })
-
-    await AsyncStorage.setItem('players', JSON.stringify(filteredPlayers))
-
-    return filteredPlayers
-  } catch (e) {
-    console.log('something happened', e)
-  }
+  const t = state.players.filter(p => {
+    if (player.id !== p.id) return p
+  })
+  state.players = t
 }

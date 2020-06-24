@@ -9,7 +9,6 @@ import { Header, SmallHeader, Input, Button } from 'app/components'
 import { colors, fonts } from 'app/config/constants'
 import { savePlayer } from 'app/config/data'
 import ColorPicker from './components/ColorPicker'
-import { TouchableOpacity } from 'react-native-gesture-handler'
 
 function AddPlayer() {
   const [name, setName] = useState('')
