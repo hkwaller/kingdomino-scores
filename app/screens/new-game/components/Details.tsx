@@ -29,42 +29,21 @@ function Details({ score }: Props) {
 
   return (
     <Animated.View style={[styles.table, style]}>
-      <View style={{ width: '100%' }}>
-        <TouchableOpacity
-          onPress={() => setExpanded(!expanded)}
-          style={{
-            paddingVertical: 15,
-            backgroundColor: 'gold',
-            width: '100%',
-            alignItems: 'center',
-          }}
-        >
-          <SmallText>{expanded ? 'Hide Details' : 'Show Details'}</SmallText>
-        </TouchableOpacity>
-        <View
-          style={{
-            backgroundColor: 'rgba(255,215,0,0.5)',
-            width: '100%',
-            height: '100%',
-            padding: 15,
-          }}
-        >
-          {score.map((points, index) => {
-            return (
-              <View
-                key={index}
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}
-              >
-                <Text>{types[index]}</Text>
-                <Text>{points}</Text>
-              </View>
-            )
-          })}
-        </View>
+      <TouchableOpacity
+        onPress={() => setExpanded(!expanded)}
+        style={styles.button}
+      >
+        <SmallText>{expanded ? 'Hide Details' : 'Show Details'}</SmallText>
+      </TouchableOpacity>
+      <View style={styles.rowContainer}>
+        {score.map((points, index) => {
+          return (
+            <View key={index} style={styles.row}>
+              <Text>{types[index]}</Text>
+              <Text>{points}</Text>
+            </View>
+          )
+        })}
       </View>
     </Animated.View>
   )
@@ -75,6 +54,22 @@ const styles = StyleSheet.create({
     paddingTop: 15,
     overflow: 'hidden',
     width: '80%',
+    alignItems: 'center',
+  },
+  button: {
+    paddingVertical: 15,
+    backgroundColor: 'gold',
+    alignItems: 'center',
+  },
+  rowContainer: {
+    backgroundColor: 'rgba(255,215,0,0.5)',
+    width: '100%',
+    height: '100%',
+    padding: 15,
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
   },
 })

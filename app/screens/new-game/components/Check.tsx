@@ -11,11 +11,11 @@ import { fonts } from 'app/config/constants'
 type Props = {
   item: any
   handleCheck: (event: TapGestureHandlerGestureEvent) => void
-  type: 'king' | 'symmetric'
+  type: 'king' | 'alldominos'
 }
 
 const texts = {
-  symmetric: 'Symmetric',
+  alldominos: 'All dominos laid down',
   king: 'King in the middle',
 }
 
@@ -24,8 +24,9 @@ function Check({ item, handleCheck, type }: Props) {
     <TapGestureHandler
       onHandlerStateChange={event => {
         if (event.nativeEvent.state === State.END) handleCheck(event)
-      }}>
-      <View style={[styles.checkmark, { marginTop: type === 'king' ? 30 : 0 }]}>
+      }}
+    >
+      <View style={[styles.checkmark, { marginBottom: 30 }]}>
         <Checkmark checked={item[type]} />
         <Text style={styles.checkmarkText}>{texts[type]}</Text>
       </View>

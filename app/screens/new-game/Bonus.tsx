@@ -20,7 +20,7 @@ function Bonus() {
   const [players, setPlayers] = useState([])
   const [activePlayer, setActivePlayer] = useState(0)
   const x = useSharedValue(500)
-  const symmetric = useSharedValue(200)
+  const alldominos = useSharedValue(200)
   const king = useSharedValue(200)
 
   const route = useRoute()
@@ -28,11 +28,11 @@ function Bonus() {
 
   useEffect(() => {
     const players = route.params.players.map(p => {
-      return Object.assign(p, { symmetric: true, king: true })
+      return Object.assign(p, { alldominos: true, king: true })
     })
 
     x.value = 0
-    symmetric.value = 0
+    alldominos.value = 0
     king.style = 0
 
     setPlayers(players)
@@ -49,7 +49,7 @@ function Bonus() {
   function continueTapped() {
     if (activePlayer < players.length - 1) {
       setActivePlayer(activePlayer + 1)
-      x.value = WIDTH * players.indexOf(activePlayer)
+      x.value = -(WIDTH * (activePlayer + 1))
     } else {
       navigation.navigate('Scores', {
         game: route.params.game,
@@ -89,8 +89,8 @@ function Bonus() {
                 />
                 <Check
                   item={p}
-                  type="symmetric"
-                  handleCheck={event => check(event, index, 'symmetric')}
+                  type="alldominos"
+                  handleCheck={event => check(event, index, 'alldominos')}
                 />
                 <Check
                   item={p}

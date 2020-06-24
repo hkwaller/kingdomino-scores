@@ -26,7 +26,8 @@ function SelectPlayer({
   deletePlayer,
 }: Props) {
   const textScale = useSharedValue(1)
-  const translateX = useSharedValue(100)
+  const translateX = useSharedValue(200)
+
   const doubleTapRef = useRef(null)
 
   const textStyle = useAnimatedStyle(() => {

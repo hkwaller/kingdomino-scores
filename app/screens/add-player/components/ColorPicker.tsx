@@ -27,8 +27,7 @@ function ColorPicker({ handleChange, currentColour }: Props) {
   })
 
   useEffect(() => {
-    x.value =
-      c.indexOf(currentColour) > -1 ? c.indexOf(currentColour) * 100 : -100
+    x.value = (c.indexOf(currentColour) || 0) * 100
   }, [currentColour])
 
   return (
