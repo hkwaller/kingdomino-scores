@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, SafeAreaView, StyleSheet, Dimensions } from 'react-native'
+import { View, SafeAreaView, StyleSheet } from 'react-native'
 import { useRoute, useNavigation } from '@react-navigation/native'
 import { State } from 'react-native-gesture-handler'
 import Animated, {
@@ -10,11 +10,9 @@ import Animated, {
 } from 'react-native-reanimated'
 
 import { Header, NormalButton } from 'app/components'
-import { fonts, colors } from 'app/config/constants'
+import { fonts, colors, screen } from 'app/config/constants'
 import Check from 'app/screens/new-game/components/Check'
 import Type from './components/Type'
-
-const WIDTH = Dimensions.get('screen').width
 
 function Bonus() {
   const [players, setPlayers] = useState([])
@@ -49,7 +47,7 @@ function Bonus() {
   function continueTapped() {
     if (activePlayer < players.length - 1) {
       setActivePlayer(activePlayer + 1)
-      x.value = -(WIDTH * (activePlayer + 1))
+      x.value = -(screen.WIDTH * (activePlayer + 1))
     } else {
       navigation.navigate('Scores', {
         game: route.params.game,
@@ -74,7 +72,7 @@ function Bonus() {
             {
               flexDirection: 'row',
               justifyContent: 'flex-start',
-              width: WIDTH * players.length,
+              width: screen.WIDTH * players.length,
             },
             style,
           ]}
@@ -121,7 +119,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   item: {
-    width: WIDTH,
+    width: screen.WIDTH,
     alignItems: 'center',
     justifyContent: 'center',
   },

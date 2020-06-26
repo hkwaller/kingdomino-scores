@@ -1,20 +1,17 @@
 import React, { useEffect } from 'react'
-import { View, StyleSheet, Dimensions, TouchableOpacity } from 'react-native'
+import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import Animated, {
   useSharedValue,
   withSpring,
   useAnimatedStyle,
 } from 'react-native-reanimated'
 
-import { colors } from 'app/config/constants'
+import { colors, screen } from 'app/config/constants'
 
 type Props = {
   handleChange: (color: string) => void
   currentColour: string
 }
-
-const WIDTH = Dimensions.get('screen').width
-const HEIGHT = Dimensions.get('screen').height
 
 function ColorPicker({ handleChange, currentColour }: Props) {
   const c = [colors.YELLOW, colors.RED, colors.GREEN, colors.BLUE]
@@ -27,7 +24,7 @@ function ColorPicker({ handleChange, currentColour }: Props) {
   })
 
   useEffect(() => {
-    x.value = (c.indexOf(currentColour) || 0) * (WIDTH / 4)
+    x.value = (c.indexOf(currentColour) || 0) * (screen.WIDTH / 4)
   }, [currentColour])
 
   return (
@@ -37,8 +34,8 @@ function ColorPicker({ handleChange, currentColour }: Props) {
           <TouchableOpacity key={index} onPress={() => handleChange(color)}>
             <View
               style={{
-                height: HEIGHT / 15,
-                width: WIDTH / 4,
+                height: screen.HEIGHT / 15,
+                width: screen.WIDTH / 4,
                 backgroundColor: color,
               }}
             />
@@ -53,15 +50,15 @@ function ColorPicker({ handleChange, currentColour }: Props) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    width: WIDTH,
+    width: screen.WIDTH,
     transform: [{ rotate: '-2deg' }],
   },
   selector: {
     position: 'absolute',
     borderColor: colors.WHITE,
     borderWidth: 10,
-    width: WIDTH / 4 + 4,
-    height: HEIGHT / 15,
+    width: screen.WIDTH / 4 + 4,
+    height: screen.HEIGHT / 15,
   },
 })
 

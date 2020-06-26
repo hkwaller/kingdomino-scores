@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react'
-import { StatusBar } from 'react-native'
+import React, { useEffect } from 'react'
+import { StatusBar, View } from 'react-native'
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
-import { store, autoEffect, clearEffect } from '@risingstack/react-easy-state'
 import { state } from 'app/config/data'
 
 import Home from 'app/screens/home/Home'
@@ -48,7 +47,6 @@ export default function App() {
     async function getDataFromStorage() {
       const games = (await AsyncStorage.getItem('games')) || '[]'
       const players = (await AsyncStorage.getItem('players')) || '[]'
-      console.log('players from storage: ', players)
 
       state.games = JSON.parse(games)
       state.players = JSON.parse(players)

@@ -1,12 +1,12 @@
 import React from 'react'
-import { View, Text, StyleSheet, Dimensions } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import {
   TapGestureHandler,
   TapGestureHandlerGestureEvent,
   State,
 } from 'react-native-gesture-handler'
 import Checkmark from './Checkmark'
-import { fonts } from 'app/config/constants'
+import { fonts, screen } from 'app/config/constants'
 
 type Props = {
   item: any
@@ -36,7 +36,7 @@ function Check({ item, handleCheck, type }: Props) {
 
 const styles = StyleSheet.create({
   item: {
-    width: Dimensions.get('screen').width - 100,
+    width: screen.WIDTH - 100,
     marginHorizontal: 40,
     alignItems: 'center',
   },

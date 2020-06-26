@@ -5,7 +5,6 @@ import {
   StyleSheet,
   View,
   FlatList,
-  Dimensions,
 } from 'react-native'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { Header, Input, Button } from 'app/components'
@@ -14,6 +13,7 @@ import {
   colors,
   types,
   landscapeColors,
+  screen,
 } from 'app/config/constants'
 import Type from './components/Type'
 
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
     paddingBottom: 500,
   },
   itemContainer: {
-    width: Dimensions.get('screen').width - 100,
+    width: screen.WIDTH - 100,
     marginHorizontal: 40,
     alignItems: 'center',
   },

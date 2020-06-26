@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, ScrollView, StyleSheet, SafeAreaView } from 'react-native'
+import {
+  View,
+  Text,
+  ScrollView,
+  StyleSheet,
+  SafeAreaView,
+  Keyboard,
+} from 'react-native'
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -12,7 +19,9 @@ import ColorPicker from './components/ColorPicker'
 
 function AddPlayer() {
   const [name, setName] = useState('')
+  const [savedName, setSavedName] = useState('')
   const [colour, setColour] = useState('')
+
   const [s, setS] = useState(false)
 
   const translateY = useSharedValue(200)
@@ -32,6 +41,9 @@ function AddPlayer() {
     const s = await savePlayer({ name: name, colour: colour })
     if (s) {
       setS(true)
+      Keyboard.dismiss()
+
+      setSavedName(name)
       setColour('')
       setName('')
       setTimeout(() => {
@@ -44,14 +56,19 @@ function AddPlayer() {
     <>
       <View style={styles.container}>
         <SafeAreaView>
-          <Header title="Add player" />
-          <ScrollView contentContainerStyle={styles.views}>
+          <ScrollView
+            contentContainerStyle={styles.views}
+            keyboardShouldPersistTaps="always"
+            keyboardDismissMode="on-drag"
+          >
+            <Header title="Add player" />
             <SmallHeader title="Name" style={{ marginBottom: -20 }} />
             <Input
               handleChange={t => setName(t)}
               placeholder="Christine"
+              continueTapped={() => save()}
+              inputAccessoryText="Save"
               value={name}
-              hideInputAccessory={true}
               style={{ minWidth: '80%' }}
             />
             <SmallHeader title="Preferred colour" style={{ marginTop: 30 }} />
@@ -68,7 +85,7 @@ function AddPlayer() {
         </SafeAreaView>
       </View>
       <Animated.View style={[styles.popup, style]}>
-        <Text style={styles.successful}>Player added!</Text>
+        <Text style={styles.successful}>{savedName} added!</Text>
       </Animated.View>
     </>
   )

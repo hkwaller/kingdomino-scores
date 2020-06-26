@@ -4,6 +4,8 @@ import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withSpring,
+  useDerivedValue,
+  interpolateNode,
 } from 'react-native-reanimated'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { types } from 'app/config/constants'
@@ -17,35 +19,45 @@ function Details({ score }: Props) {
   const [expanded, setExpanded] = useState(false)
   const show = useSharedValue(50)
 
+  const opacity = useDerivedValue(() => {
+    return interpolateNode(show, {
+      inputRange: [50, 80, 200],
+      outputRange: [0, 1, 1],
+    })
+  })
+
   const style = useAnimatedStyle(() => {
     return {
       height: withSpring(show.value),
+      opacity: withSpring(opacity.value),
     }
   })
 
   useEffect(() => {
-    show.value = expanded ? 200 : 70
+    show.value = expanded ? 200 : 50
   }, [expanded])
 
   return (
-    <Animated.View style={[styles.table, style]}>
+    <>
       <TouchableOpacity
         onPress={() => setExpanded(!expanded)}
         style={styles.button}
       >
         <SmallText>{expanded ? 'Hide Details' : 'Show Details'}</SmallText>
       </TouchableOpacity>
-      <View style={styles.rowContainer}>
-        {score.map((points, index) => {
-          return (
-            <View key={index} style={styles.row}>
-              <Text>{types[index]}</Text>
-              <Text>{points}</Text>
-            </View>
-          )
-        })}
-      </View>
-    </Animated.View>
+      <Animated.View style={[styles.table, style]}>
+        <View style={styles.rowContainer}>
+          {score.map((points, index) => {
+            return (
+              <View key={index} style={styles.row}>
+                <Text>{types[index]}</Text>
+                <Text>{points}</Text>
+              </View>
+            )
+          })}
+        </View>
+      </Animated.View>
+    </>
   )
 }
 

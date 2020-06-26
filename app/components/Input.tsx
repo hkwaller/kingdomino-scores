@@ -19,6 +19,7 @@ type Props = {
   continueTapped?: () => void
   handleFocus?: () => void
   hideInputAccessory?: boolean
+  inputAccessoryText?: string
   value: string
 }
 
@@ -31,6 +32,7 @@ function Input({
   continueTapped,
   hideInputAccessory = false,
   handleFocus = () => {},
+  inputAccessoryText,
 }: Props) {
   const inputAccessoryViewID = 'supermegaID'
 
@@ -57,8 +59,11 @@ function Input({
               style={styles.inputAccessoryViewButton}
               onPress={() => {
                 continueTapped()
-              }}>
-              <Text style={styles.inputAccessoryViewButtonText}>Next</Text>
+              }}
+            >
+              <Text style={styles.inputAccessoryViewButtonText}>
+                {inputAccessoryText || 'Next'}
+              </Text>
             </TouchableOpacity>
           </View>
         </InputAccessoryView>
