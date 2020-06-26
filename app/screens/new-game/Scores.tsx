@@ -78,9 +78,11 @@ const styles = StyleSheet.create({
   name: {
     fontFamily: fonts.BOLD,
     fontSize: 30,
+    lineHeight: 40,
   },
   nameBackground: {
-    padding: 10,
+    paddingHorizontal: 20,
+    paddingTop: 5,
   },
 })
 

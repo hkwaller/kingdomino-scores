@@ -17,21 +17,24 @@ type Props = {
 
 function Details({ score }: Props) {
   const [expanded, setExpanded] = useState(false)
-  const show = useSharedValue(50)
-
-  const opacity = useDerivedValue(() => {
-    return interpolate(show.value, [50, 51, 200], [0, 1, 1])
-  })
+  const show = useSharedValue(0)
 
   const style = useAnimatedStyle(() => {
     return {
-      height: withSpring(show.value),
-      opacity: withSpring(opacity.value),
+      transform: [
+        { translateY: -1 * (120 / 2) },
+        {
+          scaleY: withSpring(show.value, {
+            overshootClamping: true,
+          }),
+        },
+        { translateY: 120 / 2 },
+      ],
     }
   })
 
   useEffect(() => {
-    show.value = expanded ? 200 : 50
+    show.value = expanded ? 1 : 0
   }, [expanded])
 
   return (
@@ -61,8 +64,8 @@ function Details({ score }: Props) {
 const styles = StyleSheet.create({
   table: {
     paddingTop: 15,
-    overflow: 'hidden',
     alignItems: 'center',
+    flex: 1,
   },
   button: {
     paddingVertical: 15,
