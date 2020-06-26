@@ -5,7 +5,7 @@ import Animated, {
   useAnimatedStyle,
   withSpring,
   useDerivedValue,
-  interpolateNode,
+  interpolate,
 } from 'react-native-reanimated'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { types } from 'app/config/constants'
@@ -20,10 +20,7 @@ function Details({ score }: Props) {
   const show = useSharedValue(50)
 
   const opacity = useDerivedValue(() => {
-    return interpolateNode(show, {
-      inputRange: [50, 80, 200],
-      outputRange: [0, 1, 1],
-    })
+    return interpolate(show.value, [50, 51, 200], [0, 1, 1])
   })
 
   const style = useAnimatedStyle(() => {
@@ -38,7 +35,7 @@ function Details({ score }: Props) {
   }, [expanded])
 
   return (
-    <>
+    <View style={{ width: '80%' }}>
       <TouchableOpacity
         onPress={() => setExpanded(!expanded)}
         style={styles.button}
@@ -57,7 +54,7 @@ function Details({ score }: Props) {
           })}
         </View>
       </Animated.View>
-    </>
+    </View>
   )
 }
 
@@ -65,7 +62,6 @@ const styles = StyleSheet.create({
   table: {
     paddingTop: 15,
     overflow: 'hidden',
-    width: '80%',
     alignItems: 'center',
   },
   button: {

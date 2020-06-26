@@ -18,27 +18,15 @@ autoEffect(() => {
 
 export async function saveGame(data) {
   // await AsyncStorage.setItem('games', '[]')
-  try {
-    const earlierGames = (await AsyncStorage.getItem('games')) || '[]'
 
-    if (earlierGames !== null) {
-      const parsedGames = JSON.parse(earlierGames)
-
-      const newData = {
-        game: data.game,
-        players: data.players.map(p => p.id),
-        date: new Date(),
-      }
-
-      const mergedGames = parsedGames.push(newData)
-
-      AsyncStorage.setItem('games', JSON.stringify(mergedGames))
-    } else {
-      AsyncStorage.setItem('games', JSON.stringify([]))
-    }
-  } catch (e) {
-    console.log('there is nothing here', e)
+  const newData = {
+    game: data.game,
+    players: data.players.map(p => p.id),
+    date: new Date(),
   }
+  console.log('newData: ', newData)
+
+  // state.games.push(newData)
 }
 
 export async function loadGames() {

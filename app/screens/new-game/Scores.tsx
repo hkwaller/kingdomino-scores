@@ -24,7 +24,10 @@ function Scores() {
     <>
       <SafeAreaView />
       <Header title="Scores" />
-      <ScrollView contentContainerStyle={styles.container}>
+      <ScrollView
+        contentContainerStyle={styles.container}
+        keyboardDismissMode="on-drag"
+      >
         <View
           style={{
             flex: 1,

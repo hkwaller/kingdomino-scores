@@ -62,6 +62,7 @@ function Register() {
         contentContainerStyle={styles.container}
         ref={scrollViewRef}
         keyboardShouldPersistTaps="always"
+        keyboardDismissMode="on-drag"
       >
         <Header title="Score" />
         <FlatList
