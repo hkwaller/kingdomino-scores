@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, StyleProp, ViewStyle } from 'react-native'
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withSpring,
-  useDerivedValue,
-  interpolate,
 } from 'react-native-reanimated'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { types } from 'app/config/constants'
@@ -13,22 +11,24 @@ import SmallText from 'app/components/SmallText'
 
 type Props = {
   score: number[]
+  king: boolean
+  alldominos: boolean
 }
 
-function Details({ score }: Props) {
+function Details({ score, king, alldominos }: Props) {
   const [expanded, setExpanded] = useState(false)
   const show = useSharedValue(0)
 
   const style = useAnimatedStyle(() => {
     return {
       transform: [
-        { translateY: -1 * (120 / 2) },
+        { translateY: -1 * (150 / 2) },
         {
           scaleY: withSpring(show.value, {
             overshootClamping: true,
           }),
         },
-        { translateY: 120 / 2 },
+        { translateY: 150 / 2 },
       ],
     }
   })
@@ -48,15 +48,27 @@ function Details({ score }: Props) {
       <Animated.View style={[styles.table, style]}>
         <View style={styles.rowContainer}>
           {score.map((points, index) => {
-            return (
-              <View key={index} style={styles.row}>
-                <Text>{types[index]}</Text>
-                <Text>{points}</Text>
-              </View>
-            )
+            return <Row key={index} points={points} type={types[index]} />
           })}
+          {king && <Row points={15} type="King" style={{ marginTop: 20 }} />}
+          {alldominos && <Row points={10} type="All dominos" />}
         </View>
       </Animated.View>
+    </View>
+  )
+}
+
+type RowProps = {
+  points: number
+  type: string
+  style?: StyleProp<ViewStyle>
+}
+
+function Row({ points, type, style }: RowProps) {
+  return (
+    <View style={[styles.row, style]}>
+      <Text>{type}</Text>
+      <Text style={{ fontWeight: '800', fontSize: 20 }}>{points}</Text>
     </View>
   )
 }

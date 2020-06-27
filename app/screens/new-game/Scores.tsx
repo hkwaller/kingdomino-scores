@@ -49,7 +49,11 @@ function Scores() {
                   <Text style={styles.name}>{p.name}</Text>
                 </View>
                 <CountUp to={playerScore} />
-                <Details score={game[index]} />
+                <Details
+                  score={game[index]}
+                  alldominos={p.alldominos}
+                  king={p.king}
+                />
               </View>
             )
           })}
