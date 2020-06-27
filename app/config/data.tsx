@@ -48,7 +48,7 @@ export async function savePlayer(player) {
     } else {
       state.players.push(
         Object.assign(player, {
-          id: highestExistingId === Infinity ? 0 : highestExistingId,
+          id: highestExistingId === -Infinity ? 0 : highestExistingId,
         })
       )
 
