@@ -58,7 +58,8 @@ function Type({
               ? landscapeFontColors[title.toUpperCase()]
               : colors.BLACK,
           },
-        ]}>
+        ]}
+      >
         {text}
       </Text>
     </View>

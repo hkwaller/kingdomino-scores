@@ -138,8 +138,7 @@ const styles = StyleSheet.create({
     paddingBottom: 500,
   },
   itemContainer: {
-    width: screen.WIDTH - 100,
-    marginHorizontal: 40,
+    width: screen.WIDTH,
     alignItems: 'center',
   },
 })

@@ -1,12 +1,17 @@
 import React, { useState, useCallback } from 'react'
-import { Text, SafeAreaView, StyleSheet, ScrollView } from 'react-native'
+import {
+  Text,
+  SafeAreaView,
+  StyleSheet,
+  ScrollView,
+  LayoutAnimation,
+} from 'react-native'
 import { useNavigation, useFocusEffect } from '@react-navigation/native'
 import { view } from '@risingstack/react-easy-state'
 
 import { deletePlayer, state } from 'app/config/data'
-import { Header } from 'app/components'
+import { Header, Button } from 'app/components'
 import { fonts, colors } from 'app/config/constants'
-import NormalButton from 'app/components/NormalButton'
 import SelectPlayer from 'app/screens/new-game/components/SelectPlayer'
 
 function Players() {
@@ -45,7 +50,17 @@ function Players() {
               key={p.name}
               player={p}
               isSelected={isSelected}
-              deletePlayer={() => deletePlayer(p)}
+              deletePlayer={() => {
+                LayoutAnimation.configureNext({
+                  duration: 600,
+                  delete: {
+                    type: LayoutAnimation.Types.spring,
+                    property: LayoutAnimation.Properties.scaleXY,
+                    springDamping: 0.6,
+                  },
+                })
+                deletePlayer(p)
+              }}
               selectPlayer={() => {
                 const updatedSelectedPlayers = isSelected
                   ? selectedPlayers.filter(f => f.name !== p.name)
@@ -57,7 +72,7 @@ function Players() {
           )
         })}
       </ScrollView>
-      <NormalButton
+      <Button
         title={state.players.length === 0 ? 'Add players' : 'Continue'}
         backgroundColor={colors.YELLOW}
         onPress={() => handlePress()}

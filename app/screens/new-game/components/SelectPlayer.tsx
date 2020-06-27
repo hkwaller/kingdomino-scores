@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import { StyleSheet, TouchableWithoutFeedback } from 'react-native'
+import { StyleSheet } from 'react-native'
 import Animated, {
   useSharedValue,
   withSpring,
@@ -71,10 +71,9 @@ function SelectPlayer({
           </Animated.Text>
           <Animated.View
             style={[
+              styles.colouredBox,
               {
                 backgroundColor: player.colour,
-                height: 50,
-                width: 100,
               },
               translateStyle,
             ]}
@@ -96,6 +95,10 @@ const styles = StyleSheet.create({
   playerText: {
     fontFamily: fonts.LIGHT,
     fontSize: 24,
+  },
+  colouredBox: {
+    height: 50,
+    width: 100,
   },
 })
 
