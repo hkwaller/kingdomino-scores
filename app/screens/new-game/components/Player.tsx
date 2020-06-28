@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from 'react-native'
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
-  withTiming,
+  withSpring,
 } from 'react-native-reanimated'
 import { colors, fonts, screen } from 'app/config/constants'
 import { TapGestureHandler, State } from 'react-native-gesture-handler'
@@ -20,7 +20,7 @@ function Player({ name, color, onPress, isSelected }: Props) {
 
   const style = useAnimatedStyle(() => {
     return {
-      transform: [{ translateX: withTiming(active.value, { duration: 400 }) }],
+      transform: [{ translateX: withSpring(active.value) }],
     }
   })
 
@@ -40,7 +40,11 @@ function Player({ name, color, onPress, isSelected }: Props) {
       <View style={styles.container}>
         <Animated.View
           style={[
-            { ...StyleSheet.absoluteFillObject, backgroundColor: color },
+            {
+              ...StyleSheet.absoluteFillObject,
+              left: -200,
+              backgroundColor: color,
+            },
             style,
           ]}
         />
