@@ -10,10 +10,10 @@ import { colors, screen } from 'app/config/constants'
 
 type Props = {
   handleChange: (color: string) => void
-  currentColour: string
+  currentColor: string
 }
 
-function ColorPicker({ handleChange, currentColour }: Props) {
+function ColorPicker({ handleChange, currentColor }: Props) {
   const c = [colors.YELLOW, colors.RED, colors.GREEN, colors.BLUE]
   const x = useSharedValue(0)
 
@@ -24,8 +24,8 @@ function ColorPicker({ handleChange, currentColour }: Props) {
   })
 
   useEffect(() => {
-    x.value = (c.indexOf(currentColour) || 0) * (screen.WIDTH / 4)
-  }, [currentColour])
+    x.value = (c.indexOf(currentColor) || 0) * (screen.WIDTH / 4)
+  }, [currentColor])
 
   return (
     <View style={styles.container}>

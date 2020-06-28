@@ -101,7 +101,7 @@ function Register() {
             return (
               <View style={styles.itemContainer}>
                 <Type
-                  backgroundColor={colorArray[item.colour]}
+                  backgroundColor={colorArray[item.color]}
                   title={item.name}
                 />
               </View>

@@ -20,7 +20,7 @@ import ColorPicker from './components/ColorPicker'
 function AddPlayer() {
   const [name, setName] = useState('')
   const [savedName, setSavedName] = useState('')
-  const [colour, setColour] = useState('')
+  const [color, setColor] = useState('')
 
   const [s, setS] = useState(false)
 
@@ -38,13 +38,13 @@ function AddPlayer() {
   }, [s])
 
   async function save() {
-    const s = await savePlayer({ name: name, colour: colour })
+    const s = await savePlayer({ name, color })
     if (s) {
       setS(true)
       Keyboard.dismiss()
 
       setSavedName(name)
-      setColour('')
+      setColor('')
       setName('')
       setTimeout(() => {
         setS(false)
@@ -71,10 +71,10 @@ function AddPlayer() {
               value={name}
               style={{ minWidth: '80%' }}
             />
-            <SmallHeader title="Preferred colour" style={{ marginTop: 30 }} />
+            <SmallHeader title="Preferred color" style={{ marginTop: 30 }} />
             <ColorPicker
-              handleChange={colour => setColour(colour)}
-              currentColour={colour}
+              handleChange={color => setColor(color)}
+              currentColor={color}
             />
           </ScrollView>
           <Button

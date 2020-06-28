@@ -13,7 +13,7 @@ import {
 } from 'react-native-gesture-handler'
 
 type Props = {
-  player: { name: string; colour: string }
+  player: { name: string; color: string }
   isSelected: boolean
   selectPlayer: () => void
   deletePlayer: () => void
@@ -71,9 +71,9 @@ function SelectPlayer({
           </Animated.Text>
           <Animated.View
             style={[
-              styles.colouredBox,
+              styles.coloredBox,
               {
-                backgroundColor: player.colour,
+                backgroundColor: player.color,
               },
               translateStyle,
             ]}
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.LIGHT,
     fontSize: 24,
   },
-  colouredBox: {
+  coloredBox: {
     height: 50,
     width: 100,
   },
