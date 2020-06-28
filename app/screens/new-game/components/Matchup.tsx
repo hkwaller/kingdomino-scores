@@ -7,9 +7,10 @@ import { colors, fonts } from 'app/config/constants'
 type Props = {
   players: number[]
   onPress: () => void
+  isSelected: boolean
 }
 
-function Matchup({ players, onPress }: Props) {
+function Matchup({ players, onPress, isSelected }: Props) {
   return (
     <TouchableOpacity onPress={onPress} style={styles.container}>
       {players.map((p, index) => {

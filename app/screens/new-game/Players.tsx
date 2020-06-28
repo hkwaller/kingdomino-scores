@@ -18,6 +18,7 @@ import Player from './components/Player'
 
 function Players() {
   const [selectedPlayers, setSelectedPlayers] = useState([])
+  const [hasSelectedMatchup, setHasSelectedMatchup] = useState(false)
   const navigation = useNavigation()
 
   useFocusEffect(
@@ -47,13 +48,24 @@ function Players() {
         <SmallHeader title="Latest match-ups" style={{ alignSelf: 'center' }} />
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           {state.matchups.map((matchup, index) => {
+            const matchupSelected = selectedPlayers.some(
+              v => matchup.indexOf(v.id) !== -1
+            )
+
             return (
               <Matchup
                 key={index}
                 players={matchup}
-                onPress={() =>
-                  setSelectedPlayers([...matchup.map(p => state.players[p])])
-                }
+                isSelected={matchupSelected}
+                onPress={() => {
+                  if (hasSelectedMatchup) {
+                    setHasSelectedMatchup(false)
+                    setSelectedPlayers([])
+                  } else {
+                    setHasSelectedMatchup(true)
+                    setSelectedPlayers([...matchup.map(p => state.players[p])])
+                  }
+                }}
               />
             )
           })}
@@ -63,11 +75,12 @@ function Players() {
           style={{ alignSelf: 'center', marginTop: 40, marginBottom: 10 }}
         />
         <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-          {state.players.map(p => {
+          {state.players.map((p, index) => {
             const isSelected = selectedPlayers.indexOf(p) > -1
 
             return (
               <Player
+                key={index}
                 name={p.name}
                 color={p.color}
                 isSelected={isSelected}

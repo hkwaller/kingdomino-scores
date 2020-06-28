@@ -5,7 +5,7 @@ import Animated, {
   useAnimatedStyle,
   withTiming,
 } from 'react-native-reanimated'
-import { colors, fonts } from 'app/config/constants'
+import { colors, fonts, screen } from 'app/config/constants'
 import { TapGestureHandler, State } from 'react-native-gesture-handler'
 
 type Props = {
@@ -16,7 +16,7 @@ type Props = {
 }
 
 function Player({ name, color, onPress, isSelected }: Props) {
-  const active = useSharedValue(200)
+  const active = useSharedValue(-200)
 
   const style = useAnimatedStyle(() => {
     return {
@@ -25,9 +25,8 @@ function Player({ name, color, onPress, isSelected }: Props) {
   })
 
   useEffect(() => {
-    console.log('isSelected: ', isSelected)
     if (isSelected) active.value = 0
-    else active.value = 200
+    else active.value = -200
   }, [isSelected])
 
   return (
@@ -54,6 +53,8 @@ function Player({ name, color, onPress, isSelected }: Props) {
 const styles = StyleSheet.create({
   container: {
     padding: 20,
+    width: screen.WIDTH / 3 - 35,
+    marginBottom: 20,
     backgroundColor: colors.WHITE,
     borderRadius: 50,
     marginRight: 20,
@@ -62,6 +63,7 @@ const styles = StyleSheet.create({
   text: {
     fontFamily: fonts.BOLD,
     fontSize: 20,
+    textAlign: 'center',
   },
 })
 export default Player
