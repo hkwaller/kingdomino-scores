@@ -4,14 +4,17 @@ import { fonts } from 'app/config/constants'
 
 type Props = {
   to: number
+  onFinish: () => void
 }
 
-function CountUp({ to }: Props) {
+function CountUp({ to, onFinish }: Props) {
   const [count, setCount] = useState(0)
   const [time, setTime] = useState(100)
 
   useEffect(() => {
-    if (count === to) return
+    if (count === to) {
+      return onFinish()
+    }
     setTimeout(() => {
       setCount(count => count + 1)
       setTime(time => time - 10)
