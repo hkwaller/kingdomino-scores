@@ -5,14 +5,16 @@ import {
   StyleSheet,
   ScrollView,
   LayoutAnimation,
+  View,
 } from 'react-native'
 import { useNavigation, useFocusEffect } from '@react-navigation/native'
 import { view } from '@risingstack/react-easy-state'
 
 import { deletePlayer, state } from 'app/config/data'
-import { Header, Button } from 'app/components'
+import { Header, Button, SmallHeader } from 'app/components'
 import { fonts, colors } from 'app/config/constants'
-import SelectPlayer from 'app/screens/new-game/components/SelectPlayer'
+import Matchup from './components/Matchup'
+import Player from './components/Player'
 
 function Players() {
   const [selectedPlayers, setSelectedPlayers] = useState([])
@@ -42,35 +44,44 @@ function Players() {
             You haven't created any players yet. Tap below bitte.
           </Text>
         )}
-        {state.players.map((p, i) => {
-          const isSelected = selectedPlayers.indexOf(p) > -1
+        <SmallHeader title="Latest match-ups" style={{ alignSelf: 'center' }} />
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          {state.matchups.map((matchup, index) => {
+            return (
+              <Matchup
+                key={index}
+                players={matchup}
+                onPress={() =>
+                  setSelectedPlayers([...matchup.map(p => state.players[p])])
+                }
+              />
+            )
+          })}
+        </ScrollView>
+        <SmallHeader
+          title="New setup"
+          style={{ alignSelf: 'center', marginTop: 40, marginBottom: 10 }}
+        />
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+          {state.players.map(p => {
+            const isSelected = selectedPlayers.indexOf(p) > -1
 
-          return (
-            <SelectPlayer
-              key={p.name}
-              player={p}
-              isSelected={isSelected}
-              deletePlayer={() => {
-                LayoutAnimation.configureNext({
-                  duration: 600,
-                  delete: {
-                    type: LayoutAnimation.Types.spring,
-                    property: LayoutAnimation.Properties.scaleXY,
-                    springDamping: 0.6,
-                  },
-                })
-                deletePlayer(p)
-              }}
-              selectPlayer={() => {
-                const updatedSelectedPlayers = isSelected
-                  ? selectedPlayers.filter(f => f.name !== p.name)
-                  : selectedPlayers.concat(p)
+            return (
+              <Player
+                name={p.name}
+                color={p.color}
+                isSelected={isSelected}
+                onPress={() => {
+                  const updatedSelectedPlayers = isSelected
+                    ? selectedPlayers.filter(f => f.name !== p.name)
+                    : selectedPlayers.concat(p)
 
-                setSelectedPlayers(updatedSelectedPlayers)
-              }}
-            />
-          )
-        })}
+                  setSelectedPlayers(updatedSelectedPlayers)
+                }}
+              />
+            )
+          })}
+        </View>
       </ScrollView>
       <Button
         title={state.players.length === 0 ? 'Add players' : 'Continue'}

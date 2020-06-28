@@ -4,6 +4,10 @@ import { store, autoEffect } from '@risingstack/react-easy-state'
 export const state = store({
   players: [],
   games: [],
+  matchups: [
+    [0, 1],
+    [0, 1, 2],
+  ],
 })
 
 autoEffect(() => {
