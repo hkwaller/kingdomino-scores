@@ -27,14 +27,14 @@ const theme = {
   },
 }
 
-function NewGameStack() {
+function HomeStack() {
   return (
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
       }}
     >
-      <Stack.Screen name="Players" component={Players} />
+      <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="Register" component={Register} />
       <Stack.Screen name="Bonus" component={Bonus} />
       <Stack.Screen name="Scores" component={Scores} />
@@ -47,9 +47,11 @@ export default function App() {
     async function getDataFromStorage() {
       const games = (await AsyncStorage.getItem('games')) || '[]'
       const players = (await AsyncStorage.getItem('players')) || '[]'
+      const matchups = (await AsyncStorage.getItem('matchups')) || '[]'
 
       state.games = JSON.parse(games)
       state.players = JSON.parse(players)
+      state.matchups = JSON.parse(matchups)
     }
 
     getDataFromStorage()
@@ -65,9 +67,8 @@ export default function App() {
           headerShown: false,
         }}
       >
-        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="Home" component={HomeStack} />
         <Stack.Screen name="AddPlayer" component={AddPlayer} />
-        <Stack.Screen name="NewGame" component={NewGameStack} />
         <Stack.Screen name="Statistics" component={Statistics} />
       </Stack.Navigator>
     </NavigationContainer>
