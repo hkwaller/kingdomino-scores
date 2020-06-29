@@ -89,7 +89,7 @@ function Button({
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 30,
+    marginVertical: 10,
     alignSelf: 'center',
   },
   text: {

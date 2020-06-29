@@ -14,7 +14,10 @@ function Matchup({ players, onPress }: Props) {
   return (
     <TouchableOpacity onPress={onPress} style={styles.container}>
       {players.map((p, index) => {
-        const { name, color } = state.players[p]
+        const { name, color } = state.players.filter(
+          player => player.id === p
+        )[0]
+
         return (
           <View
             key={index}
@@ -38,6 +41,7 @@ const styles = StyleSheet.create({
     marginRight: 20,
     borderRadius: 50,
     marginVertical: 10,
+    height: 50,
   },
   playerBackground: {
     padding: 10,

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { StatusBar, View } from 'react-native'
+import { StatusBar, View, Platform, UIManager } from 'react-native'
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { state } from 'app/config/data'
@@ -44,7 +44,14 @@ function HomeStack() {
 
 export default function App() {
   useEffect(() => {
+    if (Platform.OS === 'android') {
+      if (UIManager.setLayoutAnimationEnabledExperimental) {
+        UIManager.setLayoutAnimationEnabledExperimental(true)
+      }
+    }
+
     async function getDataFromStorage() {
+      // await AsyncStorage.setItem('matchups', '[]')
       const games = (await AsyncStorage.getItem('games')) || '[]'
       const players = (await AsyncStorage.getItem('players')) || '[]'
       const matchups = (await AsyncStorage.getItem('matchups')) || '[]'

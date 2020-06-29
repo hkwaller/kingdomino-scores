@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import {
   View,
   Text,
@@ -21,6 +21,7 @@ function AddPlayer() {
   const [name, setName] = useState('')
   const [savedName, setSavedName] = useState('')
   const [color, setColor] = useState('')
+  const scrollViewRef = useRef(null)
 
   const [s, setS] = useState(false)
 
@@ -60,10 +61,12 @@ function AddPlayer() {
             contentContainerStyle={styles.views}
             keyboardShouldPersistTaps="always"
             keyboardDismissMode="on-drag"
+            ref={scrollViewRef}
           >
             <Header title="Add player" />
             <SmallHeader title="Name" style={{ marginBottom: -20 }} />
             <Input
+              handleFocus={() => scrollViewRef.current.scrollTo({ y: 100 })}
               handleChange={t => setName(t)}
               placeholder="Christine"
               continueTapped={() => save()}
@@ -79,6 +82,7 @@ function AddPlayer() {
           </ScrollView>
           <Button
             title="Save"
+            small
             backgroundColor={colors.YELLOW}
             onPress={() => save()}
           />
@@ -98,10 +102,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   views: {
-    flex: 1,
     alignItems: 'center',
     marginTop: 20,
-    paddingBottom: 20,
+    paddingBottom: 200,
   },
   playerAdded: {
     padding: 40,

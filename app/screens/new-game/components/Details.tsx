@@ -1,11 +1,20 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, StyleProp, ViewStyle } from 'react-native'
+import {
+  View,
+  Text,
+  StyleSheet,
+  StyleProp,
+  ViewStyle,
+  TouchableOpacity,
+  LayoutAnimation,
+} from 'react-native'
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withSpring,
+  useDerivedValue,
 } from 'react-native-reanimated'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+
 import { types } from 'app/config/constants'
 import SmallText from 'app/components/SmallText'
 
@@ -18,23 +27,25 @@ type Props = {
 function Details({ score, king, alldominos }: Props) {
   const [expanded, setExpanded] = useState(false)
   const show = useSharedValue(0)
+  const height = useSharedValue(0)
 
   const style = useAnimatedStyle(() => {
     return {
+      height: height.value,
       transform: [
-        { translateY: -1 * (150 / 2) },
+        { translateY: -1 * (180 / 2) },
         {
-          scaleY: withSpring(show.value, {
-            overshootClamping: true,
-          }),
+          scaleY: withSpring(show.value),
         },
-        { translateY: 150 / 2 },
+        { translateY: 180 / 2 },
       ],
     }
   })
 
   useEffect(() => {
     show.value = expanded ? 1 : 0
+    height.value = expanded ? 250 : 0
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
   }, [expanded])
 
   return (
@@ -67,7 +78,7 @@ type RowProps = {
 function Row({ points, type, style }: RowProps) {
   return (
     <View style={[styles.row, style]}>
-      <Text>{type}</Text>
+      <Text style={{ marginRight: 20 }}>{type}</Text>
       <Text style={{ fontWeight: '800', fontSize: 20 }}>{points}</Text>
     </View>
   )
@@ -76,8 +87,8 @@ function Row({ points, type, style }: RowProps) {
 const styles = StyleSheet.create({
   table: {
     paddingTop: 15,
-    alignItems: 'center',
     flex: 1,
+    overflow: 'hidden',
   },
   button: {
     paddingVertical: 15,
@@ -93,7 +104,7 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'flex-start',
   },
 })
 

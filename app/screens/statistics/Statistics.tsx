@@ -2,9 +2,10 @@ import React from 'react'
 import { View, Text, StyleSheet, SafeAreaView } from 'react-native'
 import { VictoryPie, VictoryChart } from 'victory-native'
 
-import { data } from 'app/config/data'
+import { state } from 'app/config/data'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Header } from 'app/components'
+import { view } from '@risingstack/react-easy-state'
 
 type Props = {}
 
@@ -18,6 +19,7 @@ const styles = StyleSheet.create({
 })
 
 function Statistics(props: Props) {
+  console.log(state.games)
   return (
     <>
       <SafeAreaView />
@@ -50,4 +52,4 @@ function Statistics(props: Props) {
     </>
   )
 }
-export default Statistics
+export default view(Statistics)

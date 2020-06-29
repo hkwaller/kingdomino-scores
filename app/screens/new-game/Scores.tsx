@@ -66,11 +66,11 @@ function Scores() {
   return (
     <>
       <SafeAreaView />
-      <Header title="Scores" />
       <ScrollView
         contentContainerStyle={styles.container}
         keyboardDismissMode="on-drag"
       >
+        <Header title="Scores" />
         <View style={styles.wrapper}>
           {players.map((p: Player, index: number) => {
             const playerScore =
@@ -107,7 +107,11 @@ function Scores() {
       />
       <SafeAreaView />
       {showConfetti && (
-        <ConfettiCannon count={200} origin={{ x: screen.WIDTH / 2, y: -10 }} />
+        <ConfettiCannon
+          count={200}
+          fallSpeed={1000}
+          origin={{ x: screen.WIDTH / 2, y: -10 }}
+        />
       )}
     </>
   )
@@ -121,7 +125,7 @@ const styles = StyleSheet.create({
   scoreContainer: {
     width: '50%',
     alignItems: 'center',
-    paddingTop: 40,
+    paddingTop: 20,
   },
   name: {
     fontFamily: fonts.BOLD,
@@ -133,7 +137,6 @@ const styles = StyleSheet.create({
     paddingTop: 5,
   },
   wrapper: {
-    flex: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
   },

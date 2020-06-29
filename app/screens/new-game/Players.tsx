@@ -15,21 +15,19 @@ import { fonts } from 'app/config/constants'
 import Matchup from './components/Matchup'
 import Player from './components/Player'
 import NoPlayers from './components/NoPlayers'
-import ContinueButton from './components/ContinueButton'
 
 function Players() {
-  const [selectedPlayers, setSelectedPlayers] = useState([])
   const navigation = useNavigation()
 
   useFocusEffect(
     useCallback(() => {
-      setSelectedPlayers([])
+      state.selectedPlayers = []
     }, [])
   )
 
   function handlePress() {
-    if (selectedPlayers.length === 0 && state.players.length !== 0) return
-    navigation.navigate('Register', { players: selectedPlayers })
+    if (state.selectedPlayers.length === 0 && state.players.length !== 0) return
+    navigation.navigate('Register', { players: state.selectedPlayers })
   }
 
   return (
@@ -41,7 +39,7 @@ function Players() {
           <SmallHeader title="Players" style={styles.playerHeader} />
           <View style={styles.players}>
             {state.players.map((p, index) => {
-              const isSelected = selectedPlayers.indexOf(p) > -1
+              const isSelected = state.selectedPlayers.indexOf(p) > -1
 
               return (
                 <Player
@@ -57,10 +55,10 @@ function Players() {
                   }}
                   onPress={() => {
                     const updatedSelectedPlayers = isSelected
-                      ? selectedPlayers.filter(f => f.name !== p.name)
-                      : selectedPlayers.concat(p)
+                      ? state.selectedPlayers.filter(f => f.name !== p.name)
+                      : state.selectedPlayers.concat(p)
 
-                    setSelectedPlayers(updatedSelectedPlayers)
+                    state.selectedPlayers = updatedSelectedPlayers
                   }}
                 />
               )
@@ -82,14 +80,17 @@ function Players() {
           />
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <View style={{ marginHorizontal: 10 }} />
-            {state.matchups.reverse().map((matchup, index) => {
+            {state.matchups.map((matchup, index) => {
               return (
                 <Matchup
                   key={index}
                   players={matchup}
                   onPress={() => {
                     navigation.navigate('Register', {
-                      players: matchup.map(id => state.players[id]),
+                      players: matchup.map(
+                        id =>
+                          state.players.filter(player => player.id === id)[0]
+                      ),
                     })
                   }}
                 />
@@ -98,12 +99,6 @@ function Players() {
           </ScrollView>
         </>
       )}
-      <ContinueButton
-        selectedPlayersIsOver={selectedPlayers.length > 1}
-        onPress={() =>
-          navigation.navigate('Register', { players: selectedPlayers })
-        }
-      />
     </>
   )
 }

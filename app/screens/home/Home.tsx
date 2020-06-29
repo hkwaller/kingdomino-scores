@@ -1,19 +1,20 @@
 import React from 'react'
 import { View, SafeAreaView, StyleSheet, ScrollView } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
+import { view } from '@risingstack/react-easy-state'
 import { Header, Button } from 'app/components'
 import { colors } from 'app/config/constants'
+import { state } from 'app/config/data'
 import Players from '../new-game/Players'
+import ContinueButton from '../new-game/components/ContinueButton'
 
 function Home() {
   const navigation = useNavigation()
 
   return (
-    <>
-      <SafeAreaView />
-      <Header title="King Domino" />
-
+    <SafeAreaView style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={styles.buttonContainer}>
+        <Header title="King Domino" />
         <Players />
         {/* <Button
           title="New Game"
@@ -37,7 +38,13 @@ function Home() {
           onPress={() => navigation.navigate('Statistics')}
         />
       </ScrollView>
-    </>
+      <ContinueButton
+        selectedPlayersIsOver={state.selectedPlayers.length > 1}
+        onPress={() =>
+          navigation.navigate('Register', { players: state.selectedPlayers })
+        }
+      />
+    </SafeAreaView>
   )
 }
 
@@ -48,7 +55,8 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     marginTop: 20,
+    paddingBottom: 200,
   },
 })
 
-export default Home
+export default view(Home)

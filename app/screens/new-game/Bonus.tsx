@@ -6,10 +6,9 @@ import Animated, {
   useSharedValue,
   withSpring,
   useAnimatedStyle,
-  delay,
 } from 'react-native-reanimated'
 
-import { Header, NormalButton } from 'app/components'
+import { Header, Button } from 'app/components'
 import { fonts, colors, screen } from 'app/config/constants'
 import Check from 'app/screens/new-game/components/Check'
 import Type from './components/Type'
@@ -83,7 +82,7 @@ function Bonus() {
                 <Type
                   backgroundColor={p.color}
                   title={p.name}
-                  style={{ marginBottom: 20 }}
+                  style={{ marginBottom: 20, paddingHorizontal: 20 }}
                 />
                 <Check
                   item={p}
@@ -101,7 +100,7 @@ function Bonus() {
         </Animated.View>
       </View>
 
-      <NormalButton
+      <Button
         title="Continue"
         backgroundColor={colors.YELLOW}
         onPress={() => continueTapped()}

@@ -13,13 +13,13 @@ type Props = {
 }
 
 function ContinueButton({ selectedPlayersIsOver, onPress }: Props) {
-  const y = useSharedValue(100)
+  const y = useSharedValue(200)
 
   useEffect(() => {
     if (selectedPlayersIsOver) {
-      y.value = -100
+      y.value = 0
     } else {
-      y.value = 100
+      y.value = 200
     }
   }, [selectedPlayersIsOver])
 
@@ -31,10 +31,21 @@ function ContinueButton({ selectedPlayersIsOver, onPress }: Props) {
 
   return (
     <Animated.View
-      style={[{ position: 'absolute', bottom: -340, left: 0, right: 0 }, style]}
+      style={[
+        {
+          zIndex: 100,
+          backgroundColor: colors.BACKGROUND,
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          paddingBottom: 20,
+        },
+        style,
+      ]}
     >
       <Button
-        title="New Game"
+        title="Start game"
         backgroundColor={colors.YELLOW}
         lean="right"
         small

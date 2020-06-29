@@ -15,6 +15,7 @@ function NoPlayers() {
           fontSize: 24,
           textAlign: 'center',
           marginTop: 40,
+          marginHorizontal: 20,
         }}
       >
         You haven't created any players yet. Tap below bitte.

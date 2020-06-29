@@ -22,7 +22,7 @@ type Props = {
 }
 
 function Player({ name, color, onPress, isSelected, deletePlayer }: Props) {
-  const active = useSharedValue(-200)
+  const active = useSharedValue(-150)
   const doubleTapRef = useRef(null)
 
   const style = useAnimatedStyle(() => {
@@ -33,7 +33,7 @@ function Player({ name, color, onPress, isSelected, deletePlayer }: Props) {
 
   useEffect(() => {
     if (isSelected) active.value = 0
-    else active.value = -200
+    else active.value = -150
   }, [isSelected])
 
   return (
@@ -71,13 +71,14 @@ function Player({ name, color, onPress, isSelected, deletePlayer }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
-    width: screen.WIDTH / 3 - 35,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
     marginBottom: 20,
     backgroundColor: colors.WHITE,
     borderRadius: 50,
     marginRight: 20,
     overflow: 'hidden',
+    minWidth: screen.WIDTH / 5,
   },
   text: {
     fontFamily: fonts.BOLD,

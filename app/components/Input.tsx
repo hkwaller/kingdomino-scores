@@ -8,6 +8,7 @@ import {
   InputAccessoryView,
   TouchableOpacity,
   Text,
+  Platform,
 } from 'react-native'
 import { colors, fonts } from 'app/config/constants'
 
@@ -52,7 +53,7 @@ function Input({
           placeholder={placeholder}
         />
       </View>
-      {!hideInputAccessory && (
+      {!hideInputAccessory && Platform.OS === 'ios' && (
         <InputAccessoryView nativeID={inputAccessoryViewID}>
           <View style={styles.inputAccessoryViewContainer}>
             <TouchableOpacity
