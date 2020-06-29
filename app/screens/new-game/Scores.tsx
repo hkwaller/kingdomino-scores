@@ -8,6 +8,7 @@ import { fonts, colors, screen } from 'app/config/constants'
 import { saveGame } from 'app/config/data'
 import CountUp from 'app/screens/new-game/components/CountUp'
 import Details from 'app/screens/new-game/components/Details'
+import { Player as PlayerType, Game } from 'app/config/data'
 
 type Player = {
   name: string
@@ -17,8 +18,17 @@ type Player = {
   finished: boolean
 }
 
+type ScoreRouteProp = {
+  params: ScoresRouteParams
+}
+
+type ScoresRouteParams = {
+  players: Player[]
+  game: Game
+}
+
 function Scores() {
-  const route = useRoute()
+  const route = useRoute<ScoreRouteProp>()
   const navigation = useNavigation()
   const [players, setPlayers] = useState<Player[]>([])
   const [game, setGame] = useState([])
@@ -27,7 +37,13 @@ function Scores() {
 
   useEffect(() => {
     setPlayers(
-      route.params.players.map(p => Object.assign(p, { finished: false }))
+      route.params.players.map(p =>
+        Object.assign(p, {
+          finished: false,
+          alldominos: p.alldominos,
+          king: p.king,
+        })
+      )
     )
     setGame(route.params.game)
     saveGame({ game: route.params.game, players: route.params.players })
@@ -55,13 +71,7 @@ function Scores() {
         contentContainerStyle={styles.container}
         keyboardDismissMode="on-drag"
       >
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-            flexWrap: 'wrap',
-          }}
-        >
+        <View style={styles.wrapper}>
           {players.map((p: Player, index: number) => {
             const playerScore =
               game[index].reduce((cur, acc) => Number(cur) + acc, 0) +
@@ -121,6 +131,11 @@ const styles = StyleSheet.create({
   nameBackground: {
     paddingHorizontal: 20,
     paddingTop: 5,
+  },
+  wrapper: {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
   },
 })
 

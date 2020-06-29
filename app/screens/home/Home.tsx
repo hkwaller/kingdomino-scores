@@ -1,9 +1,9 @@
 import React from 'react'
-import { View, SafeAreaView, StyleSheet, Text } from 'react-native'
-import { Header } from 'app/components'
-import Button from 'app/components/Button'
-import { colors } from 'app/config/constants'
+import { View, SafeAreaView, StyleSheet, ScrollView } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
+import { Header, Button } from 'app/components'
+import { colors } from 'app/config/constants'
+import Players from '../new-game/Players'
 
 function Home() {
   const navigation = useNavigation()
@@ -12,20 +12,23 @@ function Home() {
     <>
       <SafeAreaView />
       <Header title="King Domino" />
-      <View style={styles.buttonContainer}>
-        <Button
+
+      <ScrollView contentContainerStyle={styles.buttonContainer}>
+        <Players />
+        {/* <Button
           title="New Game"
           backgroundColor={colors.YELLOW}
           lean="right"
           onPress={() => navigation.navigate('NewGame')}
-        />
-        <Button
+        /> */}
+        {/* <Button
           title="Add Player"
           lean="left"
           small
           backgroundColor={colors.GREEN}
           onPress={() => navigation.navigate('AddPlayer')}
-        />
+        /> */}
+        <View style={{ marginVertical: 20 }} />
         <Button
           title="Statistics"
           backgroundColor={colors.BLUE}
@@ -33,7 +36,7 @@ function Home() {
           small
           onPress={() => navigation.navigate('Statistics')}
         />
-      </View>
+      </ScrollView>
     </>
   )
 }
@@ -45,8 +48,6 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     marginTop: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 })
 

@@ -19,6 +19,7 @@ import Type from './components/Type'
 
 function Register() {
   const route = useRoute()
+
   const { players = [] } = route.params
   const [game, setGame] = useState(players.map(_ => [0, 0, 0, 0, 0, 0]))
   const [typeIndex, setTypeIndex] = useState(0)

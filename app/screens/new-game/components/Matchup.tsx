@@ -1,31 +1,27 @@
 import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { view } from '@risingstack/react-easy-state'
+
 import { state } from 'app/config/data'
 import { colors, fonts } from 'app/config/constants'
 
 type Props = {
   players: number[]
   onPress: () => void
-  isSelected: boolean
 }
 
-function Matchup({ players, onPress, isSelected }: Props) {
+function Matchup({ players, onPress }: Props) {
   return (
     <TouchableOpacity onPress={onPress} style={styles.container}>
       {players.map((p, index) => {
+        const { name, color } = state.players[p]
         return (
           <View
             key={index}
             style={{ flexDirection: 'row', alignItems: 'center' }}
           >
-            <View
-              style={[
-                styles.playerBackground,
-                { backgroundColor: state.players[p].color },
-              ]}
-            >
-              <Text style={[styles.text]}>{state.players[p].name}</Text>
+            <View style={[styles.playerBackground, { backgroundColor: color }]}>
+              <Text style={[styles.text]}>{name}</Text>
             </View>
             {index < players.length - 1 && <Text style={styles.vs}>vs.</Text>}
           </View>
@@ -44,7 +40,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   playerBackground: {
-    padding: 20,
+    padding: 10,
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: colors.WHITE,
@@ -52,7 +48,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontFamily: fonts.BOLD,
-    fontSize: 30,
+    fontSize: 24,
     paddingHorizontal: 20,
   },
   vs: {

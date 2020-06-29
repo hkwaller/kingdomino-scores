@@ -1,13 +1,28 @@
 import AsyncStorage from '@react-native-community/async-storage'
 import { store, autoEffect } from '@risingstack/react-easy-state'
 
-export const state = store({
+export type Player = {
+  id: number
+  name: string
+  color: string
+}
+
+export type Game = {
+  date: Date
+  game: number[][]
+  players: number[]
+}
+
+type State = {
+  players: Player[]
+  games: Game[]
+  matchups: number[][]
+}
+
+export const state = store<State>({
   players: [],
   games: [],
-  matchups: [
-    [0, 1],
-    [3, 1],
-  ],
+  matchups: [],
 })
 
 autoEffect(() => {
@@ -20,29 +35,29 @@ autoEffect(() => {
   AsyncStorage.setItem('games', JSON.stringify(state.games))
 })
 
-export async function saveGame(data) {
-  // await AsyncStorage.setItem('games', '[]')
+autoEffect(() => {
+  if (state.matchups.length === 0) return
+  AsyncStorage.setItem('matchups', JSON.stringify(state.matchups))
+})
 
+export async function saveGame(data) {
+  console.log('data: ', data)
+  // await AsyncStorage.setItem('games', '[]')
   const newData = {
     game: data.game,
-    players: data.players.map(p => p.id),
+    players: data.players,
+    ids: data.players.map((p: Player) => p.id),
     date: new Date(),
   }
+
   console.log('newData: ', newData)
-
-  // state.games.push(newData)
+  const p = state.games
+  p.push(newData)
+  state.games = p
+  state.matchups.push(data.players.map(p => p.id))
 }
 
-export async function loadGames() {
-  try {
-    const loadedGames = await AsyncStorage.getItem('games')
-    return JSON.parse(loadedGames)
-  } catch (e) {
-    console.log("couldn't find any games to load", e)
-  }
-}
-
-export async function savePlayer(player) {
+export async function savePlayer(player: Player) {
   try {
     const highestExistingId =
       Math.max.apply(Math, state.players.map(p => p.id) || 0) + 1
@@ -63,9 +78,15 @@ export async function savePlayer(player) {
   }
 }
 
-export async function deletePlayer(player) {
-  const t = state.players.filter(p => {
+export async function deletePlayer(player: Player) {
+  const matchups = state.matchups.filter(m => {
+    if (m.indexOf(player.id) > -1) return m
+  })
+
+  const players = state.players.filter(p => {
     if (player.id !== p.id) return p
   })
-  state.players = t
+
+  state.players = players
+  state.matchups = matchups
 }
