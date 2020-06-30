@@ -21,6 +21,8 @@ function AddPlayer() {
   const [name, setName] = useState('')
   const [savedName, setSavedName] = useState('')
   const [color, setColor] = useState('')
+  const [pickerY, setPickerY] = useState(0)
+
   const scrollViewRef = useRef(null)
 
   const [s, setS] = useState(false)
@@ -39,6 +41,9 @@ function AddPlayer() {
   }, [s])
 
   async function save() {
+    if (color === '') {
+      return scrollViewRef.current.scrollTo({ y: pickerY })
+    }
     const s = await savePlayer({ name, color })
     if (s) {
       setS(true)
@@ -75,10 +80,18 @@ function AddPlayer() {
               style={{ minWidth: '80%' }}
             />
             <SmallHeader title="Preferred color" style={{ marginTop: 30 }} />
-            <ColorPicker
-              handleChange={color => setColor(color)}
-              currentColor={color}
-            />
+            <View
+              onLayout={({
+                nativeEvent: {
+                  layout: { y },
+                },
+              }) => setPickerY(y)}
+            >
+              <ColorPicker
+                handleChange={color => setColor(color)}
+                currentColor={color}
+              />
+            </View>
           </ScrollView>
           <Button
             title="Save"
@@ -104,7 +117,7 @@ const styles = StyleSheet.create({
   views: {
     alignItems: 'center',
     marginTop: 20,
-    paddingBottom: 200,
+    paddingBottom: 400,
   },
   playerAdded: {
     padding: 40,
