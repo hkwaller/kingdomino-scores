@@ -25,11 +25,6 @@ function Players() {
     }, [])
   )
 
-  function handlePress() {
-    if (state.selectedPlayers.length === 0 && state.players.length !== 0) return
-    navigation.navigate('Register', { players: state.selectedPlayers })
-  }
-
   return (
     <>
       <SafeAreaView />

@@ -17,6 +17,7 @@ import {
 } from 'app/config/constants'
 import { state } from 'app/config/data'
 import Type from './components/Type'
+import Progress from './components/Progress'
 
 function Register() {
   const route = useRoute()
@@ -35,7 +36,7 @@ function Register() {
   const navigation = useNavigation()
 
   useEffect(() => {
-    if (game[playerIndex] && game[playerIndex][typeIndex] !== 0)
+    if (game[playerIndex][typeIndex] !== 0)
       setInputValue(`${game[playerIndex][typeIndex]}`)
   }, [typeIndex, playerIndex])
 
@@ -84,6 +85,7 @@ function Register() {
         keyboardDismissMode="on-drag"
       >
         <Header title="Score" />
+        <Progress progress={typeIndex} />
         <FlatList
           keyExtractor={(_, index) => `${index}`}
           data={types}
