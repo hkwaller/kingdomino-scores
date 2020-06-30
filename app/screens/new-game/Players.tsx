@@ -86,12 +86,10 @@ function Players() {
                   key={index}
                   players={matchup}
                   onPress={() => {
-                    navigation.navigate('Register', {
-                      players: matchup.map(
-                        id =>
-                          state.players.filter(player => player.id === id)[0]
-                      ),
-                    })
+                    state.selectedPlayers = matchup.map(
+                      m => state.players.filter(p => p.id === m)[0]
+                    )
+                    navigation.navigate('Register')
                   }}
                 />
               )

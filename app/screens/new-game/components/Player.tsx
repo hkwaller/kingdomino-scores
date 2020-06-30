@@ -11,7 +11,6 @@ import {
   LongPressGestureHandler,
 } from 'react-native-gesture-handler'
 import { colors, fonts, screen } from 'app/config/constants'
-import { deletePlayer } from 'app/config/data'
 
 type Props = {
   name: string
@@ -40,7 +39,8 @@ function Player({ name, color, onPress, isSelected, deletePlayer }: Props) {
     <LongPressGestureHandler
       ref={doubleTapRef}
       onHandlerStateChange={event => {
-        if (event.nativeEvent.state === State.END) deletePlayer()
+        if (event.nativeEvent.state === State.END)
+          deletePlayer && deletePlayer()
       }}
     >
       <TapGestureHandler
@@ -51,18 +51,20 @@ function Player({ name, color, onPress, isSelected, deletePlayer }: Props) {
           }
         }}
       >
-        <View style={styles.container}>
-          <Animated.View
-            style={[
-              {
-                ...StyleSheet.absoluteFillObject,
-                left: -200,
-                backgroundColor: color,
-              },
-              style,
-            ]}
-          />
-          <Text style={styles.text}>{name}</Text>
+        <View style={styles.shadowView}>
+          <View style={styles.container}>
+            <Animated.View
+              style={[
+                {
+                  ...StyleSheet.absoluteFillObject,
+                  left: -200,
+                  backgroundColor: color,
+                },
+                style,
+              ]}
+            />
+            <Text style={styles.text}>{name}</Text>
+          </View>
         </View>
       </TapGestureHandler>
     </LongPressGestureHandler>
@@ -71,18 +73,28 @@ function Player({ name, color, onPress, isSelected, deletePlayer }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 12,
-    paddingHorizontal: 20,
+    paddingVertical: 20,
+    paddingHorizontal: 30,
     marginBottom: 20,
     backgroundColor: colors.WHITE,
     borderRadius: 50,
-    marginRight: 20,
+    marginHorizontal: 6,
     overflow: 'hidden',
     minWidth: screen.WIDTH / 5,
   },
+  shadowView: {
+    shadowColor: '#c0c0c0',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.8,
+    shadowRadius: 5.46,
+    elevation: 9,
+  },
   text: {
     fontFamily: fonts.BOLD,
-    fontSize: 20,
+    fontSize: 25,
     textAlign: 'center',
   },
 })

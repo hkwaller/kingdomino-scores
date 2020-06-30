@@ -4,8 +4,9 @@ import { useRoute, useNavigation } from '@react-navigation/native'
 import { State } from 'react-native-gesture-handler'
 import Animated, {
   useSharedValue,
-  withSpring,
+  withTiming,
   useAnimatedStyle,
+  Easing,
 } from 'react-native-reanimated'
 
 import { Header, Button } from 'app/components'
@@ -57,7 +58,14 @@ function Bonus() {
 
   const style = useAnimatedStyle(() => {
     return {
-      transform: [{ translateX: withSpring(x.value) }],
+      transform: [
+        {
+          translateX: withTiming(x.value, {
+            duration: 400,
+            easing: Easing.bezier(0.86, 0.0, 0.07, 1.0),
+          }),
+        },
+      ],
     }
   })
 

@@ -18,6 +18,7 @@ type Props = {
   style?: StyleProp<ViewStyle>
   handleChange: (string) => void
   continueTapped?: () => void
+  previousTapped?: () => void
   handleFocus?: () => void
   hideInputAccessory?: boolean
   inputAccessoryText?: string
@@ -31,6 +32,7 @@ function Input({
   value,
   handleChange,
   continueTapped,
+  previousTapped,
   hideInputAccessory = false,
   handleFocus = () => {},
   inputAccessoryText,
@@ -57,10 +59,19 @@ function Input({
         <InputAccessoryView nativeID={inputAccessoryViewID}>
           <View style={styles.inputAccessoryViewContainer}>
             <TouchableOpacity
+              style={[
+                styles.inputAccessoryViewButton,
+                { backgroundColor: colors.RED },
+              ]}
+              onPress={() => previousTapped && previousTapped()}
+            >
+              <Text style={styles.inputAccessoryViewButtonText}>
+                {inputAccessoryText || 'Previous'}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
               style={styles.inputAccessoryViewButton}
-              onPress={() => {
-                continueTapped()
-              }}
+              onPress={() => continueTapped && continueTapped()}
             >
               <Text style={styles.inputAccessoryViewButtonText}>
                 {inputAccessoryText || 'Next'}
@@ -90,19 +101,20 @@ const styles = StyleSheet.create({
   },
   inputAccessoryViewContainer: {
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
+    flexDirection: 'row',
     backgroundColor: colors.WHITE,
   },
   inputAccessoryViewButton: {
     padding: 10,
     marginVertical: 10,
-    paddingHorizontal: 50,
+    paddingHorizontal: 20,
     backgroundColor: colors.YELLOW,
     transform: [{ rotate: '2deg' }],
     alignSelf: 'center',
   },
   inputAccessoryViewButtonText: {
-    fontSize: 30,
+    fontSize: 20,
     textAlign: 'center',
     fontFamily: fonts.BOLD,
   },

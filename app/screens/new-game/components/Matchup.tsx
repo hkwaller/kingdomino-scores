@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { view } from '@risingstack/react-easy-state'
 
@@ -11,8 +11,18 @@ type Props = {
 }
 
 function Matchup({ players, onPress }: Props) {
+  const [height, setHeight] = useState(50)
+
   return (
-    <TouchableOpacity onPress={onPress} style={styles.container}>
+    <TouchableOpacity
+      onLayout={({
+        nativeEvent: {
+          layout: { height },
+        },
+      }) => setHeight(height)}
+      onPress={onPress}
+      style={[styles.container, { height: height }]}
+    >
       {players.map((p, index) => {
         const { name, color } = state.players.filter(
           player => player.id === p
@@ -41,10 +51,17 @@ const styles = StyleSheet.create({
     marginRight: 20,
     borderRadius: 50,
     marginVertical: 10,
-    height: 50,
+    shadowColor: '#c0c0c0',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.8,
+    shadowRadius: 5.46,
+    elevation: 9,
   },
   playerBackground: {
-    padding: 10,
+    padding: 12,
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: colors.WHITE,
