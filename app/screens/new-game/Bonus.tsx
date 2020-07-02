@@ -4,12 +4,12 @@ import { useRoute, useNavigation } from '@react-navigation/native'
 import { State } from 'react-native-gesture-handler'
 import Animated, {
   useSharedValue,
-  withSpring,
+  withTiming,
   useAnimatedStyle,
-  delay,
+  Easing,
 } from 'react-native-reanimated'
 
-import { Header, NormalButton } from 'app/components'
+import { Header, Button } from 'app/components'
 import { fonts, colors, screen } from 'app/config/constants'
 import Check from 'app/screens/new-game/components/Check'
 import Type from './components/Type'
@@ -58,7 +58,14 @@ function Bonus() {
 
   const style = useAnimatedStyle(() => {
     return {
-      transform: [{ translateX: withSpring(x.value) }],
+      transform: [
+        {
+          translateX: withTiming(x.value, {
+            duration: 400,
+            easing: Easing.bezier(0.86, 0.0, 0.07, 1.0),
+          }),
+        },
+      ],
     }
   })
 
@@ -83,7 +90,7 @@ function Bonus() {
                 <Type
                   backgroundColor={p.color}
                   title={p.name}
-                  style={{ marginBottom: 20 }}
+                  style={{ marginBottom: 20, paddingHorizontal: 20 }}
                 />
                 <Check
                   item={p}
@@ -101,7 +108,7 @@ function Bonus() {
         </Animated.View>
       </View>
 
-      <NormalButton
+      <Button
         title="Continue"
         backgroundColor={colors.YELLOW}
         onPress={() => continueTapped()}

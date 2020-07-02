@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { StatusBar, View } from 'react-native'
+import { StatusBar, View, Platform, UIManager } from 'react-native'
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { state } from 'app/config/data'
@@ -27,14 +27,14 @@ const theme = {
   },
 }
 
-function NewGameStack() {
+function HomeStack() {
   return (
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
       }}
     >
-      <Stack.Screen name="Players" component={Players} />
+      <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="Register" component={Register} />
       <Stack.Screen name="Bonus" component={Bonus} />
       <Stack.Screen name="Scores" component={Scores} />
@@ -44,12 +44,23 @@ function NewGameStack() {
 
 export default function App() {
   useEffect(() => {
+    if (Platform.OS === 'android') {
+      if (UIManager.setLayoutAnimationEnabledExperimental) {
+        UIManager.setLayoutAnimationEnabledExperimental(true)
+      }
+    }
+
     async function getDataFromStorage() {
+      // await AsyncStorage.setItem('games', '[]')
       const games = (await AsyncStorage.getItem('games')) || '[]'
       const players = (await AsyncStorage.getItem('players')) || '[]'
+      const matchups = (await AsyncStorage.getItem('matchups')) || '[]'
+      const highestId = (await AsyncStorage.getItem('highestId')) || '0'
 
       state.games = JSON.parse(games)
       state.players = JSON.parse(players)
+      state.matchups = JSON.parse(matchups)
+      state.highestId = JSON.parse(highestId)
     }
 
     getDataFromStorage()
@@ -65,9 +76,8 @@ export default function App() {
           headerShown: false,
         }}
       >
-        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="Home" component={HomeStack} />
         <Stack.Screen name="AddPlayer" component={AddPlayer} />
-        <Stack.Screen name="NewGame" component={NewGameStack} />
         <Stack.Screen name="Statistics" component={Statistics} />
       </Stack.Navigator>
     </NavigationContainer>

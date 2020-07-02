@@ -6,8 +6,8 @@ import Animated, {
   useAnimatedGestureHandler,
   withSpring,
 } from 'react-native-reanimated'
-import { fonts } from 'app/config/constants'
 import { TapGestureHandler, State } from 'react-native-gesture-handler'
+import { fonts } from 'app/config/constants'
 
 type Props = {
   title: string
@@ -78,7 +78,7 @@ function Button({
           ]}
         />
         <Animated.Text
-          style={[styles.text, { fontSize: small ? 65 : 80 }, scale]}
+          style={[styles.text, { fontSize: small ? 45 : 65 }, scale]}
         >
           {title}
         </Animated.Text>
@@ -89,7 +89,7 @@ function Button({
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 30,
+    marginVertical: 10,
     alignSelf: 'center',
   },
   text: {

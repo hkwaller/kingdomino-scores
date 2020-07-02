@@ -15,14 +15,18 @@ import {
   landscapeColors,
   screen,
 } from 'app/config/constants'
+import { state } from 'app/config/data'
 import Type from './components/Type'
+import Progress from './components/Progress'
 
 function Register() {
   const route = useRoute()
-  const { players = [] } = route.params
-  const [game, setGame] = useState(players.map(_ => [0, 0, 0, 0, 0, 0]))
-  const [typeIndex, setTypeIndex] = useState(0)
-  const [playerIndex, setPlayerIndex] = useState(0)
+
+  const [game, setGame] = useState(
+    state.selectedPlayers.map(_ => [0, 0, 0, 0, 0, 0])
+  )
+  const [typeIndex, setTypeIndex] = useState<number>(0)
+  const [playerIndex, setPlayerIndex] = useState<number>(0)
   const [inputValue, setInputValue] = useState('')
 
   const typeRef = useRef(null)
@@ -31,20 +35,36 @@ function Register() {
 
   const navigation = useNavigation()
 
+  useEffect(() => {
+    if (game[playerIndex][typeIndex] !== 0)
+      setInputValue(`${game[playerIndex][typeIndex]}`)
+  }, [typeIndex, playerIndex])
+
   function continueTapped() {
     const scores = [...game]
     scores[playerIndex][typeIndex] = Number(inputValue)
     setGame(scores)
     setInputValue('')
 
-    if (playerIndex < players.length - 1) {
+    if (playerIndex < state.selectedPlayers.length - 1) {
       setPlayerIndex(playerIndex + 1)
-    } else if (playerIndex === players.length - 1) {
+    } else if (playerIndex === state.selectedPlayers.length - 1) {
       setPlayerIndex(0)
       if (typeIndex < types.length - 1) setTypeIndex(typeIndex + 1)
       else if (typeIndex === types.length - 1)
-        navigation.navigate('Bonus', { game: game, players: players })
+        navigation.navigate('Bonus', {
+          game: game,
+          players: state.selectedPlayers,
+        })
     }
+  }
+
+  function previousTapped() {
+    if (playerIndex === 0 && typeIndex === 0) return
+    else if (playerIndex === 0) {
+      setTypeIndex(typeIndex - 1)
+      setPlayerIndex(state.selectedPlayers.length - 1)
+    } else setPlayerIndex(playerIndex - 1)
   }
 
   useEffect(() => {
@@ -65,6 +85,7 @@ function Register() {
         keyboardDismissMode="on-drag"
       >
         <Header title="Score" />
+        <Progress progress={typeIndex} />
         <FlatList
           keyExtractor={(_, index) => `${index}`}
           data={types}
@@ -77,21 +98,17 @@ function Register() {
           }}
           horizontal
           renderItem={({ item }) => {
+            const color = landscapeColors[item.toUpperCase()]
             return (
               <View style={styles.itemContainer}>
-                <Type
-                  title={item}
-                  landscape
-                  left
-                  backgroundColor={landscapeColors[item.toUpperCase()]}
-                />
+                <Type title={item} landscape left backgroundColor={color} />
               </View>
             )
           }}
         />
         <FlatList
           keyExtractor={(_, index) => `${index}`}
-          data={players}
+          data={state.selectedPlayers}
           ref={playerRef}
           showsHorizontalScrollIndicator={false}
           horizontal
@@ -113,14 +130,12 @@ function Register() {
           type="numeric"
           value={`${inputValue}`}
           handleFocus={() => scrollViewRef.current.scrollTo({ y: 100 })}
-          continueTapped={() => {
-            continueTapped()
-          }}
+          continueTapped={continueTapped}
+          previousTapped={previousTapped}
           handleChange={value => setInputValue(value)}
           style={{ paddingHorizontal: 12, width: 100 }}
         />
       </ScrollView>
-
       <Button
         backgroundColor={colors.YELLOW}
         title="Continue"

@@ -1,18 +1,43 @@
 import AsyncStorage from '@react-native-community/async-storage'
 import { store, autoEffect } from '@risingstack/react-easy-state'
 
-export const state = store({
+export type Player = {
+  id: number
+  name: string
+  color: string
+  alldominos?: boolean
+  king?: boolean
+  score?: number
+  finished?: boolean
+}
+
+export type Game = {
+  date: Date
+  game: number[][]
+  players: number[]
+  ids: number[]
+}
+
+type State = {
+  players: Player[]
+  games: Game[]
+  matchups: number[][]
+  selectedPlayers: Player[]
+  highestId: number
+}
+
+export const state = store<State>({
   players: [],
   games: [],
-  matchups: [
-    [0, 1],
-    [3, 1],
-  ],
+  matchups: [],
+  selectedPlayers: [],
+  highestId: 0,
 })
 
 autoEffect(() => {
   if (state.players.length === 0) return
   AsyncStorage.setItem('players', JSON.stringify(state.players))
+  AsyncStorage.setItem('highestId', JSON.stringify(state.highestId))
 })
 
 autoEffect(() => {
@@ -20,41 +45,42 @@ autoEffect(() => {
   AsyncStorage.setItem('games', JSON.stringify(state.games))
 })
 
+autoEffect(() => {
+  if (state.matchups.length === 0) return
+  AsyncStorage.setItem('matchups', JSON.stringify(state.matchups))
+})
+
 export async function saveGame(data) {
-  // await AsyncStorage.setItem('games', '[]')
+  console.log('data: ', data)
 
   const newData = {
     game: data.game,
-    players: data.players.map(p => p.id),
+    players: data.players,
+    ids: data.players.map((p: Player) => p.id),
     date: new Date(),
   }
+
   console.log('newData: ', newData)
+  state.games.push(newData)
+  const matchups = [data.players.map(p => p.id), ...state.matchups]
 
-  // state.games.push(newData)
+  const stringifiedMatchups = new Set(matchups.map(JSON.stringify))
+  state.matchups = Array.from(stringifiedMatchups).map(JSON.parse)
 }
 
-export async function loadGames() {
+export async function savePlayer(player: Player) {
   try {
-    const loadedGames = await AsyncStorage.getItem('games')
-    return JSON.parse(loadedGames)
-  } catch (e) {
-    console.log("couldn't find any games to load", e)
-  }
-}
-
-export async function savePlayer(player) {
-  try {
-    const highestExistingId =
-      Math.max.apply(Math, state.players.map(p => p.id) || 0) + 1
-
     if (state.players.filter(p => p.name === player.name).length > 0) {
       return 'nonono we got that one'
     } else {
+      console.log('state.highestId: ', state.highestId)
       state.players.push(
         Object.assign(player, {
-          id: highestExistingId === -Infinity ? 0 : highestExistingId,
+          id: state.highestId + 1,
         })
       )
+
+      ++state.highestId
 
       return 'hell yeah'
     }
@@ -63,9 +89,16 @@ export async function savePlayer(player) {
   }
 }
 
-export async function deletePlayer(player) {
-  const t = state.players.filter(p => {
+export async function deletePlayer(player: Player) {
+  const matchups = state.matchups.filter(m => {
+    if (m.indexOf(player.id) === -1) return m
+  })
+
+  const players = state.players.filter(p => {
     if (player.id !== p.id) return p
   })
-  state.players = t
+
+  state.selectedPlayers = state.selectedPlayers.filter(p => p.id !== player.id)
+  state.players = players
+  state.matchups = matchups
 }

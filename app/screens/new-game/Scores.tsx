@@ -5,20 +5,34 @@ import ConfettiCannon from 'react-native-confetti-cannon'
 
 import { Header, Button } from 'app/components'
 import { fonts, colors, screen } from 'app/config/constants'
-import { saveGame } from 'app/config/data'
+import { saveGame, state } from 'app/config/data'
 import CountUp from 'app/screens/new-game/components/CountUp'
 import Details from 'app/screens/new-game/components/Details'
+import { Player as PlayerType, Game } from 'app/config/data'
+
+type ScoreRouteProp = {
+  key: string
+  name: string
+  params: ScoresRouteParams
+}
+
+type ScoresRouteParams = {
+  players: PlayerType[]
+  game: Game
+}
 
 type Player = {
+  id: number
   name: string
-  color: string
-  king: boolean
-  alldominos: boolean
+  score: number
   finished: boolean
+  king: boolean | undefined
+  alldominos: boolean | undefined
+  color: string
 }
 
 function Scores() {
-  const route = useRoute()
+  const route = useRoute<ScoreRouteProp>()
   const navigation = useNavigation()
   const [players, setPlayers] = useState<Player[]>([])
   const [game, setGame] = useState([])
@@ -27,7 +41,20 @@ function Scores() {
 
   useEffect(() => {
     setPlayers(
-      route.params.players.map(p => Object.assign(p, { finished: false }))
+      route.params.players.map((p, index) =>
+        Object.assign(p, {
+          finished: false,
+          alldominos: p.alldominos,
+          king: p.king,
+          score:
+            route.params.game[index].reduce(
+              (cur: number, acc: number) => Number(cur) + acc,
+              0
+            ) +
+            (p.alldominos && 5) +
+            (p.king && 10),
+        })
+      )
     )
     setGame(route.params.game)
     saveGame({ game: route.params.game, players: route.params.players })
@@ -50,25 +77,14 @@ function Scores() {
   return (
     <>
       <SafeAreaView />
-      <Header title="Scores" />
       <ScrollView
         contentContainerStyle={styles.container}
         keyboardDismissMode="on-drag"
       >
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-            flexWrap: 'wrap',
-          }}
-        >
+        <Header title="Scores" />
+        <View style={styles.wrapper}>
           {players.map((p: Player, index: number) => {
-            const playerScore =
-              game[index].reduce((cur, acc) => Number(cur) + acc, 0) +
-              (p.alldominos && 5) +
-              (p.king && 10)
-
-            if (playerScore > players[indexOfHighestScorer]) {
+            if (p.score > players[indexOfHighestScorer].score) {
               setIndexOfHighestScorer(index)
             }
 
@@ -79,7 +95,7 @@ function Scores() {
                 >
                   <Text style={styles.name}>{p.name}</Text>
                 </View>
-                <CountUp to={playerScore} onFinish={() => finish(index)} />
+                <CountUp to={p.score} onFinish={() => finish(index)} />
                 <Details
                   score={game[index]}
                   alldominos={p.alldominos}
@@ -97,7 +113,11 @@ function Scores() {
       />
       <SafeAreaView />
       {showConfetti && (
-        <ConfettiCannon count={200} origin={{ x: screen.WIDTH / 2, y: -10 }} />
+        <ConfettiCannon
+          count={200}
+          fallSpeed={1000}
+          origin={{ x: screen.WIDTH / 2, y: -10 }}
+        />
       )}
     </>
   )
@@ -111,7 +131,7 @@ const styles = StyleSheet.create({
   scoreContainer: {
     width: '50%',
     alignItems: 'center',
-    paddingTop: 40,
+    paddingTop: 20,
   },
   name: {
     fontFamily: fonts.BOLD,
@@ -121,6 +141,10 @@ const styles = StyleSheet.create({
   nameBackground: {
     paddingHorizontal: 20,
     paddingTop: 5,
+  },
+  wrapper: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
   },
 })
 

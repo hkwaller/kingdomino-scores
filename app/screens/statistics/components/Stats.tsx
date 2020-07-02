@@ -1,42 +1,54 @@
-import React, { useEffect } from "react";
-import { View, StyleSheet } from "react-native";
-import { screen, colors } from "app/config/constants";
+import React, { useEffect } from 'react'
+import { View, StyleSheet } from 'react-native'
+import { screen, colors } from 'app/config/constants'
 import Animated, {
   useSharedValue,
   withSpring,
   useAnimatedStyle,
-  delay
-} from "react-native-reanimated";
+  delay,
+} from 'react-native-reanimated'
 
 type Props = {
-  stat: Stat;
-};
+  stat: Stat
+}
 
 type Stat = {
-  wins: number;
-  losses: number;
-  draws: number;
-  playedGames: number;
-};
+  wins: number
+  losses: number
+  draws: number
+  playedGames: number
+}
 
 function Stats({ stat }: Props) {
-  const wins = useSharedValue(0);
-  const losses = useSharedValue(0);
-  const draws = useSharedValue(0);
+  const wins = useSharedValue(0)
+  const losses = useSharedValue(0)
+  const draws = useSharedValue(0)
 
-  const factor = (screen.WIDTH - 40) / stat.playedGames;
+  const factor = (screen.WIDTH - 40) / stat.playedGames
 
   useEffect(() => {
-    wins.value = factor * stat.wins;
-    draws.value = factor * stat.draws;
-    losses.value = factor * stat.losses;
-  }, []);
+    wins.value = factor * stat.wins
+    draws.value = factor * stat.draws
+    losses.value = factor * stat.losses
+  }, [])
 
-  const winStyle = getAnimatedStyle(wins.value);
+  const winStyle = useAnimatedStyle(() => {
+    return {
+      width: delay(300, withSpring(wins.value, { damping: 16 })),
+    }
+  })
 
-  const drawStyle = getAnimatedStyle(draws.value);
+  const drawStyle = useAnimatedStyle(() => {
+    return {
+      width: delay(400, withSpring(draws.value, { damping: 16 })),
+    }
+  })
 
-  const lossStyle = getAnimatedStyle(losses.value);
+  const lossStyle = useAnimatedStyle(() => {
+    return {
+      width: delay(500, withSpring(losses.value, { damping: 16 })),
+    }
+  })
 
   return (
     <View style={styles.stats}>
@@ -44,48 +56,40 @@ function Stats({ stat }: Props) {
         style={[
           {
             height: 5,
-            backgroundColor: colors.GREEN
+            backgroundColor: colors.GREEN,
           },
-          winStyle
+          winStyle,
         ]}
       />
       <Animated.View
         style={[
           {
             height: 5,
-            backgroundColor: colors.GREY
+            backgroundColor: colors.GREY,
           },
-          drawStyle
+          drawStyle,
         ]}
       />
       <Animated.View
         style={[
           {
             height: 5,
-            backgroundColor: "tomato"
+            backgroundColor: 'tomato',
           },
-          lossStyle
+          lossStyle,
         ]}
       />
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   stats: {
-    position: "absolute",
+    position: 'absolute',
     bottom: 0,
-    flexDirection: "row",
-    width: screen.WIDTH - 40
-  }
-});
+    flexDirection: 'row',
+    width: screen.WIDTH - 40,
+  },
+})
 
-function getAnimatedStyle(v) {
-  return useAnimatedStyle(() => {
-    return {
-      width: delay(400, withSpring(v.value, { damping: 16 }))
-    };
-  });
-}
-
-export default Stats;
+export default Stats

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import {
   View,
   Text,
@@ -21,6 +21,9 @@ function AddPlayer() {
   const [name, setName] = useState('')
   const [savedName, setSavedName] = useState('')
   const [color, setColor] = useState('')
+  const [pickerY, setPickerY] = useState(0)
+
+  const scrollViewRef = useRef(null)
 
   const [s, setS] = useState(false)
 
@@ -38,6 +41,9 @@ function AddPlayer() {
   }, [s])
 
   async function save() {
+    if (color === '') {
+      return scrollViewRef.current.scrollTo({ y: pickerY })
+    }
     const s = await savePlayer({ name, color })
     if (s) {
       setS(true)
@@ -46,6 +52,7 @@ function AddPlayer() {
       setSavedName(name)
       setColor('')
       setName('')
+      scrollViewRef.current.scrollTo({ y: 0 })
       setTimeout(() => {
         setS(false)
       }, 2000)
@@ -60,10 +67,15 @@ function AddPlayer() {
             contentContainerStyle={styles.views}
             keyboardShouldPersistTaps="always"
             keyboardDismissMode="on-drag"
+            ref={scrollViewRef}
           >
             <Header title="Add player" />
-            <SmallHeader title="Name" style={{ marginBottom: -20 }} />
+            <SmallHeader
+              title="Name"
+              style={{ marginBottom: -20, marginTop: 20 }}
+            />
             <Input
+              handleFocus={() => scrollViewRef.current.scrollTo({ y: 100 })}
               handleChange={t => setName(t)}
               placeholder="Christine"
               continueTapped={() => save()}
@@ -72,10 +84,18 @@ function AddPlayer() {
               style={{ minWidth: '80%' }}
             />
             <SmallHeader title="Preferred color" style={{ marginTop: 30 }} />
-            <ColorPicker
-              handleChange={color => setColor(color)}
-              currentColor={color}
-            />
+            <View
+              onLayout={({
+                nativeEvent: {
+                  layout: { y },
+                },
+              }) => setPickerY(y)}
+            >
+              <ColorPicker
+                handleChange={color => setColor(color)}
+                currentColor={color}
+              />
+            </View>
           </ScrollView>
           <Button
             title="Save"
@@ -98,10 +118,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   views: {
-    flex: 1,
     alignItems: 'center',
     marginTop: 20,
-    paddingBottom: 20,
+    paddingBottom: 400,
   },
   playerAdded: {
     padding: 40,
