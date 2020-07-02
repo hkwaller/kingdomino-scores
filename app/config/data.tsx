@@ -5,6 +5,10 @@ export type Player = {
   id: number
   name: string
   color: string
+  alldominos?: boolean
+  king?: boolean
+  score?: number
+  finished?: boolean
 }
 
 export type Game = {
@@ -86,13 +90,16 @@ export async function savePlayer(player: Player) {
 
 export async function deletePlayer(player: Player) {
   const matchups = state.matchups.filter(m => {
-    if (m.indexOf(player.id) > -1) return m
+    if (m.indexOf(player.id) === -1) return m
   })
+
+  console.log('matchups: ', matchups)
 
   const players = state.players.filter(p => {
     if (player.id !== p.id) return p
   })
 
+  state.selectedPlayers = state.selectedPlayers.filter(p => p.id !== player.id)
   state.players = players
   state.matchups = matchups
 }
