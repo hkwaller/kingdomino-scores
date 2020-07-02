@@ -20,8 +20,8 @@ import SmallText from 'app/components/SmallText'
 
 type Props = {
   score: number[]
-  king: boolean
-  alldominos: boolean
+  king: boolean | undefined
+  alldominos: boolean | undefined
 }
 
 function Details({ score, king, alldominos }: Props) {

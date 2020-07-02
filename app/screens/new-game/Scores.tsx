@@ -5,26 +5,30 @@ import ConfettiCannon from 'react-native-confetti-cannon'
 
 import { Header, Button } from 'app/components'
 import { fonts, colors, screen } from 'app/config/constants'
-import { saveGame } from 'app/config/data'
+import { saveGame, state } from 'app/config/data'
 import CountUp from 'app/screens/new-game/components/CountUp'
 import Details from 'app/screens/new-game/components/Details'
 import { Player as PlayerType, Game } from 'app/config/data'
 
-type Player = {
-  name: string
-  color: string
-  king: boolean
-  alldominos: boolean
-  finished: boolean
-}
-
 type ScoreRouteProp = {
+  key: string
+  name: string
   params: ScoresRouteParams
 }
 
 type ScoresRouteParams = {
-  players: Player[]
+  players: PlayerType[]
   game: Game
+}
+
+type Player = {
+  id: number
+  name: string
+  score: number
+  finished: boolean
+  king: boolean | undefined
+  alldominos: boolean | undefined
+  color: string
 }
 
 function Scores() {
@@ -37,11 +41,18 @@ function Scores() {
 
   useEffect(() => {
     setPlayers(
-      route.params.players.map(p =>
+      route.params.players.map((p, index) =>
         Object.assign(p, {
           finished: false,
           alldominos: p.alldominos,
           king: p.king,
+          score:
+            route.params.game[index].reduce(
+              (cur: number, acc: number) => Number(cur) + acc,
+              0
+            ) +
+            (p.alldominos && 5) +
+            (p.king && 10),
         })
       )
     )
@@ -73,12 +84,7 @@ function Scores() {
         <Header title="Scores" />
         <View style={styles.wrapper}>
           {players.map((p: Player, index: number) => {
-            const playerScore =
-              game[index].reduce((cur, acc) => Number(cur) + acc, 0) +
-              (p.alldominos && 5) +
-              (p.king && 10)
-
-            if (playerScore > players[indexOfHighestScorer]) {
+            if (p.score > players[indexOfHighestScorer].score) {
               setIndexOfHighestScorer(index)
             }
 
@@ -89,7 +95,7 @@ function Scores() {
                 >
                   <Text style={styles.name}>{p.name}</Text>
                 </View>
-                <CountUp to={playerScore} onFinish={() => finish(index)} />
+                <CountUp to={p.score} onFinish={() => finish(index)} />
                 <Details
                   score={game[index]}
                   alldominos={p.alldominos}
