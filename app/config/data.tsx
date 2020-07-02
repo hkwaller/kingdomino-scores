@@ -15,6 +15,7 @@ export type Game = {
   date: Date
   game: number[][]
   players: number[]
+  ids: number[]
 }
 
 type State = {
@@ -22,6 +23,7 @@ type State = {
   games: Game[]
   matchups: number[][]
   selectedPlayers: Player[]
+  highestId: number
 }
 
 export const state = store<State>({
@@ -29,11 +31,13 @@ export const state = store<State>({
   games: [],
   matchups: [],
   selectedPlayers: [],
+  highestId: 0,
 })
 
 autoEffect(() => {
   if (state.players.length === 0) return
   AsyncStorage.setItem('players', JSON.stringify(state.players))
+  AsyncStorage.setItem('highestId', JSON.stringify(state.highestId))
 })
 
 autoEffect(() => {
@@ -57,10 +61,7 @@ export async function saveGame(data) {
   }
 
   console.log('newData: ', newData)
-  const p = state.games
-  p.push(newData)
-  state.games = p
-
+  state.games.push(newData)
   const matchups = [data.players.map(p => p.id), ...state.matchups]
 
   const stringifiedMatchups = new Set(matchups.map(JSON.stringify))
@@ -69,17 +70,17 @@ export async function saveGame(data) {
 
 export async function savePlayer(player: Player) {
   try {
-    const highestExistingId =
-      Math.max.apply(Math, state.players.map(p => p.id) || 0) + 1
-
     if (state.players.filter(p => p.name === player.name).length > 0) {
       return 'nonono we got that one'
     } else {
+      console.log('state.highestId: ', state.highestId)
       state.players.push(
         Object.assign(player, {
-          id: highestExistingId === -Infinity ? 0 : highestExistingId,
+          id: state.highestId + 1,
         })
       )
+
+      ++state.highestId
 
       return 'hell yeah'
     }
@@ -92,8 +93,6 @@ export async function deletePlayer(player: Player) {
   const matchups = state.matchups.filter(m => {
     if (m.indexOf(player.id) === -1) return m
   })
-
-  console.log('matchups: ', matchups)
 
   const players = state.players.filter(p => {
     if (player.id !== p.id) return p

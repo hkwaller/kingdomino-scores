@@ -51,14 +51,16 @@ export default function App() {
     }
 
     async function getDataFromStorage() {
-      // await AsyncStorage.setItem('matchups', '[]')
+      // await AsyncStorage.setItem('games', '[]')
       const games = (await AsyncStorage.getItem('games')) || '[]'
       const players = (await AsyncStorage.getItem('players')) || '[]'
       const matchups = (await AsyncStorage.getItem('matchups')) || '[]'
+      const highestId = (await AsyncStorage.getItem('highestId')) || '0'
 
       state.games = JSON.parse(games)
       state.players = JSON.parse(players)
       state.matchups = JSON.parse(matchups)
+      state.highestId = JSON.parse(highestId)
     }
 
     getDataFromStorage()

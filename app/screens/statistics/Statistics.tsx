@@ -1,14 +1,24 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, SafeAreaView } from 'react-native'
+import { View, Text, StyleSheet, SafeAreaView, ScrollView } from 'react-native'
 import { view } from '@risingstack/react-easy-state'
 
 import { state } from 'app/config/data'
-import { ScrollView } from 'react-native-gesture-handler'
 import { Header } from 'app/components'
+import Stats from './components/Stats'
+
 import { colors, screen, fonts } from 'app/config/constants'
+import { getStatsForPlayer } from './helpers'
+
+type Stat = {
+  wins: number
+  draws: number
+  losses: number
+  playedGames: number
+  id?: number
+}
 
 function Statistics() {
-  const [stats, setStats] = useState([])
+  const [stats, setStats] = useState<Stat[]>([])
 
   useEffect(() => {
     const stats = state.players
@@ -19,6 +29,7 @@ function Statistics() {
       .sort((a, b) => a.wins < b.wins)
     setStats(stats)
   }, [])
+
   return (
     <>
       <SafeAreaView />
@@ -29,8 +40,10 @@ function Statistics() {
       <ScrollView contentContainerStyle={styles.container}>
         {stats.map(stat => {
           const [player] = state.players.filter(p => p.id === stat.id)
+
           return (
             <View key={stat.id} style={styles.playerContainer}>
+              <Stats stat={stat} />
               <View style={styles.row}>
                 <Text style={styles.playerName}>{player.name}</Text>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -70,7 +83,7 @@ function Statistics() {
 
 type StatProps = {
   title: string
-  score: string
+  score: number
 }
 
 function Stat({ title, score }: StatProps) {
@@ -89,35 +102,12 @@ function Stat({ title, score }: StatProps) {
   )
 }
 
-function getStatsForPlayer(id: number) {
-  const games = state.games.filter(game => {
-    if (game.ids.indexOf(id) > -1) return game
-  })
-
-  return games.reduce(
-    (cur, acc) => {
-      ++cur.playedGames
-      const [player] = acc.players.filter(p => p.id === id)
-      acc.players.map(p => {
-        if (p.id !== id) {
-          if (p.score > player.score) ++cur.losses
-          else if (p.score === player.score) ++cur.draws
-          else ++cur.wins
-        }
-      })
-
-      return cur
-    },
-    { wins: 0, draws: 0, losses: 0, playedGames: 0 }
-  )
-}
-
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-start',
     overflow: 'visible',
+    paddingBottom: 300,
   },
   playerContainer: {
     padding: 40,
