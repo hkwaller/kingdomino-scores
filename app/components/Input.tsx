@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import {
   View,
   TextInput,
@@ -16,7 +16,7 @@ type Props = {
   placeholder?: string
   type?: 'numeric' | 'default'
   style?: StyleProp<ViewStyle>
-  handleChange: (string) => void
+  handleChange: (val: string) => void
   continueTapped?: () => void
   previousTapped?: () => void
   handleFocus?: () => void
@@ -58,17 +58,19 @@ function Input({
       {!hideInputAccessory && Platform.OS === 'ios' && (
         <InputAccessoryView nativeID={inputAccessoryViewID}>
           <View style={styles.inputAccessoryViewContainer}>
-            <TouchableOpacity
-              style={[
-                styles.inputAccessoryViewButton,
-                { backgroundColor: colors.RED },
-              ]}
-              onPress={() => previousTapped && previousTapped()}
-            >
-              <Text style={styles.inputAccessoryViewButtonText}>
-                {inputAccessoryText || 'Previous'}
-              </Text>
-            </TouchableOpacity>
+            {previousTapped && (
+              <TouchableOpacity
+                style={[
+                  styles.inputAccessoryViewButton,
+                  { backgroundColor: colors.PINK },
+                ]}
+                onPress={() => previousTapped()}
+              >
+                <Text style={styles.inputAccessoryViewButtonText}>
+                  {inputAccessoryText || 'Previous'}
+                </Text>
+              </TouchableOpacity>
+            )}
             <TouchableOpacity
               style={styles.inputAccessoryViewButton}
               onPress={() => continueTapped && continueTapped()}
