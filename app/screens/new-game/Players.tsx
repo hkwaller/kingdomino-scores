@@ -11,7 +11,7 @@ import { view } from '@risingstack/react-easy-state'
 
 import { deletePlayer, state } from 'app/config/data'
 import { SmallHeader } from 'app/components'
-import { fonts } from 'app/config/constants'
+import { fonts, colors } from 'app/config/constants'
 import Matchup from './components/Matchup'
 import Player from './components/Player'
 import NoPlayers from './components/NoPlayers'
@@ -60,7 +60,8 @@ function Players() {
             })}
             <Player
               name="Add +"
-              color="#FFB3BA"
+              color={colors.BLACK}
+              white
               isSelected={true}
               onPress={() => navigation.navigate('AddPlayer')}
             />
@@ -71,7 +72,7 @@ function Players() {
         <>
           <SmallHeader
             title="Latest match-ups"
-            style={{ alignSelf: 'center' }}
+            style={{ alignSelf: 'center', marginTop: 20 }}
           />
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <View style={{ marginHorizontal: 10 }} />

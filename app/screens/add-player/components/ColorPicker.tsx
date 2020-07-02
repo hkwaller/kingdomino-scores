@@ -14,12 +14,12 @@ type Props = {
 }
 
 function ColorPicker({ handleChange, currentColor }: Props) {
-  const c = [colors.YELLOW, colors.RED, colors.GREEN, colors.BLUE]
+  const c = [colors.YELLOW, colors.PINK, colors.GREEN, colors.BLUE]
   const x = useSharedValue(0)
 
   const style = useAnimatedStyle(() => {
     return {
-      transform: [{ translateX: withSpring(x.value) }],
+      transform: [{ translateX: withSpring(x.value, { damping: 15 }) }],
     }
   })
 

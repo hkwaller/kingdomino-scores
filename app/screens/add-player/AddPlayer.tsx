@@ -52,6 +52,7 @@ function AddPlayer() {
       setSavedName(name)
       setColor('')
       setName('')
+      scrollViewRef.current.scrollTo({ y: 0 })
       setTimeout(() => {
         setS(false)
       }, 2000)
@@ -69,7 +70,10 @@ function AddPlayer() {
             ref={scrollViewRef}
           >
             <Header title="Add player" />
-            <SmallHeader title="Name" style={{ marginBottom: -20 }} />
+            <SmallHeader
+              title="Name"
+              style={{ marginBottom: -20, marginTop: 20 }}
+            />
             <Input
               handleFocus={() => scrollViewRef.current.scrollTo({ y: 100 })}
               handleChange={t => setName(t)}
@@ -95,7 +99,6 @@ function AddPlayer() {
           </ScrollView>
           <Button
             title="Save"
-            small
             backgroundColor={colors.YELLOW}
             onPress={() => save()}
           />

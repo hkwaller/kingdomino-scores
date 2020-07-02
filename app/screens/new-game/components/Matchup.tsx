@@ -51,14 +51,6 @@ const styles = StyleSheet.create({
     marginRight: 20,
     borderRadius: 50,
     marginVertical: 10,
-    shadowColor: '#c0c0c0',
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.8,
-    shadowRadius: 5.46,
-    elevation: 9,
   },
   playerBackground: {
     padding: 12,

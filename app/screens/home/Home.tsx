@@ -16,19 +16,6 @@ function Home() {
       <ScrollView contentContainerStyle={styles.buttonContainer}>
         <Header title="King Domino" />
         <Players />
-        {/* <Button
-          title="New Game"
-          backgroundColor={colors.YELLOW}
-          lean="right"
-          onPress={() => navigation.navigate('NewGame')}
-        /> */}
-        {/* <Button
-          title="Add Player"
-          lean="left"
-          small
-          backgroundColor={colors.GREEN}
-          onPress={() => navigation.navigate('AddPlayer')}
-        /> */}
         <View style={{ marginVertical: 20 }} />
         <Button
           title="Statistics"

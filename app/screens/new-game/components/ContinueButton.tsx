@@ -4,7 +4,7 @@ import Animated, {
   useAnimatedStyle,
   withSpring,
 } from 'react-native-reanimated'
-import { screen, colors } from 'app/config/constants'
+import { colors } from 'app/config/constants'
 import { Button } from 'app/components'
 
 type Props = {
@@ -48,7 +48,6 @@ function ContinueButton({ selectedPlayersIsOver, onPress }: Props) {
         title="Start game"
         backgroundColor={colors.YELLOW}
         lean="right"
-        small
         onPress={onPress}
       />
     </Animated.View>

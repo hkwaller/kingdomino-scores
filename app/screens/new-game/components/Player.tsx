@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, Image } from 'react-native'
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -11,6 +11,7 @@ import {
   LongPressGestureHandler,
 } from 'react-native-gesture-handler'
 import { colors, fonts, screen } from 'app/config/constants'
+import { getAnimalWithColor } from 'app/config/constants'
 
 type Props = {
   name: string
@@ -18,15 +19,29 @@ type Props = {
   isSelected: boolean
   onPress: () => void
   deletePlayer?: () => void
+  white?: boolean
 }
 
-function Player({ name, color, onPress, isSelected, deletePlayer }: Props) {
+function Player({
+  name,
+  color,
+  onPress,
+  isSelected,
+  deletePlayer,
+  white,
+}: Props) {
   const active = useSharedValue(-150)
   const doubleTapRef = useRef(null)
 
   const style = useAnimatedStyle(() => {
     return {
-      transform: [{ translateX: withSpring(active.value) }],
+      transform: [
+        {
+          translateX: withSpring(active.value, {
+            damping: 18,
+          }),
+        },
+      ],
     }
   })
 
@@ -34,6 +49,8 @@ function Player({ name, color, onPress, isSelected, deletePlayer }: Props) {
     if (isSelected) active.value = 0
     else active.value = -150
   }, [isSelected])
+
+  const imageSource = getAnimalWithColor(color, isSelected)
 
   return (
     <LongPressGestureHandler
@@ -51,20 +68,25 @@ function Player({ name, color, onPress, isSelected, deletePlayer }: Props) {
           }
         }}
       >
-        <View style={styles.shadowView}>
-          <View style={styles.container}>
-            <Animated.View
-              style={[
-                {
-                  ...StyleSheet.absoluteFillObject,
-                  left: -200,
-                  backgroundColor: color,
-                },
-                style,
-              ]}
-            />
-            <Text style={styles.text}>{name}</Text>
-          </View>
+        <View style={styles.container}>
+          <Animated.View
+            style={[
+              {
+                ...StyleSheet.absoluteFillObject,
+                backgroundColor: color,
+              },
+              style,
+            ]}
+          />
+          <Image source={imageSource} />
+          <Text
+            style={[
+              styles.text,
+              { color: isSelected ? colors.WHITE : colors.BLACK },
+            ]}
+          >
+            {name}
+          </Text>
         </View>
       </TapGestureHandler>
     </LongPressGestureHandler>
@@ -73,29 +95,21 @@ function Player({ name, color, onPress, isSelected, deletePlayer }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 20,
-    paddingHorizontal: 30,
-    marginBottom: 20,
+    paddingVertical: 15,
+    paddingHorizontal: 25,
+    marginBottom: 15,
     backgroundColor: colors.WHITE,
-    borderRadius: 50,
-    marginHorizontal: 6,
+    borderRadius: 8,
+    marginHorizontal: 10,
     overflow: 'hidden',
-    minWidth: screen.WIDTH / 5,
-  },
-  shadowView: {
-    shadowColor: '#c0c0c0',
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.8,
-    shadowRadius: 5.46,
-    elevation: 9,
+    alignItems: 'center',
+    minWidth: screen.WIDTH / 4,
   },
   text: {
-    fontFamily: fonts.BOLD,
-    fontSize: 25,
+    fontFamily: fonts.LIGHT,
+    fontSize: 20,
     textAlign: 'center',
+    marginTop: 10,
   },
 })
 export default Player

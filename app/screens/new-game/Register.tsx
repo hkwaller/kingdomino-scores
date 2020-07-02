@@ -139,7 +139,6 @@ function Register() {
       <Button
         backgroundColor={colors.YELLOW}
         title="Continue"
-        small
         onPress={() => continueTapped()}
       />
       <SafeAreaView />
