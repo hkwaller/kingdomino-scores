@@ -15,6 +15,7 @@
     "@react-navigation/native": "^5.5.1",
     "@react-navigation/stack": "^5.5.1",
     "@risingstack/react-easy-state": "^6.3.0",
+    "hermes-engine": "0.4.2-rc1",
     "react": "16.11.0",
     "react-native": "0.62.2",
     "react-native-confetti-cannon": "^1.5.0",

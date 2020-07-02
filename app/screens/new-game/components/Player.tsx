@@ -1,73 +1,115 @@
-import React, { useEffect } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import React, { useEffect, useRef } from 'react'
+import { View, Text, StyleSheet, Image } from 'react-native'
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withSpring,
 } from 'react-native-reanimated'
+import {
+  TapGestureHandler,
+  State,
+  LongPressGestureHandler,
+} from 'react-native-gesture-handler'
 import { colors, fonts, screen } from 'app/config/constants'
-import { TapGestureHandler, State } from 'react-native-gesture-handler'
+import { getAnimalWithColor } from 'app/config/constants'
 
 type Props = {
   name: string
   color: string
-  onPress: () => void
   isSelected: boolean
+  onPress: () => void
+  deletePlayer?: () => void
+  white?: boolean
 }
 
-function Player({ name, color, onPress, isSelected }: Props) {
-  const active = useSharedValue(-200)
+function Player({
+  name,
+  color,
+  onPress,
+  isSelected,
+  deletePlayer,
+  white,
+}: Props) {
+  const active = useSharedValue(-150)
+  const doubleTapRef = useRef(null)
 
   const style = useAnimatedStyle(() => {
     return {
-      transform: [{ translateX: withSpring(active.value) }],
+      transform: [
+        {
+          translateX: withSpring(active.value, {
+            damping: 18,
+          }),
+        },
+      ],
     }
   })
 
   useEffect(() => {
     if (isSelected) active.value = 0
-    else active.value = -200
+    else active.value = -150
   }, [isSelected])
 
+  const imageSource = getAnimalWithColor(color, isSelected)
+
   return (
-    <TapGestureHandler
+    <LongPressGestureHandler
+      ref={doubleTapRef}
       onHandlerStateChange={event => {
-        if (event.nativeEvent.state === State.END) {
-          onPress()
-        }
+        if (event.nativeEvent.state === State.END)
+          deletePlayer && deletePlayer()
       }}
     >
-      <View style={styles.container}>
-        <Animated.View
-          style={[
-            {
-              ...StyleSheet.absoluteFillObject,
-              left: -200,
-              backgroundColor: color,
-            },
-            style,
-          ]}
-        />
-        <Text style={styles.text}>{name}</Text>
-      </View>
-    </TapGestureHandler>
+      <TapGestureHandler
+        waitFor={doubleTapRef}
+        onHandlerStateChange={event => {
+          if (event.nativeEvent.state === State.END) {
+            onPress()
+          }
+        }}
+      >
+        <View style={styles.container}>
+          <Animated.View
+            style={[
+              {
+                ...StyleSheet.absoluteFillObject,
+                backgroundColor: color,
+              },
+              style,
+            ]}
+          />
+          <Image source={imageSource} />
+          <Text
+            style={[
+              styles.text,
+              { color: isSelected ? colors.WHITE : colors.BLACK },
+            ]}
+          >
+            {name}
+          </Text>
+        </View>
+      </TapGestureHandler>
+    </LongPressGestureHandler>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
-    width: screen.WIDTH / 3 - 35,
-    marginBottom: 20,
+    paddingVertical: 15,
+    paddingHorizontal: 25,
+    marginBottom: 15,
     backgroundColor: colors.WHITE,
-    borderRadius: 50,
-    marginRight: 20,
+    borderRadius: 8,
+    marginHorizontal: 10,
     overflow: 'hidden',
+    alignItems: 'center',
+    minWidth: screen.WIDTH / 4,
   },
   text: {
-    fontFamily: fonts.BOLD,
+    fontFamily: fonts.LIGHT,
     fontSize: 20,
     textAlign: 'center',
+    marginTop: 10,
   },
 })
 export default Player

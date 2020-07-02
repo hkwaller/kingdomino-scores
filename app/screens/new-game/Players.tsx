@@ -1,6 +1,5 @@
 import React, { useState, useCallback } from 'react'
 import {
-  Text,
   SafeAreaView,
   StyleSheet,
   ScrollView,
@@ -11,97 +10,89 @@ import { useNavigation, useFocusEffect } from '@react-navigation/native'
 import { view } from '@risingstack/react-easy-state'
 
 import { deletePlayer, state } from 'app/config/data'
-import { Header, Button, SmallHeader } from 'app/components'
+import { SmallHeader } from 'app/components'
 import { fonts, colors } from 'app/config/constants'
 import Matchup from './components/Matchup'
 import Player from './components/Player'
+import NoPlayers from './components/NoPlayers'
 
 function Players() {
-  const [selectedPlayers, setSelectedPlayers] = useState([])
-  const [hasSelectedMatchup, setHasSelectedMatchup] = useState(false)
   const navigation = useNavigation()
 
   useFocusEffect(
     useCallback(() => {
-      setSelectedPlayers([])
+      state.selectedPlayers = []
     }, [])
   )
-
-  function handlePress() {
-    if (selectedPlayers.length === 0 && state.players.length !== 0) return
-    const destination = state.players.length === 0 ? 'AddPlayer' : 'Register'
-    navigation.navigate(destination, { players: selectedPlayers })
-  }
 
   return (
     <>
       <SafeAreaView />
-      <Header title="Who's playing?" />
-      <ScrollView contentContainerStyle={{ margin: 20 }}>
-        {state.players.length === 0 && (
-          <Text
-            style={[styles.playerText, { textAlign: 'center', marginTop: 40 }]}
-          >
-            You haven't created any players yet. Tap below bitte.
-          </Text>
-        )}
-        <SmallHeader title="Latest match-ups" style={{ alignSelf: 'center' }} />
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {state.matchups.map((matchup, index) => {
-            const matchupSelected = selectedPlayers.some(
-              v => matchup.indexOf(v.id) !== -1
-            )
+      {state.players.length === 0 && <NoPlayers />}
+      {state.players.length > 0 && (
+        <>
+          <SmallHeader title="Players" style={styles.playerHeader} />
+          <View style={styles.players}>
+            {state.players.map((p, index) => {
+              const isSelected = state.selectedPlayers.indexOf(p) > -1
 
-            return (
-              <Matchup
-                key={index}
-                players={matchup}
-                isSelected={matchupSelected}
-                onPress={() => {
-                  if (hasSelectedMatchup) {
-                    setHasSelectedMatchup(false)
-                    setSelectedPlayers([])
-                  } else {
-                    setHasSelectedMatchup(true)
-                    setSelectedPlayers([...matchup.map(p => state.players[p])])
-                  }
-                }}
-              />
-            )
-          })}
-        </ScrollView>
-        <SmallHeader
-          title="New setup"
-          style={{ alignSelf: 'center', marginTop: 40, marginBottom: 10 }}
-        />
-        <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-          {state.players.map((p, index) => {
-            const isSelected = selectedPlayers.indexOf(p) > -1
+              return (
+                <Player
+                  key={index}
+                  name={p.name}
+                  color={p.color}
+                  isSelected={isSelected}
+                  deletePlayer={() => {
+                    LayoutAnimation.configureNext(
+                      LayoutAnimation.Presets.spring
+                    )
+                    deletePlayer(p)
+                  }}
+                  onPress={() => {
+                    const updatedSelectedPlayers = isSelected
+                      ? state.selectedPlayers.filter(f => f.name !== p.name)
+                      : state.selectedPlayers.concat(p)
 
-            return (
-              <Player
-                key={index}
-                name={p.name}
-                color={p.color}
-                isSelected={isSelected}
-                onPress={() => {
-                  const updatedSelectedPlayers = isSelected
-                    ? selectedPlayers.filter(f => f.name !== p.name)
-                    : selectedPlayers.concat(p)
-
-                  setSelectedPlayers(updatedSelectedPlayers)
-                }}
-              />
-            )
-          })}
-        </View>
-      </ScrollView>
-      <Button
-        title={state.players.length === 0 ? 'Add players' : 'Continue'}
-        backgroundColor={colors.YELLOW}
-        onPress={() => handlePress()}
-      />
-      <SafeAreaView />
+                    state.selectedPlayers = updatedSelectedPlayers
+                  }}
+                />
+              )
+            })}
+            <Player
+              name="Add +"
+              color={colors.BLACK}
+              white
+              isSelected={true}
+              onPress={() => navigation.navigate('AddPlayer')}
+            />
+          </View>
+        </>
+      )}
+      {state.matchups.length > 0 && (
+        <>
+          <SmallHeader
+            title="Latest match-ups"
+            style={{ alignSelf: 'center', marginTop: 20 }}
+          />
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            <View style={{ marginHorizontal: 10 }} />
+            {state.matchups.map((matchup, index) => {
+              return (
+                <Matchup
+                  key={index}
+                  players={matchup}
+                  onPress={() => {
+                    state.selectedPlayers = matchup.map(
+                      m => state.players.filter(p => p.id === m)[0]
+                    )
+                    navigation.navigate('Register')
+                  }}
+                />
+              )
+            })}
+          </ScrollView>
+        </>
+      )}
     </>
   )
 }
@@ -111,6 +102,13 @@ const styles = StyleSheet.create({
     fontFamily: fonts.LIGHT,
     fontSize: 24,
   },
+  players: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    margin: 20,
+    justifyContent: 'center',
+  },
+  playerHeader: { alignSelf: 'center', marginTop: 10 },
 })
 
 export default view(Players)

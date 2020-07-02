@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import {
   View,
   TextInput,
@@ -8,6 +8,7 @@ import {
   InputAccessoryView,
   TouchableOpacity,
   Text,
+  Platform,
 } from 'react-native'
 import { colors, fonts } from 'app/config/constants'
 
@@ -15,8 +16,9 @@ type Props = {
   placeholder?: string
   type?: 'numeric' | 'default'
   style?: StyleProp<ViewStyle>
-  handleChange: (string) => void
+  handleChange: (val: string) => void
   continueTapped?: () => void
+  previousTapped?: () => void
   handleFocus?: () => void
   hideInputAccessory?: boolean
   inputAccessoryText?: string
@@ -30,6 +32,7 @@ function Input({
   value,
   handleChange,
   continueTapped,
+  previousTapped,
   hideInputAccessory = false,
   handleFocus = () => {},
   inputAccessoryText,
@@ -52,14 +55,25 @@ function Input({
           placeholder={placeholder}
         />
       </View>
-      {!hideInputAccessory && (
+      {!hideInputAccessory && Platform.OS === 'ios' && (
         <InputAccessoryView nativeID={inputAccessoryViewID}>
           <View style={styles.inputAccessoryViewContainer}>
+            {previousTapped && (
+              <TouchableOpacity
+                style={[
+                  styles.inputAccessoryViewButton,
+                  { backgroundColor: colors.PINK },
+                ]}
+                onPress={() => previousTapped()}
+              >
+                <Text style={styles.inputAccessoryViewButtonText}>
+                  {inputAccessoryText || 'Previous'}
+                </Text>
+              </TouchableOpacity>
+            )}
             <TouchableOpacity
               style={styles.inputAccessoryViewButton}
-              onPress={() => {
-                continueTapped()
-              }}
+              onPress={() => continueTapped && continueTapped()}
             >
               <Text style={styles.inputAccessoryViewButtonText}>
                 {inputAccessoryText || 'Next'}
@@ -89,19 +103,20 @@ const styles = StyleSheet.create({
   },
   inputAccessoryViewContainer: {
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
+    flexDirection: 'row',
     backgroundColor: colors.WHITE,
   },
   inputAccessoryViewButton: {
     padding: 10,
     marginVertical: 10,
-    paddingHorizontal: 50,
+    paddingHorizontal: 20,
     backgroundColor: colors.YELLOW,
     transform: [{ rotate: '2deg' }],
     alignSelf: 'center',
   },
   inputAccessoryViewButtonText: {
-    fontSize: 30,
+    fontSize: 20,
     textAlign: 'center',
     fontFamily: fonts.BOLD,
   },

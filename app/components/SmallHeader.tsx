@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleProp, ViewStyle } from 'react-native'
+import { Text, StyleProp, ViewStyle } from 'react-native'
 import { fonts } from 'app/config/constants'
 
 type Props = {

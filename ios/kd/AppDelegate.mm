@@ -16,7 +16,7 @@
 #import <React/JSCExecutorFactory.h>
 #import <RNReanimated/RETurboModuleProvider.h>
 
-
+  
 #if DEBUG
 #import <FlipperKit/FlipperClient.h>
 #import <FlipperKitLayoutPlugin/FlipperKitLayoutPlugin.h>
@@ -68,8 +68,12 @@ static void InitializeFlipper(UIApplication *application) {
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
   UIViewController *rootViewController = [UIViewController new];
   rootViewController.view = rootView;
+  if (@available(iOS 13.0, *)) {
+    rootViewController.overrideUserInterfaceStyle = UIUserInterfaceStyleLight;
+  }
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+
   
   RCTEnableTurboModule(YES);
   
