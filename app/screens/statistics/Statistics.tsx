@@ -22,9 +22,7 @@ function Statistics() {
 
   useEffect(() => {
     const stats = state.players
-      .map(p => {
-        return Object.assign(getStatsForPlayer(p.id), { id: p.id })
-      })
+      .map(p => Object.assign(getStatsForPlayer(p.id), { id: p.id }))
       .sort((a, b) => a.playedGames > b.playedGames)
       .sort((a, b) => a.wins < b.wins)
     setStats(stats)

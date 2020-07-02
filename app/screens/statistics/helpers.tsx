@@ -11,13 +11,14 @@ export function getStatsForPlayer(id: number) {
 
   return games.reduce(
     (cur, acc) => {
-      const indexOfPlayer = acc.ids.findIndex(f => f === id)
-
-      const scores = acc.game.map(g =>
-        g.reduce((cur, acc) => {
+      const bonuses = acc.players.map(p => (p.king && 10) + (p.alldominos && 5))
+      const scores = acc.game.map((g, index) => {
+        return g.reduce((cur, acc) => {
           return acc + cur
-        }, 0)
-      )
+        }, bonuses[index])
+      })
+
+      const indexOfPlayer = acc.ids.findIndex(f => f === id)
       const indexOfMaxValue = scores.indexOf(Math.max(...scores))
 
       if (scores.every(s => s === scores[0])) ++cur.draws
