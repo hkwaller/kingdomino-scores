@@ -46,13 +46,13 @@ function Input({
         <TextInput
           style={styles.text}
           keyboardType={type}
+          onFocus={handleFocus}
+          defaultValue={value}
+          inputAccessoryViewID={inputAccessoryViewID}
+          placeholder={placeholder}
           onChangeText={text => {
             handleChange(text)
           }}
-          onFocus={handleFocus}
-          value={value}
-          inputAccessoryViewID={inputAccessoryViewID}
-          placeholder={placeholder}
         />
       </View>
       {!hideInputAccessory && Platform.OS === 'ios' && (
@@ -60,11 +60,11 @@ function Input({
           <View style={styles.inputAccessoryViewContainer}>
             {previousTapped && (
               <TouchableOpacity
+                onPress={() => previousTapped()}
                 style={[
                   styles.inputAccessoryViewButton,
                   { backgroundColor: colors.PINK },
                 ]}
-                onPress={() => previousTapped()}
               >
                 <Text style={styles.inputAccessoryViewButtonText}>
                   {inputAccessoryText || 'Previous'}

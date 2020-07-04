@@ -18,6 +18,7 @@ import {
 import { state } from 'app/config/data'
 import Type from './components/Type'
 import Progress from './components/Progress'
+import Intro from './components/Intro'
 
 function Register() {
   const route = useRoute()
@@ -135,6 +136,7 @@ function Register() {
           handleChange={value => setInputValue(value)}
           style={{ paddingHorizontal: 12, width: 100 }}
         />
+        <Intro show={(typeIndex === 0) & (playerIndex === 0)} />
       </ScrollView>
       <Button
         backgroundColor={colors.YELLOW}
