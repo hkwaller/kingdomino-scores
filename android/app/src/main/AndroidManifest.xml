@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.kd">
+  package="com.hkwaller.kd">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
