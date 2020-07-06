@@ -25,6 +25,7 @@ type State = {
   selectedPlayers: Player[]
   highestId: number
   timesPlayed: number
+  hasAsked: boolean
 }
 
 export const state = store<State>({
@@ -34,6 +35,7 @@ export const state = store<State>({
   selectedPlayers: [],
   highestId: 0,
   timesPlayed: 0,
+  hasAsked: false,
 })
 
 autoEffect(() => {

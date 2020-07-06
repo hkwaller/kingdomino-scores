@@ -23,9 +23,11 @@ function Home() {
       if (
         route.params?.checkForReview &&
         state.timesPlayed > 0 &&
-        state.timesPlayed % 2 === 0
+        state.timesPlayed % 2 === 0 &&
+        !state.hasAsked
       ) {
         StoreReview.requestReview()
+        state.hasAsked = true
       }
     }, [])
   )
