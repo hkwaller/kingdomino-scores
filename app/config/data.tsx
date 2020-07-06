@@ -24,6 +24,7 @@ type State = {
   matchups: number[][]
   selectedPlayers: Player[]
   highestId: number
+  timesPlayed: number
 }
 
 export const state = store<State>({
@@ -32,6 +33,7 @@ export const state = store<State>({
   matchups: [],
   selectedPlayers: [],
   highestId: 0,
+  timesPlayed: 0,
 })
 
 autoEffect(() => {
@@ -48,6 +50,11 @@ autoEffect(() => {
 autoEffect(() => {
   if (state.matchups.length === 0) return
   AsyncStorage.setItem('matchups', JSON.stringify(state.matchups))
+})
+
+autoEffect(() => {
+  if (state.timesPlayed === 0) return
+  AsyncStorage.setItem('timesPlayed', JSON.stringify(state.timesPlayed))
 })
 
 export async function saveGame(data) {

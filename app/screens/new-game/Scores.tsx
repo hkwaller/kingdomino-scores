@@ -109,7 +109,10 @@ function Scores() {
       <Button
         title="Start over"
         backgroundColor={colors.GREEN}
-        onPress={() => navigation.navigate('Home')}
+        onPress={() => {
+          ++state.timesPlayed
+          navigation.navigate('Home', { checkForReview: true })
+        }}
       />
       <SafeAreaView />
       {showConfetti && (
