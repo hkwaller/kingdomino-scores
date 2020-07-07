@@ -30,10 +30,8 @@ function Home() {
         Platform.OS === 'ios' &&
         route.params?.checkForReview &&
         state.timesPlayed > 0 &&
-        state.timesPlayed % 2 === 0 &&
-        !state.hasAsked
+        state.timesPlayed % 2 === 0
       ) {
-        state.hasAsked = true
         StoreReview.requestReview()
       }
     }, [])
