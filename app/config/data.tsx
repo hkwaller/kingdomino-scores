@@ -23,6 +23,7 @@ type State = {
   games: Game[]
   matchups: number[][]
   selectedPlayers: Player[]
+  highestId: number
   timesPlayed: number
   hasAsked: boolean
 }
@@ -32,6 +33,7 @@ export const state = store<State>({
   games: [],
   matchups: [],
   selectedPlayers: [],
+  highestId: 0,
   timesPlayed: 0,
   hasAsked: false,
 })
@@ -39,6 +41,7 @@ export const state = store<State>({
 autoEffect(() => {
   if (state.players.length === 0) return
   AsyncStorage.setItem('players', JSON.stringify(state.players))
+  AsyncStorage.setItem('highestId', JSON.stringify(state.highestId))
 })
 
 autoEffect(() => {
@@ -66,7 +69,6 @@ export async function saveGame(data) {
     date: new Date(),
   }
 
-  console.log('newData: ', newData)
   state.games.push(newData)
   const matchups = [data.players.map(p => p.id), ...state.matchups]
 
@@ -81,9 +83,12 @@ export async function savePlayer(player: Player) {
     } else {
       state.players.push(
         Object.assign(player, {
-          id: Math.max(...state.players.map(p => p.id)) + 1,
+          id: state.highestId + 1,
         })
       )
+
+      ++state.highestId
+
       return 'hell yeah'
     }
   } catch (e) {

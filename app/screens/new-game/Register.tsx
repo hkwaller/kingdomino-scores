@@ -27,9 +27,11 @@ function Register() {
   const [typeIndex, setTypeIndex] = useState<number>(0)
   const [playerIndex, setPlayerIndex] = useState<number>(0)
   const [inputValue, setInputValue] = useState('')
+  const [inputY, setInputY] = useState(0)
 
   const typeRef = useRef(null)
   const playerRef = useRef(null)
+  const scrollViewRef = useRef(null)
 
   const navigation = useNavigation()
 
@@ -77,10 +79,15 @@ function Register() {
     typeRef.current.scrollToIndex({ index: typeIndex })
   }, [typeIndex])
 
+  useEffect(() => {
+    scrollViewRef.current?.scrollTo({ y: inputY })
+  }, [inputY])
+
   return (
     <>
       <SafeAreaView />
       <ScrollView
+        ref={scrollViewRef}
         contentContainerStyle={styles.container}
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"
@@ -90,6 +97,11 @@ function Register() {
         <FlatList
           keyExtractor={(_, index) => `${index}`}
           data={types}
+          onLayout={({
+            nativeEvent: {
+              layout: { y },
+            },
+          }) => setInputY(y - 50)}
           ref={typeRef}
           showsHorizontalScrollIndicator={false}
           pagingEnabled

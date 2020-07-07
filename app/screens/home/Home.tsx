@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react'
+import React, { useCallback } from 'react'
 import {
   View,
   SafeAreaView,
@@ -27,12 +27,14 @@ function Home() {
   useFocusEffect(
     useCallback(() => {
       if (
-        Platform.OS === 'ios' &&
         route.params?.checkForReview &&
+        Platform.OS === 'ios' &&
         state.timesPlayed > 0 &&
         state.timesPlayed % 2 === 0
       ) {
-        StoreReview.requestReview()
+        setTimeout(() => {
+          StoreReview.requestReview()
+        }, 1000)
       }
     }, [])
   )

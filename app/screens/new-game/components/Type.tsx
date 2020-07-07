@@ -7,7 +7,12 @@ import {
   ViewStyle,
   Platform,
 } from 'react-native'
-import { colors, fonts, landscapeFontColors } from 'app/config/constants'
+import {
+  colors,
+  fonts,
+  landscapeFontColors,
+  screen,
+} from 'app/config/constants'
 
 type Props = {
   title: string
@@ -19,7 +24,7 @@ type Props = {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: Platform.OS === 'ios' ? 30 : 20,
+    marginTop: screen.HEIGHT / 100,
   },
   background: {
     ...StyleSheet.absoluteFillObject,
