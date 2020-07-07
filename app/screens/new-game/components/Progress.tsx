@@ -35,7 +35,7 @@ function Progress({ progress }: Props) {
   })
 
   return (
-    <View style={{ flexDirection: 'row', marginTop: 10 }}>
+    <View style={{ flexDirection: 'row', marginVertical: 20 }}>
       {Object.keys(landscapeColors).map((l, index) => {
         return (
           <View

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import { View, Text, StyleSheet, Image } from 'react-native'
+import { View, Text, StyleSheet, Image, PixelRatio } from 'react-native'
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -51,6 +51,7 @@ function Player({
   }, [isSelected])
 
   const imageSource = getAnimalWithColor(color, isSelected)
+  const fontSize = screen.WIDTH / 25
 
   return (
     <LongPressGestureHandler
@@ -82,7 +83,10 @@ function Player({
           <Text
             style={[
               styles.text,
-              { color: isSelected ? colors.WHITE : colors.BLACK },
+              {
+                color: isSelected ? colors.WHITE : colors.BLACK,
+                fontSize: fontSize,
+              },
             ]}
           >
             {name}
@@ -103,11 +107,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     overflow: 'hidden',
     alignItems: 'center',
-    minWidth: screen.WIDTH / 4,
+    maxWidth: screen.WIDTH / 3 - 20,
   },
   text: {
     fontFamily: fonts.LIGHT,
-    fontSize: 20,
     textAlign: 'center',
     marginTop: 10,
   },

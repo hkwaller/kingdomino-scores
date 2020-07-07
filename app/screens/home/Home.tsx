@@ -1,7 +1,19 @@
-import React from 'react'
-import { View, SafeAreaView, StyleSheet, ScrollView } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
+import React, { useCallback } from 'react'
+import {
+  View,
+  SafeAreaView,
+  StyleSheet,
+  ScrollView,
+  Platform,
+} from 'react-native'
+import {
+  useNavigation,
+  useFocusEffect,
+  useRoute,
+} from '@react-navigation/native'
 import { view } from '@risingstack/react-easy-state'
+import * as StoreReview from 'expo-store-review'
+
 import { Header, Button } from 'app/components'
 import { colors } from 'app/config/constants'
 import { state } from 'app/config/data'
@@ -10,6 +22,22 @@ import ContinueButton from '../new-game/components/ContinueButton'
 
 function Home() {
   const navigation = useNavigation()
+  const route = useRoute()
+
+  useFocusEffect(
+    useCallback(() => {
+      if (
+        route.params?.checkForReview &&
+        Platform.OS === 'ios' &&
+        state.timesPlayed > 0 &&
+        state.timesPlayed % 2 === 0
+      ) {
+        setTimeout(() => {
+          StoreReview.requestReview()
+        }, 1000)
+      }
+    }, [])
+  )
 
   return (
     <SafeAreaView style={{ flex: 1 }}>

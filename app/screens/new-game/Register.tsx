@@ -21,14 +21,13 @@ import Progress from './components/Progress'
 import Intro from './components/Intro'
 
 function Register() {
-  const route = useRoute()
-
   const [game, setGame] = useState(
     state.selectedPlayers.map(_ => [0, 0, 0, 0, 0, 0])
   )
   const [typeIndex, setTypeIndex] = useState<number>(0)
   const [playerIndex, setPlayerIndex] = useState<number>(0)
   const [inputValue, setInputValue] = useState('')
+  const [inputY, setInputY] = useState(0)
 
   const typeRef = useRef(null)
   const playerRef = useRef(null)
@@ -37,8 +36,9 @@ function Register() {
   const navigation = useNavigation()
 
   useEffect(() => {
-    if (game[playerIndex][typeIndex] !== 0)
+    if (game[playerIndex][typeIndex] !== 0) {
       setInputValue(`${game[playerIndex][typeIndex]}`)
+    }
   }, [typeIndex, playerIndex])
 
   function continueTapped() {
@@ -65,7 +65,10 @@ function Register() {
     else if (playerIndex === 0) {
       setTypeIndex(typeIndex - 1)
       setPlayerIndex(state.selectedPlayers.length - 1)
-    } else setPlayerIndex(playerIndex - 1)
+    } else {
+      setPlayerIndex(playerIndex - 1)
+      setInputValue(game[playerIndex][typeIndex])
+    }
   }
 
   useEffect(() => {
@@ -76,13 +79,17 @@ function Register() {
     typeRef.current.scrollToIndex({ index: typeIndex })
   }, [typeIndex])
 
+  useEffect(() => {
+    scrollViewRef.current?.scrollTo({ y: inputY })
+  }, [inputY])
+
   return (
     <>
       <SafeAreaView />
       <ScrollView
-        contentContainerStyle={styles.container}
         ref={scrollViewRef}
-        keyboardShouldPersistTaps="always"
+        contentContainerStyle={styles.container}
+        keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"
       >
         <Header title="Score" />
@@ -90,13 +97,15 @@ function Register() {
         <FlatList
           keyExtractor={(_, index) => `${index}`}
           data={types}
+          onLayout={({
+            nativeEvent: {
+              layout: { y },
+            },
+          }) => setInputY(y - 50)}
           ref={typeRef}
           showsHorizontalScrollIndicator={false}
           pagingEnabled
           scrollEnabled={false}
-          contentContainerStyle={{
-            maxHeight: 120,
-          }}
           horizontal
           renderItem={({ item }) => {
             const color = landscapeColors[item.toUpperCase()]
@@ -129,8 +138,7 @@ function Register() {
         <Input
           placeholder="0"
           type="numeric"
-          value={`${inputValue}`}
-          handleFocus={() => scrollViewRef.current.scrollTo({ y: 100 })}
+          value={inputValue}
           continueTapped={continueTapped}
           previousTapped={previousTapped}
           handleChange={value => setInputValue(value)}

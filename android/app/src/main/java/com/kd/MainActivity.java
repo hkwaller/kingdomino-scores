@@ -1,4 +1,4 @@
-package com.kd;
+package com.hkwaller.kd;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

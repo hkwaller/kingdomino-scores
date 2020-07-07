@@ -16,6 +16,7 @@
     "@react-navigation/native": "^5.5.1",
     "@react-navigation/stack": "^5.5.1",
     "@risingstack/react-easy-state": "^6.3.0",
+    "expo-store-review": "^2.1.2",
     "hermes-engine": "0.4.2-rc1",
     "react": "16.11.0",
     "react-native": "0.62.2",
@@ -25,6 +26,7 @@
     "react-native-safe-area-context": "^3.0.5",
     "react-native-screens": "^2.9.0",
     "react-native-svg": "^12.1.0",
+    "react-native-unimodules": "^0.10.1",
     "react-navigation": "^4.3.9",
     "victory-native": "^34.3.0"
   },
