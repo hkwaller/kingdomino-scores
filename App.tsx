@@ -55,13 +55,11 @@ export default function App() {
       const games = (await AsyncStorage.getItem('games')) || '[]'
       const players = (await AsyncStorage.getItem('players')) || '[]'
       const matchups = (await AsyncStorage.getItem('matchups')) || '[]'
-      const highestId = (await AsyncStorage.getItem('highestId')) || '0'
       const timesPlayed = (await AsyncStorage.getItem('timesPlayed')) || '0'
 
       state.games = JSON.parse(games)
       state.players = JSON.parse(players)
       state.matchups = JSON.parse(matchups)
-      state.highestId = JSON.parse(highestId)
       state.timesPlayed = JSON.parse(timesPlayed)
     }
 
