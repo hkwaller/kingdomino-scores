@@ -1,5 +1,12 @@
 import React from 'react'
-import { View, Text, StyleSheet, StyleProp, ViewStyle } from 'react-native'
+import {
+  View,
+  Text,
+  StyleSheet,
+  StyleProp,
+  ViewStyle,
+  Platform,
+} from 'react-native'
 import { colors, fonts, landscapeFontColors } from 'app/config/constants'
 
 type Props = {
@@ -12,7 +19,7 @@ type Props = {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 20,
+    marginTop: Platform.OS === 'ios' ? 30 : 20,
   },
   background: {
     ...StyleSheet.absoluteFillObject,
@@ -53,7 +60,7 @@ function Type({
         style={[
           styles.text,
           {
-            fontSize: landscape ? 90 : 80,
+            fontSize: landscape ? 70 : 50,
             color: landscape
               ? landscapeFontColors[title.toUpperCase()]
               : colors.BLACK,

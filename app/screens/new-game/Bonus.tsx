@@ -13,6 +13,7 @@ import { Header, Button } from 'app/components'
 import { fonts, colors, screen } from 'app/config/constants'
 import Check from 'app/screens/new-game/components/Check'
 import Type from './components/Type'
+import Progress from './components/Progress'
 
 function Bonus() {
   const [players, setPlayers] = useState([])
@@ -74,6 +75,7 @@ function Bonus() {
       <SafeAreaView />
       <View style={styles.container}>
         <Header title="Bonus" />
+        <Progress progress={6} />
         <Animated.View
           style={[
             {

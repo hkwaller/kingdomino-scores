@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef, useEffect } from 'react'
 import {
   View,
   TextInput,
@@ -38,16 +38,25 @@ function Input({
   inputAccessoryText,
 }: Props) {
   const inputAccessoryViewID = 'supermegaID'
+  const ref = useRef(null)
+
+  useEffect(() => {
+    if (value.length === 0 && Platform.OS === 'android') ref.current.focus()
+  })
 
   return (
     <>
       <View style={[styles.container, style]}>
         <View style={styles.background} />
         <TextInput
+          autoFocus
+          ref={ref}
           style={styles.text}
           keyboardType={type}
           onFocus={handleFocus}
           defaultValue={value}
+          returnKeyType="next"
+          onSubmitEditing={continueTapped}
           inputAccessoryViewID={inputAccessoryViewID}
           placeholder={placeholder}
           onChangeText={text => {

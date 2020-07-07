@@ -1,5 +1,11 @@
 import React, { useEffect, useCallback } from 'react'
-import { View, SafeAreaView, StyleSheet, ScrollView } from 'react-native'
+import {
+  View,
+  SafeAreaView,
+  StyleSheet,
+  ScrollView,
+  Platform,
+} from 'react-native'
 import {
   useNavigation,
   useFocusEffect,
@@ -21,13 +27,14 @@ function Home() {
   useFocusEffect(
     useCallback(() => {
       if (
+        Platform.OS === 'ios' &&
         route.params?.checkForReview &&
         state.timesPlayed > 0 &&
         state.timesPlayed % 2 === 0 &&
         !state.hasAsked
       ) {
-        StoreReview.requestReview()
         state.hasAsked = true
+        StoreReview.requestReview()
       }
     }, [])
   )
