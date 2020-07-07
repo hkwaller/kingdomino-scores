@@ -2,6 +2,7 @@
 #import <UIKit/UIKit.h>
 #import <UMCore/UMAppDelegateWrapper.h>
 
+
 @class RCTBridge;
 
 @interface AppDelegate : UMAppDelegateWrapper <UIApplicationDelegate, RCTBridgeDelegate>
