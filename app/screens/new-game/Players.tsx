@@ -107,6 +107,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     margin: 20,
     justifyContent: 'center',
+    alignItems: 'flex-start',
   },
   playerHeader: { alignSelf: 'center', marginTop: 10 },
 })
