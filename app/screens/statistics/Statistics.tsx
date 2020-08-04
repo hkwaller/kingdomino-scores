@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, SafeAreaView, ScrollView } from 'react-native'
 import { view } from '@risingstack/react-easy-state'
 
 import { state } from 'app/config/data'
-import { Header } from 'app/components'
+import { Header, SmallHeader } from 'app/components'
 import Stats from './components/Stats'
 
 import { colors, screen, fonts } from 'app/config/constants'
@@ -74,8 +74,69 @@ function Statistics() {
             </View>
           )
         })}
+        <SmallHeader title="Matchups" style={{ marginTop: 20 }} />
+        {state.matchups.map(m => {
+          const currentMatchupGames = state.games.filter(g => {
+            if (
+              JSON.stringify(g.players.map(p => p.id).sort()) ===
+              JSON.stringify(m)
+            ) {
+              return g
+            }
+          })
+          return (
+            <View style={{ alignItems: 'center', padding: 20 }}>
+              {currentMatchupGames.reverse().map(game => {
+                const lineUp = game.players.map(p => {
+                  return { name: p.name, score: p.score }
+                })
+
+                return (
+                  <View style={{ flexDirection: 'row' }}>
+                    {lineUp.map((player, index) => {
+                      if (index % 2 === 0)
+                        return (
+                          <LeftPlayer name={player.name} score={player.score} />
+                        )
+                      else
+                        return (
+                          <RightPlayer
+                            name={player.name}
+                            score={player.score}
+                          />
+                        )
+                    })}
+                  </View>
+                )
+              })}
+            </View>
+          )
+        })}
       </ScrollView>
     </>
+  )
+}
+
+type PlayerProps = {
+  name: string
+  score: number
+}
+
+function LeftPlayer({ name, score }: PlayerProps) {
+  return (
+    <View style={styles.rowContainer}>
+      <Text style={{ fontSize: 20 }}>{name}</Text>
+      <Text style={{ fontSize: 30 }}>{score} -</Text>
+    </View>
+  )
+}
+
+function RightPlayer({ name, score }: PlayerProps) {
+  return (
+    <View style={styles.rowContainer}>
+      <Text style={{ fontSize: 30 }}> {score}</Text>
+      <Text style={{ fontSize: 20 }}>{name}</Text>
+    </View>
   )
 }
 
@@ -136,6 +197,12 @@ const styles = StyleSheet.create({
   },
   smallText: {
     fontSize: 20,
+  },
+  rowContainer: {
+    flexDirection: 'row',
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
 })
 export default view(Statistics)
