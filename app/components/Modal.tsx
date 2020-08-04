@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Text, StyleSheet } from 'react-native'
+import { Text, StyleSheet, View } from 'react-native'
 import Animated, {
   useSharedValue,
   withSpring,
@@ -7,20 +7,25 @@ import Animated, {
 } from 'react-native-reanimated'
 import { screen, colors, fonts } from 'app/config/constants'
 import SmallHeader from './SmallHeader'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import {
+  TouchableOpacity,
+  TapGestureHandler,
+  State,
+} from 'react-native-gesture-handler'
 import * as InAppPurchases from 'expo-in-app-purchases'
 import { state } from 'app/config/data'
 
 type Props = {
   isVisible: boolean
+  onPress: () => void
 }
 
-function Modal({ isVisible }: Props) {
-  const translateY = useSharedValue(screen.HEIGHT / 1.5)
+function Modal({ isVisible, onPress }: Props) {
+  const translateY = useSharedValue(screen.HEIGHT + 50)
 
   useEffect(() => {
     if (isVisible) translateY.value = 0
-    else translateY.value = screen.HEIGHT / 1.5
+    else translateY.value = screen.HEIGHT + 50
   }, [isVisible])
 
   const style = useAnimatedStyle(() => {
@@ -32,8 +37,18 @@ function Modal({ isVisible }: Props) {
   })
 
   return (
-    <>
-      <Animated.View style={[styles.container, style]}>
+    <Animated.View style={[style, styles.outerContainer]}>
+      <TapGestureHandler
+        onHandlerStateChange={event => {
+          if (event.nativeEvent.state === State.END) {
+            state.limited = true
+            onPress()
+          }
+        }}
+      >
+        <Animated.View style={styles.fillObject} />
+      </TapGestureHandler>
+      <View style={[styles.container]}>
         <SmallHeader title="Continue with KD Scores?" />
         <Text style={{ paddingVertical: 40 }}>
           In order to continue to use the app you have to purchase the full
@@ -50,17 +65,26 @@ function Modal({ isVisible }: Props) {
         <TouchableOpacity
           style={styles.statsButton}
           onPress={() => {
+            onPress()
             state.limited = true
           }}
         >
           <Text>I'm just going to check some stats</Text>
         </TouchableOpacity>
-      </Animated.View>
-    </>
+      </View>
+    </Animated.View>
   )
 }
 
 const styles = StyleSheet.create({
+  outerContainer: {
+    height: screen.HEIGHT,
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    top: 0,
+  },
   container: {
     width: screen.WIDTH,
     padding: 20,
@@ -88,6 +112,12 @@ const styles = StyleSheet.create({
     paddingBottom: 4,
     borderBottomWidth: 1,
     borderBottomColor: colors.BLACK,
+  },
+  fillObject: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: colors.BLACK,
+    marginTop: -50,
+    opacity: 0.8,
   },
 })
 export default Modal

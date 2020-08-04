@@ -16,10 +16,14 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 
 function Home() {
   const [isVisible, setIsVisible] = useState(
-    !state.hasPurchased && !state.limited && state.timesPlayed === 13
+    !state.hasPurchased && state.timesPlayed === 13
   )
   const navigation = useNavigation()
   const route = useRoute()
+
+  useEffect(() => {
+    state.limited && setIsVisible(false)
+  }, [state.limited])
 
   setTimeout(() => {
     if (route.params?.checkForReview && state.timesPlayed % 5 === 0) {
@@ -84,7 +88,7 @@ function Home() {
             small
             onPress={() => navigation.navigate('Statistics')}
           />
-          {!state.hasPurchased && (
+          {!state.hasPurchased && state.timesPlayed > 5 && (
             <>
               <Text style={{ padding: 24, textAlign: 'center', fontSize: 18 }}>
                 You still haven't purchased the full app. That is ok. You still
@@ -120,7 +124,7 @@ function Home() {
           }
         />
       </SafeAreaView>
-      <Modal isVisible={isVisible} />
+      <Modal isVisible={isVisible} onPress={() => setIsVisible(false)} />
     </>
   )
 }
