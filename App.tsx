@@ -2,14 +2,13 @@ import React, { useEffect } from 'react'
 import { StatusBar, View, Platform, UIManager } from 'react-native'
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
-import { state } from 'app/config/data'
 
+import { state } from 'app/config/data'
 import Home from 'app/screens/home/Home'
 
 import AddPlayer from 'app/screens/add-player/AddPlayer'
 
 import Register from 'app/screens/new-game/Register'
-import Players from 'app/screens/new-game/Players'
 import Bonus from 'app/screens/new-game/Bonus'
 import Scores from 'app/screens/new-game/Scores'
 
@@ -57,12 +56,15 @@ export default function App() {
       const matchups = (await AsyncStorage.getItem('matchups')) || '[]'
       const highestId = (await AsyncStorage.getItem('highestId')) || '0'
       const timesPlayed = (await AsyncStorage.getItem('timesPlayed')) || '0'
+      const hasPurchased =
+        (await AsyncStorage.getItem('@hasPurchased')) || 'false'
 
       state.games = JSON.parse(games)
       state.players = JSON.parse(players)
       state.matchups = JSON.parse(matchups)
       state.highestId = JSON.parse(highestId)
       state.timesPlayed = JSON.parse(timesPlayed)
+      state.hasPurchased = JSON.parse(hasPurchased)
     }
 
     getDataFromStorage()
