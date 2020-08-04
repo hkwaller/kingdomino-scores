@@ -132,8 +132,8 @@ android {
         applicationId "com.hkwaller.kd"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "1.0.1"
     }
     splits {
         abi {
@@ -185,10 +185,18 @@ android {
 
         }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
+
+apply from: '../../node_modules/react-native-unimodules/gradle.groovy'
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
+    addUnimodulesDependencies()
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
 

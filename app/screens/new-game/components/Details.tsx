@@ -12,7 +12,6 @@ import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withSpring,
-  useDerivedValue,
 } from 'react-native-reanimated'
 
 import { types } from 'app/config/constants'

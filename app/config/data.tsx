@@ -60,8 +60,6 @@ autoEffect(() => {
 })
 
 export async function saveGame(data) {
-  console.log('data: ', data)
-
   const newData = {
     game: data.game,
     players: data.players,
