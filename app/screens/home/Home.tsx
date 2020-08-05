@@ -15,15 +15,19 @@ import AsyncStorage from '@react-native-community/async-storage'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
 function Home() {
-  const [isVisible, setIsVisible] = useState(
-    !state.hasPurchased && state.timesPlayed === 13
-  )
+  // const [isVisible, setIsVisible] = useState(
+  //   !state.hasPurchased && state.timesPlayed === 5
+  // )
   const navigation = useNavigation()
   const route = useRoute()
 
+  // useEffect(() => {
+  //   state.limited && setIsVisible(false)
+  // }, [state.limited])
+
   useEffect(() => {
-    state.limited && setIsVisible(false)
-  }, [state.limited])
+    state.hasPurchased = true
+  })
 
   setTimeout(() => {
     if (route.params?.checkForReview && state.timesPlayed % 5 === 0) {
@@ -31,48 +35,48 @@ function Home() {
     }
   }, 1000)
 
-  useEffect(() => {
-    async function check() {
-      const history = await InAppPurchases.connectAsync()
-      if (history.responseCode === InAppPurchases.IAPResponseCode.OK) {
-        history.results.forEach(result => {
-          console.log('result: ', result)
-        })
-      } else {
-        console.log('shit failed yo')
-      }
+  // useEffect(() => {
+  //   async function check() {
+  //     const history = await InAppPurchases.connectAsync()
+  //     if (history.responseCode === InAppPurchases.IAPResponseCode.OK) {
+  //       history.results.forEach(result => {
+  //         console.log('result: ', result)
+  //       })
+  //     } else {
+  //       console.log('shit failed yo')
+  //     }
 
-      await InAppPurchases.getProductsAsync(['1'])
+  //     await InAppPurchases.getProductsAsync(['1'])
 
-      InAppPurchases.setPurchaseListener(
-        ({ responseCode, results, errorCode }) => {
-          if (responseCode === InAppPurchases.IAPResponseCode.OK) {
-            results.forEach(purchase => {
-              if (!purchase.acknowledged) {
-                state.hasPurchased = true
-                AsyncStorage.setItem('@hasPurchased', JSON.stringify(true))
-                InAppPurchases.finishTransactionAsync(purchase, true)
-              }
-            })
-          }
+  //     InAppPurchases.setPurchaseListener(
+  //       ({ responseCode, results, errorCode }) => {
+  //         if (responseCode === InAppPurchases.IAPResponseCode.OK) {
+  //           results.forEach(purchase => {
+  //             if (!purchase.acknowledged) {
+  //               state.hasPurchased = true
+  //               AsyncStorage.setItem('@hasPurchased', JSON.stringify(true))
+  //               InAppPurchases.finishTransactionAsync(purchase, true)
+  //             }
+  //           })
+  //         }
 
-          if (responseCode === InAppPurchases.IAPResponseCode.USER_CANCELED) {
-            console.log('User canceled the transaction')
-          } else if (responseCode === InAppPurchases.IAPResponseCode.DEFERRED) {
-            console.log(
-              'User does not have permissions to buy but requested parental approval (iOS only)'
-            )
-          } else {
-            console.warn(
-              `Something went wrong with the purchase. Received errorCode ${errorCode}`
-            )
-          }
-        }
-      )
-    }
+  //         if (responseCode === InAppPurchases.IAPResponseCode.USER_CANCELED) {
+  //           console.log('User canceled the transaction')
+  //         } else if (responseCode === InAppPurchases.IAPResponseCode.DEFERRED) {
+  //           console.log(
+  //             'User does not have permissions to buy but requested parental approval (iOS only)'
+  //           )
+  //         } else {
+  //           console.warn(
+  //             `Something went wrong with the purchase. Received errorCode ${errorCode}`
+  //           )
+  //         }
+  //       }
+  //     )
+  //   }
 
-    check()
-  }, [])
+  //   check()
+  // }, [])
 
   return (
     <>
@@ -124,7 +128,7 @@ function Home() {
           }
         />
       </SafeAreaView>
-      <Modal isVisible={isVisible} onPress={() => setIsVisible(false)} />
+      {/* <Modal isVisible={isVisible} onPress={() => setIsVisible(false)} /> */}
     </>
   )
 }

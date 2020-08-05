@@ -41,7 +41,6 @@ function Modal({ isVisible, onPress }: Props) {
       <TapGestureHandler
         onHandlerStateChange={event => {
           if (event.nativeEvent.state === State.END) {
-            state.limited = true
             onPress()
           }
         }}
