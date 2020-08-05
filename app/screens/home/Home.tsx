@@ -27,7 +27,7 @@ function Home() {
 
   useEffect(() => {
     state.hasPurchased = true
-  })
+  }, [])
 
   setTimeout(() => {
     if (route.params?.checkForReview && state.timesPlayed % 5 === 0) {
@@ -92,11 +92,11 @@ function Home() {
             small
             onPress={() => navigation.navigate('Statistics')}
           />
-          {!state.hasPurchased && state.timesPlayed > 5 && (
+          {/* {!state.hasPurchased && state.timesPlayed > 5 && (
             <>
               <Text style={{ padding: 24, textAlign: 'center', fontSize: 18 }}>
                 You still haven't purchased the full app. That is ok. You still
-                got {Math.min(0, 10 - state.timesPlayed)} more games to go
+                got {Math.max(0, 10 - state.timesPlayed)} more games to go
                 before you have to make a decision.
               </Text>
               <TouchableOpacity
@@ -119,7 +119,7 @@ function Home() {
                 </Text>
               </TouchableOpacity>
             </>
-          )}
+          )} */}
         </ScrollView>
         <ContinueButton
           selectedPlayersIsOver={state.selectedPlayers.length > 1}
