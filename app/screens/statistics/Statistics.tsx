@@ -47,11 +47,7 @@ function Statistics() {
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <Text style={[styles.bigText, styles.greyText]}>Played</Text>
                   <Text
-                    style={[
-                      styles.bigText,
-                      styles.blackText,
-                      { fontSize: 40, marginTop: -6 },
-                    ]}
+                    style={[styles.bigText, styles.blackText, { fontSize: 20 }]}
                   >
                     {stat.playedGames}
                   </Text>
@@ -59,11 +55,11 @@ function Statistics() {
               </View>
               <View
                 style={{
-                  width: screen.WIDTH - 100,
+                  width: screen.WIDTH - 80,
                   backgroundColor: player.color,
-                  height: 4,
-                  alignSelf: 'center',
-                  marginVertical: 20,
+                  height: 2,
+                  marginTop: 10,
+                  marginBottom: 20,
                 }}
               />
               <View style={styles.row}>
@@ -92,17 +88,35 @@ function Statistics() {
                 })
 
                 return (
-                  <View style={{ flexDirection: 'row' }}>
+                  <View style={{ flexDirection: 'row', marginBottom: 10 }}>
                     {lineUp.map((player, index) => {
                       if (index % 2 === 0)
                         return (
-                          <LeftPlayer name={player.name} score={player.score} />
+                          <>
+                            <LeftPlayer
+                              name={player.name}
+                              score={player.score}
+                              isHighest={
+                                player.score >= lineUp[index + 1].score
+                              }
+                            />
+                            <View
+                              style={{
+                                backgroundColor: colors.BLACK,
+                                width: 20,
+                                height: 5,
+                                marginHorizontal: 10,
+                                alignSelf: 'center',
+                              }}
+                            />
+                          </>
                         )
                       else
                         return (
                           <RightPlayer
                             name={player.name}
                             score={player.score}
+                            isHighest={player.score >= lineUp[index - 1].score}
                           />
                         )
                     })}
@@ -120,22 +134,53 @@ function Statistics() {
 type PlayerProps = {
   name: string
   score: number
+  isHighest?: boolean
 }
 
-function LeftPlayer({ name, score }: PlayerProps) {
+function LeftPlayer({ name, score, isHighest }: PlayerProps) {
   return (
     <View style={styles.rowContainer}>
-      <Text style={{ fontSize: 20 }}>{name}</Text>
-      <Text style={{ fontSize: 30 }}>{score} -</Text>
+      <Text
+        style={{
+          fontSize: 20,
+          fontFamily: fonts.LIGHT,
+        }}
+      >
+        {name}
+      </Text>
+      <View
+        style={[
+          styles.scoreContainer,
+          { right: 0, backgroundColor: isHighest ? colors.GREEN : colors.RED },
+        ]}
+      >
+        <Text style={{ fontSize: 20 }}>{score}</Text>
+      </View>
     </View>
   )
 }
 
-function RightPlayer({ name, score }: PlayerProps) {
+function RightPlayer({ name, score, isHighest }: PlayerProps) {
   return (
     <View style={styles.rowContainer}>
-      <Text style={{ fontSize: 30 }}> {score}</Text>
-      <Text style={{ fontSize: 20 }}>{name}</Text>
+      <View
+        style={[
+          styles.scoreContainer,
+          { left: 0, backgroundColor: isHighest ? colors.GREEN : colors.RED },
+        ]}
+      >
+        <Text style={{ fontSize: 20 }}>{score}</Text>
+      </View>
+      <Text
+        style={{
+          fontSize: 20,
+          textAlign: 'right',
+          flex: 1,
+          fontFamily: fonts.LIGHT,
+        }}
+      >
+        {name}
+      </Text>
     </View>
   )
 }
@@ -153,9 +198,7 @@ function Stat({ title, score }: StatProps) {
         alignItems: 'flex-end',
       }}
     >
-      <Text style={[styles.smallText, styles.greyText, { marginBottom: 3 }]}>
-        {title}
-      </Text>
+      <Text style={[styles.smallText, styles.greyText]}>{title}</Text>
       <Text style={[styles.bigText, styles.blackText]}>{score}</Text>
     </View>
   )
@@ -169,8 +212,8 @@ const styles = StyleSheet.create({
     paddingBottom: 300,
   },
   playerContainer: {
-    padding: 40,
-    margin: 20,
+    padding: 20,
+    margin: 10,
     width: screen.WIDTH - 40,
     backgroundColor: colors.WHITE,
   },
@@ -181,7 +224,7 @@ const styles = StyleSheet.create({
   },
   playerName: {
     fontFamily: fonts.BOLD,
-    fontSize: 40,
+    fontSize: 30,
   },
   greyText: {
     fontFamily: fonts.BOLD,
@@ -193,16 +236,31 @@ const styles = StyleSheet.create({
     color: colors.BLACK,
   },
   bigText: {
-    fontSize: 30,
+    fontSize: 20,
   },
   smallText: {
-    fontSize: 20,
+    fontSize: 15,
+    marginBottom: 1,
   },
   rowContainer: {
     flexDirection: 'row',
     flex: 1,
     alignItems: 'center',
     justifyContent: 'space-between',
+    backgroundColor: colors.WHITE,
+    padding: 10,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    overflow: 'hidden',
+  },
+  scoreContainer: {
+    backgroundColor: colors.GREEN,
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    width: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 })
 export default view(Statistics)
