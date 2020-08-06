@@ -65,7 +65,7 @@ function Modal({ isVisible, onPress }: Props) {
           style={styles.statsButton}
           onPress={() => {
             onPress()
-            state.limited = true
+            state.limited = !state.hasPurchased && state.timesPlayed > 10
           }}
         >
           <Text>I'm just going to check some stats</Text>
