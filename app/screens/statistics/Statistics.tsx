@@ -80,15 +80,29 @@ function Statistics() {
               return g
             }
           })
+
           return (
             <View style={{ alignItems: 'center', padding: 20 }}>
-              {currentMatchupGames.reverse().map(game => {
-                const lineUp = game.players.map(p => {
-                  return { name: p.name, score: p.score }
+              {currentMatchupGames.reverse().map((game, index) => {
+                const lineUp = game.players.map((p, playerIndex) => {
+                  const playerScore =
+                    game.game[playerIndex].reduce((cur, acc) => {
+                      return cur + acc
+                    }, 0) +
+                    (game.players[playerIndex].alldominos && 10) +
+                    (game.players[playerIndex].king && 5)
+
+                  return {
+                    name: p.name,
+                    score: playerScore,
+                  }
                 })
 
                 return (
-                  <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+                  <View
+                    key={index}
+                    style={{ flexDirection: 'row', marginBottom: 10 }}
+                  >
                     {lineUp.map((player, index) => {
                       if (index % 2 === 0)
                         return (
@@ -103,8 +117,8 @@ function Statistics() {
                             <View
                               style={{
                                 backgroundColor: colors.BLACK,
-                                width: 20,
-                                height: 5,
+                                width: 10,
+                                height: 3,
                                 marginHorizontal: 10,
                                 alignSelf: 'center',
                               }}
