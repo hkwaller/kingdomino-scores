@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { View, SafeAreaView, StyleSheet, ScrollView, Text } from 'react-native'
+import {
+  View,
+  SafeAreaView,
+  StyleSheet,
+  ScrollView,
+  Text,
+  Platform,
+} from 'react-native'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { view } from '@risingstack/react-easy-state'
 import * as StoreReview from 'expo-store-review'
@@ -16,7 +23,7 @@ import AsyncStorage from '@react-native-community/async-storage'
 
 function Home() {
   const [isVisible, setIsVisible] = useState(
-    !state.hasPurchased && state.timesPlayed === 5
+    !state.hasPurchased && state.timesPlayed >= 5
   )
   const navigation = useNavigation()
   const route = useRoute()
@@ -26,13 +33,14 @@ function Home() {
   }, [state.limited])
 
   setTimeout(() => {
-    if (route.params?.checkForReview && state.timesPlayed % 5 === 0) {
+    if (
+      route.params?.checkForReview &&
+      state.timesPlayed % 5 === 0 &&
+      !state.hasAsked &&
+      Platform.OS === 'ios'
+    ) {
+      state.hasAsked = true
       StoreReview.requestReview()
-    }
-
-    console.log('state.timesPlayed: ', state.timesPlayed)
-    if (!state.hasPurchased && state.timesPlayed > 10) {
-      state.limited = true
     }
   }, 1000)
 
@@ -42,12 +50,18 @@ function Home() {
       if (history.responseCode === InAppPurchases.IAPResponseCode.OK) {
         history.results.forEach(result => {
           console.log('result: ', result)
+          if (result) state.hasPurchased = true
         })
       } else {
-        console.log('shit failed yo')
+        console.log('could not get history')
       }
 
-      await InAppPurchases.getProductsAsync(['1'])
+      const id = Platform.select({
+        ios: ['1'],
+        android: ['Premium'],
+      })
+
+      await InAppPurchases.getProductsAsync(id || [])
 
       InAppPurchases.setPurchaseListener(
         ({ responseCode, results, errorCode }) => {
@@ -75,9 +89,19 @@ function Home() {
         }
       )
     }
-
-    check()
+    if (!state.hasPurchased) {
+      check()
+      if (state.timesPlayed > 10) {
+        state.limited = true
+      }
+    }
   }, [])
+
+  useEffect(() => {
+    if (state.timesPlayed > 10 && !state.hasPurchased) {
+      state.limited = true
+    }
+  }, [state.timesPlayed])
 
   return (
     <>
@@ -93,7 +117,7 @@ function Home() {
             small
             onPress={() => navigation.navigate('Statistics')}
           />
-          {!state.hasPurchased && state.timesPlayed >= 5 && (
+          {!state.hasPurchased && state.timesPlayed > 5 && (
             <>
               <Text style={{ padding: 24, textAlign: 'center', fontSize: 18 }}>
                 You still haven't purchased the full app. That is ok. You still

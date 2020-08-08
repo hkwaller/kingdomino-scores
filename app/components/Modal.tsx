@@ -1,18 +1,19 @@
 import React, { useEffect } from 'react'
-import { Text, StyleSheet, View } from 'react-native'
+import { Text, StyleSheet, View, Platform } from 'react-native'
 import Animated, {
   useSharedValue,
   withSpring,
   useAnimatedStyle,
 } from 'react-native-reanimated'
-import { screen, colors, fonts } from 'app/config/constants'
-import SmallHeader from './SmallHeader'
 import {
   TouchableOpacity,
   TapGestureHandler,
   State,
 } from 'react-native-gesture-handler'
 import * as InAppPurchases from 'expo-in-app-purchases'
+
+import { screen, colors, fonts } from 'app/config/constants'
+import SmallHeader from './SmallHeader'
 import { state } from 'app/config/data'
 
 type Props = {
@@ -56,7 +57,8 @@ function Modal({ isVisible, onPress }: Props) {
         <TouchableOpacity
           style={styles.buyButtonContainer}
           onPress={async () => {
-            await InAppPurchases.purchaseItemAsync('1')
+            const id = Platform.OS === 'android' ? 'premium' : '1'
+            await InAppPurchases.purchaseItemAsync(id)
           }}
         >
           <Text style={styles.buyButtonText}>Purchase now</Text>

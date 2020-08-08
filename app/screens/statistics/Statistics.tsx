@@ -71,7 +71,7 @@ function Statistics() {
           )
         })}
         <SmallHeader title="Matchups" style={{ marginTop: 20 }} />
-        {state.matchups.map(m => {
+        {state.matchups.map((m, index) => {
           const currentMatchupGames = state.games.filter(g => {
             if (
               JSON.stringify(g.players.map(p => p.id).sort()) ===
@@ -82,7 +82,7 @@ function Statistics() {
           })
 
           return (
-            <View style={{ alignItems: 'center', padding: 20 }}>
+            <View key={index} style={{ alignItems: 'center', padding: 20 }}>
               {currentMatchupGames.reverse().map((game, index) => {
                 const lineUp = game.players.map((p, playerIndex) => {
                   const playerScore =
@@ -106,7 +106,7 @@ function Statistics() {
                     {lineUp.map((player, index) => {
                       if (index % 2 === 0)
                         return (
-                          <>
+                          <View key={index}>
                             <LeftPlayer
                               name={player.name}
                               score={player.score}
@@ -123,11 +123,12 @@ function Statistics() {
                                 alignSelf: 'center',
                               }}
                             />
-                          </>
+                          </View>
                         )
                       else
                         return (
                           <RightPlayer
+                            key={index}
                             name={player.name}
                             score={player.score}
                             isHighest={player.score >= lineUp[index - 1].score}
