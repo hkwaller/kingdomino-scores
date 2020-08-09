@@ -58,7 +58,7 @@ function Home() {
 
       const id = Platform.select({
         ios: ['1'],
-        android: ['Premium'],
+        android: ['premium'],
       })
 
       await InAppPurchases.getProductsAsync(id || [])

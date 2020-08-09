@@ -106,8 +106,9 @@ function Statistics() {
                     {lineUp.map((player, index) => {
                       if (index % 2 === 0)
                         return (
-                          <View key={index}>
+                          <>
                             <LeftPlayer
+                              key={index}
                               name={player.name}
                               score={player.score}
                               isHighest={
@@ -123,7 +124,7 @@ function Statistics() {
                                 alignSelf: 'center',
                               }}
                             />
-                          </View>
+                          </>
                         )
                       else
                         return (
