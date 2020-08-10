@@ -1,6 +1,13 @@
 import { state } from 'app/config/data'
 
-export function getStatsForPlayer(id: number) {
+export type Stats = {
+  wins: number
+  draws: number
+  losses: number
+  playedGames: number
+}
+
+export function getStatsForPlayer(id: number): Stats {
   const games = [
     ...new Set(
       state.games.filter(game => {

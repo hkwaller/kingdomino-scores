@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: colors.WHITE,
-    borderRadius: 50,
+    borderRadius: 10,
   },
   text: {
     fontFamily: fonts.BOLD,

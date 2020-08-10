@@ -19,6 +19,7 @@ export const colors = {
   BACKGROUND: '#EAE7D6',
   WHITE: '#fff',
   BLACK: '#2B2B2C',
+  RED: '#FF5959',
   GREY: '#999999',
 }
 

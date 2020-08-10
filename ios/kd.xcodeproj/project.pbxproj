@@ -14,6 +14,7 @@
 		4B084894B701328C425CFAF8 /* libPods-kd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ABC24F95E94DD32CE0D9F776 /* libPods-kd.a */; };
 		812562BD9FE8439BA2B09301 /* FormulaCondensed-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 9B6A39BB80344FE799249A30 /* FormulaCondensed-Bold.otf */; };
 		943CB397A09144B7AA39ADF1 /* FormulaCondensed-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 02402EEA886C41FDB7660D21 /* FormulaCondensed-Light.otf */; };
+		F86C11AE24D96BDA006F46EE /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F86C11AD24D96BDA006F46EE /* StoreKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +44,7 @@
 		DA88D32176AAB57DA6E0BC8B /* Pods-kd-kdTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-kd-kdTests.release.xcconfig"; path = "Target Support Files/Pods-kd-kdTests/Pods-kd-kdTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
+		F86C11AD24D96BDA006F46EE /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,6 +53,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4B084894B701328C425CFAF8 /* libPods-kd.a in Frameworks */,
+				F86C11AE24D96BDA006F46EE /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,6 +103,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F86C11AD24D96BDA006F46EE /* StoreKit.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				ABC24F95E94DD32CE0D9F776 /* libPods-kd.a */,
@@ -314,7 +318,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_TEAM = 3GU3D426J4;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -324,7 +328,7 @@
 				INFOPLIST_FILE = kd/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.2;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -334,7 +338,7 @@
 				PRODUCT_NAME = "KD Scores";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -345,12 +349,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_TEAM = 3GU3D426J4;
 				INFOPLIST_FILE = kd/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.2;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -359,7 +363,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = no.krawaller.kingdomino;
 				PRODUCT_NAME = "KD Scores";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

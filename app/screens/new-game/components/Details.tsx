@@ -12,7 +12,6 @@ import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withSpring,
-  useDerivedValue,
 } from 'react-native-reanimated'
 
 import { types } from 'app/config/constants'
@@ -61,8 +60,8 @@ function Details({ score, king, alldominos }: Props) {
           {score.map((points, index) => {
             return <Row key={index} points={points} type={types[index]} />
           })}
-          {king && <Row points={15} type="King" style={{ marginTop: 20 }} />}
-          {alldominos && <Row points={10} type="All dominos" />}
+          {king && <Row points={10} type="King" style={{ marginTop: 20 }} />}
+          {alldominos && <Row points={5} type="All dominos" />}
         </View>
       </Animated.View>
     </View>
