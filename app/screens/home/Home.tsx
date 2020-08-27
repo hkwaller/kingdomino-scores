@@ -7,7 +7,11 @@ import {
   Text,
   Platform,
 } from 'react-native'
-import { useNavigation, useRoute } from '@react-navigation/native'
+import {
+  useNavigation,
+  useRoute,
+  useFocusEffect,
+} from '@react-navigation/native'
 import { view } from '@risingstack/react-easy-state'
 import * as StoreReview from 'expo-store-review'
 import * as InAppPurchases from 'expo-in-app-purchases'
@@ -32,24 +36,29 @@ function Home() {
     state.limited && setIsVisible(false)
   }, [state.limited])
 
-  setTimeout(() => {
-    if (
-      route.params?.checkForReview &&
-      state.timesPlayed % 5 === 0 &&
-      !state.hasAsked &&
-      Platform.OS === 'ios'
-    ) {
-      state.hasAsked = true
-      StoreReview.requestReview()
-    }
-  }, 1000)
+  useFocusEffect(
+    React.useCallback(() => {
+      if (
+        route.params?.checkForReview &&
+        state.timesPlayed % 5 === 0 &&
+        !state.hasAsked &&
+        Platform.OS === 'ios'
+      ) {
+        review()
+        state.hasAsked = true
+      }
+    }, [route.params?.checkForReview])
+  )
+
+  async function review() {
+    await StoreReview.requestReview()
+  }
 
   useEffect(() => {
     async function check() {
       const history = await InAppPurchases.connectAsync()
       if (history.responseCode === InAppPurchases.IAPResponseCode.OK) {
         history.results.forEach(result => {
-          console.log('result: ', result)
           if (result) state.hasPurchased = true
         })
       } else {
