@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     padding: 20,
     position: 'absolute',
     bottom: 0,
-    height: screen.HEIGHT / 1.5,
+    height: screen.HEIGHT / 2,
     paddingTop: 40,
     backgroundColor: colors.WHITE,
   },

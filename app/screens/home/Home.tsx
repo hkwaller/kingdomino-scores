@@ -25,6 +25,7 @@ import ContinueButton from '../new-game/components/ContinueButton'
 import Modal from 'app/components/Modal'
 import AsyncStorage from '@react-native-community/async-storage'
 import { setupPurchases } from 'app/config/utils'
+import Purchase from 'app/components/Purchase'
 
 function Home() {
   const [isVisible, setIsVisible] = useState(
@@ -68,13 +69,29 @@ function Home() {
           <Header title="King Domino" />
           {!state.limited && <Players />}
           <View style={{ marginVertical: 20 }} />
-          <Button
-            title="Statistics"
-            backgroundColor={colors.BLUE}
-            lean="right"
-            small
-            onPress={() => navigation.navigate('Statistics')}
-          />
+          <View
+            style={{
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+              justifyContent: 'center',
+            }}
+          >
+            <Button
+              title="Statistics"
+              backgroundColor={colors.BLUE}
+              lean="right"
+              small
+              onPress={() => navigation.navigate('Statistics')}
+            />
+            <View style={{ marginHorizontal: 10 }} />
+            <Button
+              title="Settings"
+              backgroundColor={colors.PINK}
+              lean="right"
+              small
+              onPress={() => navigation.navigate('Settings')}
+            />
+          </View>
           {!state.hasPurchased && state.timesPlayed > 5 && (
             <>
               <Text style={{ padding: 24, textAlign: 'center', fontSize: 18 }}>
@@ -93,7 +110,6 @@ function Home() {
               >
                 <Text
                   style={{
-                    color: colors.WHITE,
                     fontSize: 24,
                     fontFamily: fonts.BOLD,
                   }}
@@ -103,29 +119,7 @@ function Home() {
               </TouchableOpacity>
             </>
           )}
-          {!state.hasPurchased && (
-            <TouchableOpacity
-              style={{
-                alignSelf: 'center',
-                padding: 20,
-                backgroundColor: colors.GREEN,
-                borderRadius: 50,
-                paddingHorizontal: 30,
-                marginTop: 20,
-              }}
-              onPress={() => setupPurchases()}
-            >
-              <Text
-                style={{
-                  color: colors.WHITE,
-                  fontSize: 24,
-                  fontFamily: fonts.BOLD,
-                }}
-              >
-                Restore purchase
-              </Text>
-            </TouchableOpacity>
-          )}
+          {!state.hasPurchased && <Purchase />}
         </ScrollView>
         <ContinueButton
           selectedPlayersIsOver={state.selectedPlayers.length > 1}

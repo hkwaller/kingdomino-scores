@@ -16,7 +16,7 @@ export const colors = {
   BLUE: '#3FC0F8',
   PINK: '#f54291',
   YELLOW: '#FDD827',
-  BACKGROUND: '#EAE7D6',
+  BACKGROUND: '#EEECF1',
   WHITE: '#fff',
   BLACK: '#2B2B2C',
   RED: '#FF5959',

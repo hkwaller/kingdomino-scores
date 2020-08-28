@@ -28,6 +28,7 @@ type State = {
   hasAsked: boolean
   limited: boolean
   hasPurchased: boolean
+  showConfetti: boolean
 }
 
 export const state = store<State>({
@@ -40,6 +41,7 @@ export const state = store<State>({
   hasAsked: false,
   limited: false,
   hasPurchased: false,
+  showConfetti: true,
 })
 
 autoEffect(() => {
@@ -52,9 +54,14 @@ autoEffect(() => {
   if (state.games.length === 0) return
   AsyncStorage.setItem('games', JSON.stringify(state.games))
 })
+
 autoEffect(() => {
   if (state.timesPlayed === 0) return
   AsyncStorage.setItem('timesPlayed', JSON.stringify(state.timesPlayed))
+})
+
+autoEffect(() => {
+  AsyncStorage.setItem('showConfetti', JSON.stringify(state.showConfetti))
 })
 
 autoEffect(() => {

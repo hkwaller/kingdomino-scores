@@ -15,6 +15,7 @@ import Scores from 'app/screens/new-game/Scores'
 import Statistics from 'app/screens/statistics/Statistics'
 import { colors } from 'app/config/constants'
 import AsyncStorage from '@react-native-community/async-storage'
+import Settings from 'app/screens/home/Settings'
 
 const Stack = createStackNavigator()
 
@@ -37,6 +38,7 @@ function HomeStack() {
       <Stack.Screen name="Register" component={Register} />
       <Stack.Screen name="Bonus" component={Bonus} />
       <Stack.Screen name="Scores" component={Scores} />
+      <Stack.Screen name="Settings" component={Settings} />
     </Stack.Navigator>
   )
 }
@@ -56,6 +58,8 @@ export default function App() {
       const matchups = (await AsyncStorage.getItem('matchups')) || '[]'
       const highestId = (await AsyncStorage.getItem('highestId')) || '0'
       const timesPlayed = (await AsyncStorage.getItem('timesPlayed')) || '0'
+      const showConfetti =
+        (await AsyncStorage.getItem('showConfetti')) || 'true'
       const hasPurchased =
         (await AsyncStorage.getItem('@hasPurchased')) || 'false'
 
@@ -65,6 +69,7 @@ export default function App() {
       state.highestId = JSON.parse(highestId)
       state.timesPlayed = JSON.parse(timesPlayed)
       state.hasPurchased = JSON.parse(hasPurchased)
+      state.showConfetti = JSON.parse(showConfetti)
     }
 
     getDataFromStorage()

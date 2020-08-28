@@ -115,7 +115,7 @@ function Scores() {
         }}
       />
       <SafeAreaView />
-      {showConfetti && (
+      {showConfetti && state.showConfetti && (
         <ConfettiCannon
           count={200}
           fallSpeed={1000}
