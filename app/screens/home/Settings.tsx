@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
-import { SafeAreaView, TouchableOpacity, Text } from 'react-native'
+import React from 'react'
+import { SafeAreaView, TouchableOpacity, Text, StyleSheet } from 'react-native'
+import { view } from '@risingstack/react-easy-state'
+
 import Purchase from 'app/components/Purchase'
 import { Header } from 'app/components'
 import CheckMark from '../new-game/components/Checkmark'
-import { fonts } from 'app/config/constants'
+import { fonts, screen } from 'app/config/constants'
 import { state } from 'app/config/data'
-import { view } from '@risingstack/react-easy-state'
 
 function Settings() {
   return (
@@ -13,19 +14,28 @@ function Settings() {
       <Header title="Settings" />
       <TouchableOpacity
         onPress={() => (state.showConfetti = !state.showConfetti)}
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          marginVertical: 40,
-        }}
+        style={styles.button}
       >
         <CheckMark checked={state.showConfetti} />
-        <Text style={{ marginLeft: 20, fontFamily: fonts.BOLD, fontSize: 24 }}>
-          Show confetti
-        </Text>
+        <Text style={styles.buttonText}>Show confetti when game finishes</Text>
       </TouchableOpacity>
       <Purchase />
     </SafeAreaView>
   )
 }
+
+const styles = StyleSheet.create({
+  button: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 40,
+    paddingHorizontal: screen.WIDTH / 4,
+  },
+  buttonText: {
+    marginLeft: 20,
+    fontFamily: fonts.BOLD,
+    fontSize: 24,
+  },
+})
+
 export default view(Settings)
