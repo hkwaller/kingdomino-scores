@@ -24,6 +24,7 @@ import Players from '../new-game/Players'
 import ContinueButton from '../new-game/components/ContinueButton'
 import Modal from 'app/components/Modal'
 import AsyncStorage from '@react-native-community/async-storage'
+import { setupPurchases } from 'app/config/utils'
 
 function Home() {
   const [isVisible, setIsVisible] = useState(
@@ -53,58 +54,6 @@ function Home() {
   async function review() {
     await StoreReview.requestReview()
   }
-
-  useEffect(() => {
-    async function check() {
-      const history = await InAppPurchases.connectAsync()
-      if (history.responseCode === InAppPurchases.IAPResponseCode.OK) {
-        history.results.forEach(result => {
-          if (result) state.hasPurchased = true
-        })
-      } else {
-        console.log('could not get history')
-      }
-
-      const id = Platform.select({
-        ios: ['1'],
-        android: ['premium'],
-      })
-
-      await InAppPurchases.getProductsAsync(id || [])
-
-      InAppPurchases.setPurchaseListener(
-        ({ responseCode, results, errorCode }) => {
-          if (responseCode === InAppPurchases.IAPResponseCode.OK) {
-            results.forEach(purchase => {
-              if (!purchase.acknowledged) {
-                state.hasPurchased = true
-                AsyncStorage.setItem('@hasPurchased', JSON.stringify(true))
-                InAppPurchases.finishTransactionAsync(purchase, true)
-              }
-            })
-          }
-
-          if (responseCode === InAppPurchases.IAPResponseCode.USER_CANCELED) {
-            console.log('User canceled the transaction')
-          } else if (responseCode === InAppPurchases.IAPResponseCode.DEFERRED) {
-            console.log(
-              'User does not have permissions to buy but requested parental approval (iOS only)'
-            )
-          } else {
-            console.warn(
-              `Something went wrong with the purchase. Received errorCode ${errorCode}`
-            )
-          }
-        }
-      )
-    }
-    if (!state.hasPurchased) {
-      check()
-      if (state.timesPlayed > 10) {
-        state.limited = true
-      }
-    }
-  }, [])
 
   useEffect(() => {
     if (state.timesPlayed > 10 && !state.hasPurchased) {
@@ -153,6 +102,29 @@ function Home() {
                 </Text>
               </TouchableOpacity>
             </>
+          )}
+          {!state.hasPurchased && (
+            <TouchableOpacity
+              style={{
+                alignSelf: 'center',
+                padding: 20,
+                backgroundColor: colors.GREEN,
+                borderRadius: 50,
+                paddingHorizontal: 30,
+                marginTop: 20,
+              }}
+              onPress={() => setupPurchases()}
+            >
+              <Text
+                style={{
+                  color: colors.WHITE,
+                  fontSize: 24,
+                  fontFamily: fonts.BOLD,
+                }}
+              >
+                Restore purchase
+              </Text>
+            </TouchableOpacity>
           )}
         </ScrollView>
         <ContinueButton

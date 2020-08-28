@@ -15,6 +15,7 @@ import * as InAppPurchases from 'expo-in-app-purchases'
 import { screen, colors, fonts } from 'app/config/constants'
 import SmallHeader from './SmallHeader'
 import { state } from 'app/config/data'
+import { setupPurchases, setupPurchaseListener } from 'app/config/utils'
 
 type Props = {
   isVisible: boolean
@@ -58,6 +59,8 @@ function Modal({ isVisible, onPress }: Props) {
           style={styles.buyButtonContainer}
           onPress={async () => {
             const id = Platform.OS === 'android' ? 'premium' : '1'
+            await setupPurchases()
+            await setupPurchaseListener()
             await InAppPurchases.purchaseItemAsync(id)
           }}
         >
