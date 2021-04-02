@@ -1,0 +1,12 @@
+{
+  "name": "kd-scores",
+  "displayName": "kd-scores",
+  "expo": {
+    "name": "kd-scores",
+    "slug": "kd-scores",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
