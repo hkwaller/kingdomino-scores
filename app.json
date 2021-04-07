@@ -1,12 +1,15 @@
 {
-  "name": "kd-scores",
-  "displayName": "kd-scores",
   "expo": {
-    "name": "kd-scores",
+    "orientation": "portrait",
+    "name": "KD Scores",
     "slug": "kd-scores",
     "version": "1.0.0",
-    "assetBundlePatterns": [
-      "**/*"
-    ]
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "appStoreUrl": "https://apps.apple.com/us/app/id1521443134"
+    },
+    "android": {
+      "playStoreUrl": "https://play.google.com/store/apps/details?id=com.hkwaller.kd"
+    }
   }
 }
