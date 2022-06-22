@@ -18,7 +18,7 @@
     "@risingstack/react-easy-state": "6.3.0",
     "expo-in-app-purchases": "8.2.1",
     "expo-store-review": "2.1.2",
-    "hermes-engine": "0.4.2-rc1",
+    "hermes-engine": "0.10.0",
     "react": "16.11.0",
     "react-native": "0.62.2",
     "react-native-confetti-cannon": "1.5.0",
